@@ -43,3 +43,6 @@
 -keep class com.xmlywind.**.**{*;}
 -keep interface com.xmlywind.**.** {*;}
 -keep enum com.xmlywind.**.** {*;}
+
+#加密解除
+-keep class androidx.core.app.CoreComponentFactory { *; }
