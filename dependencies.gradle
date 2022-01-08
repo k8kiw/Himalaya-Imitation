@@ -20,6 +20,11 @@ android {
 
         }
 
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi'/*, 'x86'*///, 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+
     }
 
     buildFeatures{
@@ -47,7 +52,8 @@ android {
 dependencies {
 
     // sdk 依赖
-    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation fileTree(dir: "../common/libs", include: ['*.jar','*.aar'])
+
 
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'androidx.core:core-ktx:1.7.0'
