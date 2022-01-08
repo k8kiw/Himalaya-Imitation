@@ -1,0 +1,38 @@
+if (isSingleModule.toBoolean()) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+
+apply from:'../dependencies.gradle'
+
+android {
+    defaultConfig {
+        if (isSingleModule.toBoolean()) {
+            //如果是app
+            applicationId "com.kotori.mobilefmplayer"
+        }
+    }
+
+    sourceSets{
+        main {
+            if (isSingleModule.toBoolean()) {
+                //如果是application，则编译主目录下AndroidManifest.xml
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+
+                // 引入只有 app 时才用的类
+                // java.srcDir 'src/main/module'
+            } else {
+                //如果是library，则编译manifest下AndroidManifest.xml
+                manifest.srcFile 'src/main/manifest/AndroidManifest.xml'
+            }
+        }
+    }
+}
+
+dependencies {
+
+    // 底层库
+    implementation project(path: ':common')
+
+}

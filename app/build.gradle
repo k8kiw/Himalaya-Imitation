@@ -12,9 +12,12 @@ android {
 
 dependencies {
 
-    //implementation project(path: ':common')
+    // 公共底层库
+    implementation project(path: ':common')
 
+    // 当模块独立运行时，需要排除其他模块
     if (!isSingleModule.toBoolean()) {
         // 依赖所有模块
+        implementation project(path: ':home')
     }
 }

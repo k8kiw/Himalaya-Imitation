@@ -1,0 +1,9 @@
+apply plugin: 'com.android.library'
+apply from:'../dependencies.gradle'
+
+
+dependencies {
+
+    // okhttp sdk 等在此处依赖
+
+}
