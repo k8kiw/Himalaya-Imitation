@@ -9,6 +9,7 @@ import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.kotori.common.DemoHelper
 import com.kotori.common.receiver.MyPlayerReceiver
+import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager
 import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants
 import com.ximalaya.ting.android.opensdk.constants.ConstantsOpenSdk
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
@@ -73,6 +74,7 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
 
         // 各种初始化
         x.Ext.init(this)
+        QMUISwipeBackActivityManager.init(this)
 
         this.initSDK()
 
@@ -249,7 +251,7 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
 
             @Throws(IOException::class)
             override fun onResponse(call: Call, response: Response) {
-                val statusCode = response.code()
+                //val statusCode = response.code()
                 val json = response.body()!!.string()
                 println("TingApplication.refreshSync  1  $json")
                 var jsonObject: JSONObject? = null

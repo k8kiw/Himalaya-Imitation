@@ -1,10 +1,11 @@
 package com.kotori.mobilefmplayer
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.kotori.common.sdk.testSDKGetCategories
+import com.qmuiteam.qmui.arch.QMUIActivity
+import com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : QMUIActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

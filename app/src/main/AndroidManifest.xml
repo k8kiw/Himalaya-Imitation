@@ -27,6 +27,19 @@
         tools:replace="android:allowBackup,android:name,android:appComponentFactory"
         android:appComponentFactory="androidx.core.app.AppComponentFactory">
 
+        <!-- 适配各种异形屏 -->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true"/>
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.34"/>
+
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape"/>
+
 
         <activity android:name=".MainActivity"
             android:exported="true">
