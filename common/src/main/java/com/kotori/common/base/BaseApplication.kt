@@ -1,11 +1,12 @@
 package com.kotori.common.base
 
 import android.annotation.SuppressLint
-import android.app.Application
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
+import androidx.multidex.MultiDex
+import androidx.multidex.MultiDexApplication
 import com.kotori.common.DemoHelper
 import com.kotori.common.receiver.MyPlayerReceiver
 import com.ximalaya.ting.android.opensdk.auth.constants.XmlyConstants
@@ -34,11 +35,17 @@ import org.xutils.x
 import java.io.IOException
 
 
-open class BaseApplication : Application(), DemoHelper.AppIdsUpdater {
+open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
 
     companion object {
         const val REFRESH_TOKEN_URL = "https://api.ximalaya.com/oauth2/refresh_token?"
         const val KEY_LAST_OAID = "last_oaid"
+
+        // app相关
+        private const val APP_KEY = "ab6cdee3a29df9a2eb5a2f1d9ec1fb48"
+        private const val APP_SECRET = "3f02472f86cd0ab340c2099937d1390a"
+        private const val PACK_ID = "com.kotori.mobilefmplayer"
+
 
         /**
          * 当前 DEMO 应用的回调页，第三方应用应该使用自己的回调页。
@@ -54,6 +61,11 @@ open class BaseApplication : Application(), DemoHelper.AppIdsUpdater {
     }
 
     private lateinit var oaid: String
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -74,31 +86,34 @@ open class BaseApplication : Application(), DemoHelper.AppIdsUpdater {
             "开心麻花", "开心开心,无敌开心")
 
         if (BaseUtil.isMainProcess(this)) {
-            oaid = SharedPreferencesUtil.getInstance(context).getString(KEY_LAST_OAID)
+            oaid = SharedPreferencesUtil.getInstance(this).getString(KEY_LAST_OAID)
             DemoHelper { ids ->
                 oaid = ids
 
-                SharedPreferencesUtil.getInstance(context).saveString(KEY_LAST_OAID, ids)
+                SharedPreferencesUtil.getInstance(this).saveString(KEY_LAST_OAID, ids)
 
                 println("TingApplication.OnOaidAvalid  $ids")
 
-            }.getDeviceIds(context)
+            }.getDeviceIds(this)
 
             val mp3 = getExternalFilesDir("mp3")!!.absolutePath
             println("地址是  $mp3")
 
-            val mXimalaya = CommonRequest.getInstanse()
-            if (DTransferConstants.isRelease) {
-                val mAppSecret = "3f02472f86cd0ab340c2099937d1390a"
-                mXimalaya.setAppkey("ab6cdee3a29df9a2eb5a2f1d9ec1fb48")
-                mXimalaya.setPackid("com.app.test.android")
-                mXimalaya.init(this, mAppSecret, true, getDeviceInfoProvider(this))
-            } else {
-                val mAppSecret = "3f02472f86cd0ab340c2099937d1390a"
-                mXimalaya.setAppkey("ab6cdee3a29df9a2eb5a2f1d9ec1fb48")
-                mXimalaya.setPackid("android.test")
-                mXimalaya.init(this, mAppSecret, getDeviceInfoProvider(this))
+            // 初始化SDK
+            CommonRequest.getInstanse().apply {
+                if (DTransferConstants.isRelease) {
+                    setAppkey(APP_KEY)
+                    setPackid(PACK_ID)
+                    init(this@BaseApplication, APP_SECRET, true,
+                        getDeviceInfoProvider(this@BaseApplication))
+                } else {
+                    setAppkey(APP_KEY)
+                    setPackid(PACK_ID)
+                    init(this@BaseApplication, APP_SECRET,
+                        getDeviceInfoProvider(this@BaseApplication))
+                }
             }
+
             AccessTokenManager.getInstanse().init(this)
             if (AccessTokenManager.getInstanse().hasLogin()) {
                 registerLoginTokenChangeListener(this)
@@ -139,6 +154,7 @@ open class BaseApplication : Application(), DemoHelper.AppIdsUpdater {
             instanse.setStartOrPausePendingIntent(broadcast1)
         }
     }
+
 
     override fun OnOaidAvalid(ids: String) {
         oaid = ids
@@ -335,4 +351,6 @@ open class BaseApplication : Application(), DemoHelper.AppIdsUpdater {
             Logger.log("TingApplication : onFinished $request")
         }
     }
+
+
 }

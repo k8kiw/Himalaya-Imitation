@@ -25,7 +25,7 @@
         android:theme="@style/Theme.MobileFMPlayer"
 
         tools:replace="android:allowBackup,android:name,android:appComponentFactory"
-        android:appComponentFactory="任意字符">
+        android:appComponentFactory="androidx.core.app.AppComponentFactory">
 
 
         <activity android:name=".MainActivity"
