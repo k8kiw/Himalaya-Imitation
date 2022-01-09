@@ -112,7 +112,7 @@ dependencies {
     //annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     // QMUI
-    def qmui_version = '2.0.0-alpha08'
+    def qmui_version = '2.0.1'
     implementation "com.qmuiteam:qmui:$qmui_version"
     implementation "com.qmuiteam:arch:$qmui_version"
     kapt "com.qmuiteam:arch-compiler:$qmui_version" // use annotationProcessor if java
