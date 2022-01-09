@@ -22,11 +22,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:theme="@style/TestTheme"
+
         tools:replace="android:allowBackup,android:name,android:appComponentFactory"
         android:appComponentFactory="androidx.core.app.AppComponentFactory">
 
-        <!-- 适配各种异形屏 -->
-        <meta-data
+
+        <!--<meta-data
             android:name="android.notch_support"
             android:value="true"/>
 
@@ -36,12 +38,11 @@
 
         <meta-data
             android:name="notch.config"
-            android:value="portrait|landscape"/>
+            android:value="portrait|landscape"/>-->
 
 
         <activity android:name=".MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.MobileFMPlayer">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
