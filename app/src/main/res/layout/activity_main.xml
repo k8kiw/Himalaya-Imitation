@@ -7,37 +7,23 @@
 
     </data>
 
-    <com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="match_parent">
 
-        tools:context=".MainActivity">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="?attr/qmui_topbar_height"
-            android:fitsSystemWindows="true">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/qmui_config_color_white"
-                android:gravity="center"
-                android:padding="30dp"
-                android:text="test test" />
-        </FrameLayout>
-
-
-        <com.qmuiteam.qmui.widget.QMUITopBarLayout
-            android:id="@+id/top_bar"
-            android:layout_width="match_parent"
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+            android:id="@+id/test_button"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/app_color_blue"
-            android:fitsSystemWindows="true" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
 
-
-    </com.qmuiteam.qmui.widget.QMUIWindowInsetLayout2>
+            android:paddingVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:text="测试"
+            android:textSize="20sp"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
