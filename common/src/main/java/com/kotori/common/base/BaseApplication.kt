@@ -5,8 +5,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
+import androidx.multidex.BuildConfig
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
+import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.DemoHelper
 import com.kotori.common.receiver.MyPlayerReceiver
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager
@@ -32,10 +34,15 @@ import com.ximalaya.ting.android.sdkdownloader.http.request.UriRequest
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 import org.xutils.x
 import java.io.IOException
 
-
+/**
+ * App基类，进行oaid获取、sdk初始化、各种第三方库初始化
+ */
 open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
 
     companion object {
@@ -57,6 +64,9 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
             else
                 "http://api.test.ximalaya.com/openapi-collector-app/get_access_token"
 
+        /**
+         * 全局可用的一个context，给不在activity/fragment里的代码提供帮助
+         */
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
     }
@@ -77,9 +87,12 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
         QMUISwipeBackActivityManager.init(this)
 
         this.initSDK()
-
+        this.initARouter()
     }
 
+    /**
+     * 初始化
+     */
     private fun initSDK() {
         ConstantsOpenSdk.isDebug = true
         XMediaPlayerConstants.isDebug = true
@@ -157,6 +170,25 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
         }
     }
 
+    private fun initARouter() {
+        if (BuildConfig.DEBUG) {
+            ARouter.openLog()
+            ARouter.openDebug()
+        }
+        ARouter.init(this)
+    }
+
+    //koin
+    private fun initKoin() {
+        startKoin {
+            androidLogger()
+            androidContext(this@BaseApplication)
+            // 拿到全部模块，再初始化，应该放到app模块里
+            //modules(modules)
+        }
+    }
+
+
 
     override fun OnOaidAvalid(ids: String) {
         oaid = ids
@@ -177,6 +209,9 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
             }
         }
     }
+
+
+
 
     fun unregisterLoginTokenChangeListener() {
         CommonRequest.getInstanse().iTokenStateChange = null
@@ -219,6 +254,11 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
     }
 
 
+
+
+    /**
+     * 两个 refresh 都是实现登录逻辑的
+     */
     @Throws(XimalayaException::class)
     fun refresh() {
         val client = OkHttpClient().newBuilder()
