@@ -16,6 +16,9 @@ fun testSDKGetCategories() {
     CommonRequest.getCategories(map, object :IDataCallBack<CategoryList> {
         override fun onSuccess(categoryList: CategoryList?) {
 
+            // 线程
+            LogUtil.d(TAG, "当前线程为：${Thread.currentThread().name}")
+
             val categories = categoryList?.categories
             categories?.let { list ->
                 LogUtil.d(TAG, list.size.toString())
