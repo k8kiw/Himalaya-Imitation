@@ -2,3 +2,7 @@ rootProject.name = "MobileFMPlayer"
 include ':app'
 include ':common'
 include ':home'
+include ':ranking'
+include ':player'
+include ':local'
+include ':personal'

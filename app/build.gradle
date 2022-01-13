@@ -19,5 +19,9 @@ dependencies {
     if (!isSingleModule.toBoolean()) {
         // 依赖所有模块
         implementation project(path: ':home')
+        implementation project(path: ':ranking')
+        implementation project(path: ':player')
+        implementation project(path: ':local')
+        implementation project(path: ':personal')
     }
 }
