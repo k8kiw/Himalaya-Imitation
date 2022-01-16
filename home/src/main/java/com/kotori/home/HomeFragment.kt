@@ -4,6 +4,7 @@ import android.view.View
 import com.kotori.common.base.BaseDbFragment
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.ui.showInfoTipsDialog
+import com.kotori.common.utils.LogUtil
 import com.kotori.home.databinding.FragmentHomeBinding
 
 class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
@@ -13,12 +14,16 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
 
     override fun getLayoutId(): Int = R.layout.fragment_home
 
+    override fun showTopBar(): Boolean = true
+
 
     override fun initView(root: View) {
-        getTopBar()?.setTitle("首页")
+        getTopBar()?.setTitle(R.string.title_home)
 
+        LogUtil.d("TTTTTTTTTTTTTT------>", "$parentFragment")
+        LogUtil.d("TTTTTTTTTTTTTT------>", "${showTopBar()}")
 
-        mBinding.testButton.setOnClickListener {
+        mBinding.homeTestButton.setOnClickListener {
             showInfoTipsDialog("点击了按钮")
 
         }
