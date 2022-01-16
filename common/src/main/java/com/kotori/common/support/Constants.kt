@@ -1,5 +1,7 @@
 package com.kotori.common.support
 
+import com.kotori.common.R
+
 
 /**
  * 保存全局使用的常量
@@ -9,6 +11,6 @@ object Constants {
 
     const val PATH_MAIN = "/app/MainActivity"
 
-    // TODO:默认的返回键
-    const val DEFAULT_LEFT_IMAGE: Int = 1
+    // 默认的返回键
+    val DEFAULT_LEFT_IMAGE: Int = R.drawable.ic_back_24px_rounded
 }

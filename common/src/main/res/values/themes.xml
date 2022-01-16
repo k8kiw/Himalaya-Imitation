@@ -21,6 +21,9 @@
 
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/qmui_config_color_blue</item>
+
         <!--***************************** qmui topbar  ***************************** -->
         <item name="qmui_topbar_height">56dp</item>
         <!-- skin support-->

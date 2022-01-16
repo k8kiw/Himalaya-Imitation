@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">Common</string>
+    <string name="app_name">FMPlayer</string>
+    <string name="title_home">首页</string>
+    <string name="title_rank">排行</string>
+    <string name="title_local">本地</string>
+    <string name="title_personal">我的</string>
 </resources>
