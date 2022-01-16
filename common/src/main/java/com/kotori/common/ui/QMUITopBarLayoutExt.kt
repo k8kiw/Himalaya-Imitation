@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import com.kotori.common.R
 import com.kotori.common.base.BaseFragment
 import com.kotori.common.support.Constants.DEFAULT_LEFT_IMAGE
+import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.widget.QMUITopBarLayout
 
 
@@ -37,7 +38,17 @@ fun BaseFragment.addLeftCloseImageBtn( drawableResId: Int = DEFAULT_LEFT_IMAGE){
 
 fun QMUITopBarLayout.addLeftCloseImageBtn(fragment: BaseFragment, drawableResId: Int = DEFAULT_LEFT_IMAGE) {
     when (drawableResId) {
-        DEFAULT_LEFT_IMAGE -> addLeftBackImageButton()
+        // 为返回键属性替换为自己的按钮
+        //DEFAULT_LEFT_IMAGE -> addLeftImageButton(DEFAULT_LEFT_IMAGE, R.id.qmui_topbar_item_left_back)
+        //DEFAULT_LEFT_IMAGE -> addLeftBackImageButton()
+        DEFAULT_LEFT_IMAGE ->
+            addLeftImageButton(
+                DEFAULT_LEFT_IMAGE,
+                true,
+                R.id.qmui_topbar_item_left_back,
+                QMUIDisplayHelper.dpToPx(24),
+                QMUIDisplayHelper.dpToPx(24)
+            )
         else -> addLeftImageButton(drawableResId, R.id.qmui_topbar_item_left_back)
     }.setOnClickListener {
         fragment.finish()
