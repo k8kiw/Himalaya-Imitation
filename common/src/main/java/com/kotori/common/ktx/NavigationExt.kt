@@ -2,7 +2,9 @@ package com.kotori.common.ktx
 
 import android.content.Intent
 import android.util.SparseArray
+import androidx.annotation.RequiresApi
 import androidx.core.util.forEach
+import androidx.core.util.set
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -16,6 +18,8 @@ import com.kotori.common.utils.LogUtil
  * Manages the various graphs needed for a [BottomNavigationView].
  *
  * This sample is a workaround until the Navigation Component supports multiple back stacks.
+ * 
+ * menu的id应该与navigation的名称相同
  */
 private const val TAG = "NavigationExtensions"
 fun BottomNavigationView.setupWithNavController(
@@ -52,7 +56,8 @@ fun BottomNavigationView.setupWithNavController(
         }
 
         // Save to the map
-        graphIdToTagMap[graphId] = fragmentTag
+        //graphIdToTagMap[graphId] = fragmentTag
+        graphIdToTagMap.put(graphId, fragmentTag)
 
         // Attach or detach nav host fragment depending on whether it's the selected item.
         LogUtil.d(TAG, "setupWithNavController: $selectedItemId and $graphId")
@@ -78,11 +83,13 @@ fun BottomNavigationView.setupWithNavController(
             LogUtil.d(TAG, "setupWithNavController: isStateSaved ")
             false
         } else {
+            // 这里的 item 是 menu，需要与navigation的实际名字对应
             val newlySelectedItemTag = graphIdToTagMap[item.itemId]
             if (selectedItemTag != newlySelectedItemTag) {
                 // Pop everything above the first fragment (the "fixed start destination")
                 fragmentManager.popBackStack(firstFragmentTag,
                     FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                LogUtil.d(TAG, "findFragmentByTag: $newlySelectedItemTag")
                 val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
                         as NavHostFragment
 
