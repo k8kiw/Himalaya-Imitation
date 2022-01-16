@@ -9,7 +9,7 @@ import androidx.databinding.ViewDataBinding
  */
 abstract class BaseDbFragment<T : ViewDataBinding> : BaseFragment() {
 
-    private lateinit var mBinding: T
+    lateinit var mBinding: T
 
     override fun createContentView(): View {
         // 初始化
