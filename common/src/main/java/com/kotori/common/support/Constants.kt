@@ -12,5 +12,5 @@ object Constants {
     const val PATH_MAIN = "/app/MainActivity"
 
     // 默认的返回键
-    val DEFAULT_LEFT_IMAGE: Int = R.drawable.ic_back_24px_rounded
+    val DEFAULT_LEFT_IMAGE: Int = R.drawable.ic_arrow_back_ios_24px_rounded
 }

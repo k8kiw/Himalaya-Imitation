@@ -39,16 +39,16 @@ fun BaseFragment.addLeftCloseImageBtn( drawableResId: Int = DEFAULT_LEFT_IMAGE){
 fun QMUITopBarLayout.addLeftCloseImageBtn(fragment: BaseFragment, drawableResId: Int = DEFAULT_LEFT_IMAGE) {
     when (drawableResId) {
         // 为返回键属性替换为自己的按钮
-        //DEFAULT_LEFT_IMAGE -> addLeftImageButton(DEFAULT_LEFT_IMAGE, R.id.qmui_topbar_item_left_back)
+        DEFAULT_LEFT_IMAGE -> addLeftImageButton(DEFAULT_LEFT_IMAGE, R.id.qmui_topbar_item_left_back)
         //DEFAULT_LEFT_IMAGE -> addLeftBackImageButton()
-        DEFAULT_LEFT_IMAGE ->
+        /*DEFAULT_LEFT_IMAGE ->
             addLeftImageButton(
                 DEFAULT_LEFT_IMAGE,
                 true,
                 R.id.qmui_topbar_item_left_back,
                 QMUIDisplayHelper.dpToPx(24),
                 QMUIDisplayHelper.dpToPx(24)
-            )
+            )*/
         else -> addLeftImageButton(drawableResId, R.id.qmui_topbar_item_left_back)
     }.setOnClickListener {
         fragment.finish()
