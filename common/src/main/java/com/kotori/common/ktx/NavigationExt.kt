@@ -78,6 +78,10 @@ fun BottomNavigationView.setupWithNavController(
 
     // When a navigation item is selected
     setOnNavigationItemSelectedListener { item ->
+        // 屏蔽中间按钮的点击事件
+        /*if (item.itemId == 2) {
+            true
+        }*/
         // Don't do anything if the state is state has already been saved.
         if (fragmentManager.isStateSaved) {
             LogUtil.d(TAG, "setupWithNavController: isStateSaved ")

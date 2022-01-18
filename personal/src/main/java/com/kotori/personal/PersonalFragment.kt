@@ -20,7 +20,7 @@ class PersonalFragment: BaseDbFragment<FragmentPersonalBinding>() {
         getTopBar()?.setTitle(R.string.title_personal)
 
         // 测试返回键
-        addLeftCloseImageBtn()
+        //addLeftCloseImageBtn()
     }
 
     override fun showProgress(progress: ProgressBean) {

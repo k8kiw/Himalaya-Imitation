@@ -55,12 +55,12 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             navController.addOnDestinationChangedListener { _, destination, _ ->
                 run {
                     val id = destination.id
-                    // 设置进入到什么页面时，隐藏导航栏
-                    /*if (id == R.id.projectContentFragment) {
+                    // 设置进入到播放页面时，隐藏导航栏
+                    if (id == R.id.tempPlayerFragment) {
                         mBinding.bottomNavView.visibility = View.GONE
                     } else {
                         mBinding.bottomNavView.visibility = View.VISIBLE
-                    }*/
+                    }
                 }
             }
         })
