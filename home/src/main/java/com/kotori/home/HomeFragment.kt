@@ -81,6 +81,10 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
             tabs.forEach {
                 // 设置tab文字和样式
                 val tab = tabBuilder()
+                    .setTextSize(
+                        QMUIDisplayHelper.sp2px(context, 15),
+                        QMUIDisplayHelper.sp2px(context, 18)
+                    )
                     .setText(it)
                     .setColorAttr(R.attr.qmui_config_color_gray_1, R.attr.qmui_config_color_blue)
                     .build(context)
