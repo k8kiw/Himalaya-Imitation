@@ -11,6 +11,14 @@ object Constants {
 
     const val PATH_MAIN = "/app/MainActivity"
 
+    const val PATH_HOME_PAGE = "/home/HomeFragment"
+
+    const val PATH_PLAYER_PAGE = "/player/PlayerActivity"
+
+
     // 默认的返回键
     val DEFAULT_LEFT_IMAGE: Int = R.drawable.ic_arrow_back_24px_rounded
+
+    // view pager 传递参数时的键值
+    const val ARG_PAGER_ADAPTER = "view pager arguments"
 }
