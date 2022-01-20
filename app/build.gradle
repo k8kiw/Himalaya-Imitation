@@ -14,6 +14,10 @@ dependencies {
 
     // 公共底层库
     implementation project(path: ':common')
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
 
     // 当模块独立运行时，需要排除其他模块
     if (!isSingleModule.toBoolean()) {
