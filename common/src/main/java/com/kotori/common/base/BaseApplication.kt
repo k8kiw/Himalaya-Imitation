@@ -178,18 +178,6 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
         ARouter.init(this)
     }
 
-    //koin
-    private fun initKoin() {
-        startKoin {
-            androidLogger()
-            androidContext(this@BaseApplication)
-            // 拿到全部模块，再初始化，应该放到app模块里
-            //modules(modules)
-        }
-    }
-
-
-
     override fun OnOaidAvalid(ids: String) {
         oaid = ids
 
