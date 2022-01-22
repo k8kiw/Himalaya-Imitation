@@ -1,7 +1,6 @@
 package com.kotori.home
 
 import android.view.View
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -9,13 +8,11 @@ import com.kotori.common.base.BaseDbFragment
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.sdk.SDKCallbackExt
 import com.kotori.common.support.Constants
-import com.kotori.common.ui.showInfoTipsDialog
 import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
 import com.kotori.home.adapter.HomePagerFragmentStateAdapter
 import com.kotori.home.databinding.FragmentHomeBinding
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
-import com.qmuiteam.qmui.widget.tab.QMUIBasicTabSegment
 import com.qmuiteam.qmui.widget.tab.QMUITabIndicator
 import com.qmuiteam.qmui.widget.tab.QMUITabSegment
 import kotlinx.coroutines.launch
@@ -73,7 +70,16 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
                 R.id.topbar_right_about_button
             )?.setOnClickListener {
                 "搜索被点击".showToast()
-                mBinding.homeViewPager.currentItem = 3
+                // 测试数据获取
+                lifecycleScope.launch {
+                    val recommendAlbumList = SDKCallbackExt.getRecommendAlbumList(30, 50)
+
+                    LogUtil.d(TAG, recommendAlbumList?.size.toString())
+                    recommendAlbumList?.forEach {
+                        LogUtil.d(TAG, it.albumTitle)
+                    }
+
+                }
             }
         }
 
