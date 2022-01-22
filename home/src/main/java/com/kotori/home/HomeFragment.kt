@@ -32,22 +32,6 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
 
         initTopBar()
         initTabAndPager()
-
-        /*mBinding.homeTestButton.setOnClickListener {
-
-            // 请求网络数据，记得捕获没网异常
-            lifecycleScope.launch {
-                val categories = SDKCallbackExt.getAllCategories()
-                categories?.let { list ->
-                    LogUtil.d(TAG, list.size.toString())
-
-                    list.forEach {
-                        LogUtil.d(TAG, it.toString())
-                    }
-                }
-            }
-
-        }*/
     }
 
     /**
@@ -74,8 +58,8 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
                 lifecycleScope.launch {
                     val recommendAlbumList = SDKCallbackExt.getRecommendAlbumList(30, 50)
 
-                    LogUtil.d(TAG, recommendAlbumList?.size.toString())
-                    recommendAlbumList?.forEach {
+                    LogUtil.d(TAG, recommendAlbumList.size.toString())
+                    recommendAlbumList.forEach {
                         LogUtil.d(TAG, it.albumTitle)
                     }
 

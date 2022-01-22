@@ -16,6 +16,7 @@ import com.kotori.common.R
 /**
  * PagingAdapter的基类提取
  * 当只有一类数据时，只需编写点击事件和具体控件的数据显示逻辑
+ * @param T 一个item的数据类型
  */
 abstract class BasePagingAdapter<T : Any>(
     diffCallback: DiffUtil.ItemCallback<T>

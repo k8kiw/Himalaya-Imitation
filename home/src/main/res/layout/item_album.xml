@@ -22,7 +22,7 @@
             android:id="@+id/album_cover"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:background="@color/qmui_config_color_red"
+            android:src="@mipmap/img_placeholder"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -32,9 +32,10 @@
             android:id="@+id/album_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="10dp"
+            
             android:ellipsize="end"
+            android:maxLines="1"
             android:text="专辑标题专辑标题"
             android:textAlignment="textStart"
             android:textColor="@color/qmui_config_color_75_pure_black"
@@ -68,22 +69,22 @@
             app:layout_constraintVertical_bias="0.55" />
 
         <ImageView
-            android:id="@+id/views_icon"
+            android:id="@+id/album_views_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:src="@drawable/ic_play_arrow_24px_rounded"
 
             app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/views_text_view"
+            app:layout_constraintBottom_toBottomOf="@+id/album_views_num"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/album_cover"
-            app:layout_constraintTop_toTopOf="@+id/views_text_view"
+            app:layout_constraintTop_toTopOf="@+id/album_views_num"
             app:layout_constraintVertical_bias="0.95" />
 
         <TextView
-            android:id="@+id/views_text_view"
+            android:id="@+id/album_views_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
@@ -100,28 +101,28 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/views_icon"
+            app:layout_constraintStart_toEndOf="@id/album_views_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.98" />
 
 
         <ImageView
-            android:id="@+id/subscribe_icon"
+            android:id="@+id/album_subscribe_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             android:src="@drawable/ic_star_24px_rounded"
 
             app:layout_constrainedWidth="true"
-            app:layout_constraintBottom_toBottomOf="@+id/views_text_view"
+            app:layout_constraintBottom_toBottomOf="@+id/album_views_num"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/views_text_view"
-            app:layout_constraintTop_toTopOf="@+id/subscribe_text_view"
+            app:layout_constraintStart_toEndOf="@id/album_views_num"
+            app:layout_constraintTop_toTopOf="@+id/album_subscribe_num"
             app:layout_constraintVertical_bias="0.95" />
 
         <TextView
-            android:id="@+id/subscribe_text_view"
+            android:id="@+id/album_subscribe_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
@@ -138,7 +139,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/subscribe_icon"
+            app:layout_constraintStart_toEndOf="@id/album_subscribe_icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.98" />
 
