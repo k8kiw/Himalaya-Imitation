@@ -12,8 +12,11 @@ import kotlinx.coroutines.flow.Flow
  */
 object HomeRepository {
 
-    // 分页加载的一页长度
-    private const val PAGE_SIZE = 20
+    // 分页加载的配置
+    private val config = PagingConfig(
+        pageSize = 20,
+        maxSize = 150
+    )
 
 
     /**
@@ -21,7 +24,7 @@ object HomeRepository {
      */
     fun getRecommendAlbumPagingData() : Flow<PagingData<Album>> {
         return Pager(
-            config = PagingConfig(PAGE_SIZE),
+            config = config,
             pagingSourceFactory = { RecommendAlbumPagingSource() }
         ).flow
     }

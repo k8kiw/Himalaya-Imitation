@@ -41,6 +41,7 @@ object SDKCallbackExt {
     /**
      * 获取推荐专辑，将全区的编辑推荐整合为一个大列表
      * 方便进行分页加载
+     * index需要进行限制，不能无限多
      */
     suspend fun getRecommendAlbumList(startIndex : Int, endIndex : Int) : List<Album> {
         return suspendCoroutine { continuation ->
