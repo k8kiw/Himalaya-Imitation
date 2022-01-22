@@ -12,20 +12,22 @@ import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 /**
- * 封装SDK的回调
- *
+ * 封装SDK的参数设置、复杂的返回值、回调
+ * 尽量返回一个非空的类型
  */
 object SDKCallbackExt {
 
     /**
      * 获取所有分类
      */
-    suspend fun getAllCategoryList(specificParams: Map<String, String>? = null) : List<Category>? {
+    suspend fun getAllCategoryList(specificParams: Map<String, String>? = null) : List<Category> {
         return suspendCoroutine { continuation ->
             // 调用sdk
             CommonRequest.getCategories(specificParams, object : IDataCallBack<CategoryList> {
                 override fun onSuccess(p0: CategoryList?) {
-                    continuation.resume(p0?.categories)
+                    // 就算回调是空的，自己也应该返回一个空list而不是null
+                    val result = p0?.categories ?: ArrayList<Category>()
+                    continuation.resume(result)
                 }
 
                 override fun onError(p0: Int, p1: String?) {
@@ -40,7 +42,7 @@ object SDKCallbackExt {
      * 获取推荐专辑，将全区的编辑推荐整合为一个大列表
      * 方便进行分页加载
      */
-    suspend fun getRecommendAlbumList(startIndex : Int, endIndex : Int) : List<Album>? {
+    suspend fun getRecommendAlbumList(startIndex : Int, endIndex : Int) : List<Album> {
         return suspendCoroutine { continuation ->
             // 设置参数，每类推荐10个
             val params = mapOf(
