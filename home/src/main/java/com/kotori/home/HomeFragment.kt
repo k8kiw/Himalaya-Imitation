@@ -15,6 +15,7 @@ import com.kotori.common.utils.showToast
 import com.kotori.home.adapter.HomePagerFragmentStateAdapter
 import com.kotori.home.databinding.FragmentHomeBinding
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
+import com.qmuiteam.qmui.widget.tab.QMUIBasicTabSegment
 import com.qmuiteam.qmui.widget.tab.QMUITabIndicator
 import com.qmuiteam.qmui.widget.tab.QMUITabSegment
 import kotlinx.coroutines.launch
@@ -39,7 +40,7 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
 
             // 请求网络数据，记得捕获没网异常
             lifecycleScope.launch {
-                val categories = SDKCallbackExt.getAllCategories(null)
+                val categories = SDKCallbackExt.getAllCategories()
                 categories?.let { list ->
                     LogUtil.d(TAG, list.size.toString())
 
@@ -52,14 +53,30 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
         }*/
     }
 
-    private fun initTopBar() {
-        getTopBar()?.setTitle(R.string.title_home)
-        getTopBar()?.addRightImageButton(
-            R.drawable.ic_search_24px_rounded,
-            R.id.topbar_right_about_button
-        )?.setOnClickListener {
-            "搜索被点击".showToast()
+    /**
+     * fragment 被重新加载时，重新加载一遍避免白屏
+     */
+    override fun onStart() {
+        super.onStart()
+
+        // 重新加载时，使用当前 item 刷新一次
+        mBinding.homeViewPager.apply {
+            adapter?.notifyItemChanged(currentItem)
         }
+    }
+
+    private fun initTopBar() {
+        getTopBar()?.apply {
+            setTitle(R.string.title_home)
+            addRightImageButton(
+                R.drawable.ic_search_24px_rounded,
+                R.id.topbar_right_about_button
+            )?.setOnClickListener {
+                "搜索被点击".showToast()
+                mBinding.homeViewPager.currentItem = 3
+            }
+        }
+
     }
 
     /**
@@ -72,7 +89,7 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
         // 先初始化view pager, 后面设置tab时一并绑定
         mBinding.homeViewPager.apply {
             adapter = HomePagerFragmentStateAdapter(this@HomeFragment, tabs)
-            // TODO:底部bottom切换后fragment不会保存，得切换才会重新刷新
+            // 底部bottom切换后fragment不会保存，得切换才会重新刷新
             isSaveEnabled = false
         }
 
@@ -103,6 +120,28 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
 
             // 设置模式：宽度固定，内容均分
             mode = QMUITabSegment.MODE_FIXED
+
+            // 设置点击的切换动画，没用
+            // setSelectNoAnimation(false)
+            /*addOnTabSelectedListener(object : QMUIBasicTabSegment.OnTabSelectedListener {
+                override fun onTabSelected(index: Int) {
+                    mBinding.homeViewPager.currentItem = index
+                }
+
+                override fun onTabUnselected(index: Int) {
+
+                }
+
+                override fun onTabReselected(index: Int) {
+
+                }
+
+                override fun onDoubleTap(index: Int) {
+
+                }
+
+            })*/
+
 
             // 绑定view pager
             // TabLayout没有绑定ViewPager2的方法，所以才需要使用TabMediator做中介
