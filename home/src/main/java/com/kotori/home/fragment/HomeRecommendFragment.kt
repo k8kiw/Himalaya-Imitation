@@ -5,6 +5,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import com.kotori.common.base.BaseDbFragment
 import com.kotori.common.entity.ProgressBean
+import com.kotori.common.ui.showFailTipsDialog
 import com.kotori.common.utils.showToast
 import com.kotori.home.R
 import com.kotori.home.adapter.RecommendAlbumPagingAdapter
@@ -67,7 +68,9 @@ class HomeRecommendFragment : BaseDbFragment<FragmentHomeRecommendBinding>(){
                     is LoadState.Error -> {
                         // 隐藏刷新，不然一直在转回不去
                         mBinding.swipeRefreshLayout.isRefreshing = false
-                        // refresh 无法顺带被强转，只能自己转
+                        // 网络提示框
+                        showFailTipsDialog("加载错误，请稍后再试")
+                        // refresh 是字段无法被自动强转，只能自己转
                         val state = it.refresh as LoadState.Error
                         "${state.error.message}".showToast()
                     }
