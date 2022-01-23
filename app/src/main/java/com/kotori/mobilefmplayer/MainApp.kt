@@ -1,5 +1,7 @@
 package com.kotori.mobilefmplayer
 
+import androidx.multidex.BuildConfig
+import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseApplication
 import com.kotori.home.di.moduleHome
 import org.koin.android.ext.koin.androidContext
@@ -17,6 +19,7 @@ class MainApp : BaseApplication() {
         super.onCreate()
 
         initKoin()
+        initARouter()
     }
 
     private fun initKoin() {
@@ -26,5 +29,15 @@ class MainApp : BaseApplication() {
             // 拿到全部模块，初始化
             modules(modules)
         }
+    }
+
+    private fun initARouter() {
+        /*if (BuildConfig.DEBUG) {
+            ARouter.openLog()
+            ARouter.openDebug()
+        }*/
+        ARouter.openLog()
+        ARouter.openDebug()
+        ARouter.init(this)
     }
 }

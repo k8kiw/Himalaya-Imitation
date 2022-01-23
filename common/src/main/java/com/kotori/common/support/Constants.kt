@@ -13,8 +13,12 @@ object Constants {
 
     const val PATH_HOME_PAGE = "/home/HomeFragment"
 
+    const val PATH_ALBUM_DETAIL_PAGE = "/home/DetailActivity"
+
     const val PATH_PLAYER_PAGE = "/player/PlayerActivity"
 
+    // ARouter 传递自定义对象所要用的
+    const val SERVICE_ALBUM = "/service/AlbumServiceImpl"
 
     // 默认的返回键
     val DEFAULT_LEFT_IMAGE: Int = R.drawable.ic_arrow_back_24px_rounded

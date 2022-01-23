@@ -86,8 +86,7 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
         x.Ext.init(this)
         QMUISwipeBackActivityManager.init(this)
 
-        this.initSDK()
-        this.initARouter()
+        initSDK()
     }
 
     /**
@@ -168,14 +167,6 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
             val broadcast1 = PendingIntent.getBroadcast(this, 0, intent1, 0)
             instanse.setStartOrPausePendingIntent(broadcast1)
         }
-    }
-
-    private fun initARouter() {
-        if (BuildConfig.DEBUG) {
-            ARouter.openLog()
-            ARouter.openDebug()
-        }
-        ARouter.init(this)
     }
 
     override fun OnOaidAvalid(ids: String) {

@@ -18,4 +18,10 @@ class HomeViewModel : ViewModel(){
         // 封装repository，并缓存
         return HomeRepository.getRecommendAlbumPagingData().cachedIn(viewModelScope)
     }
+
+
+    /**
+     * --------------------------- 专辑详情页 -------------------------
+     */
+
 }

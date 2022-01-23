@@ -1,7 +1,9 @@
 package com.kotori.home.adapter
 
 import androidx.recyclerview.widget.DiffUtil
+import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BasePagingAdapter
+import com.kotori.common.support.Constants
 import com.kotori.common.utils.showToast
 import com.kotori.home.R
 import com.ximalaya.ting.android.opensdk.model.album.Album
@@ -33,6 +35,10 @@ class RecommendAlbumPagingAdapter : BasePagingAdapter<Album>(differCallback) {
 
     override fun onItemClick(data: Album?) {
         "打开 ${data?.albumTitle} 详情".showToast()
+
+        ARouter.getInstance().build(Constants.PATH_ALBUM_DETAIL_PAGE)
+            .withParcelable("album", data)
+            .navigation()
     }
 
     override fun bindData(helper: ItemHelper, data: Album?) {
