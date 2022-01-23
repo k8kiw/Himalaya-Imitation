@@ -1,4 +1,4 @@
-package com.kotori.home
+package com.kotori.home.fragment
 
 import android.view.View
 import androidx.lifecycle.lifecycleScope
@@ -10,11 +10,13 @@ import com.kotori.common.sdk.SDKCallbackExt
 import com.kotori.common.support.Constants
 import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
+import com.kotori.home.R
 import com.kotori.home.adapter.HomePagerFragmentStateAdapter
 import com.kotori.home.databinding.FragmentHomeBinding
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.widget.tab.QMUITabIndicator
 import com.qmuiteam.qmui.widget.tab.QMUITabSegment
+import com.ximalaya.ting.android.opensdk.model.album.Album
 import kotlinx.coroutines.launch
 
 @Route(path = Constants.PATH_HOME_PAGE)
@@ -143,11 +145,11 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
 
 
     /**
-     * 跳转播放页就是将专辑传过去给它播放
+     * 跳转详情页，将要打开的专辑传过去
      */
-    private fun startPlayerPage() {
-        ARouter.getInstance().build(Constants.PATH_PLAYER_PAGE)
-            .withString("test", "路由跳转")
+    private fun startAlbumDetailPage(album: Album) {
+        ARouter.getInstance().build(Constants.PATH_ALBUM_DETAIL_PAGE)
+            .withObject("album", album)
             .navigation()
     }
 
