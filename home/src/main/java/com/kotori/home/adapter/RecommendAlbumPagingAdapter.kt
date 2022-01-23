@@ -15,7 +15,12 @@ class RecommendAlbumPagingAdapter : BasePagingAdapter<Album>(differCallback) {
             }
 
             override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean {
-                return oldItem.equals(newItem)
+                // return oldItem == newItem
+                // bean 未实现equals，没办法快速比较
+                return oldItem.albumTitle == newItem.albumTitle &&
+                        oldItem.albumIntro == newItem.albumIntro &&
+                        oldItem.playCount == newItem.playCount &&
+                        oldItem.subscribeCount == newItem.subscribeCount
             }
 
         }
