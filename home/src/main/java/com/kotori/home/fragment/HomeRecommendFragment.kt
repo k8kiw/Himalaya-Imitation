@@ -65,6 +65,8 @@ class HomeRecommendFragment : BaseDbFragment<FragmentHomeRecommendBinding>(){
                     is LoadState.Loading -> mBinding.swipeRefreshLayout.isRefreshing = true
                     is LoadState.NotLoading -> mBinding.swipeRefreshLayout.isRefreshing = false
                     is LoadState.Error -> {
+                        // 隐藏刷新，不然一直在转回不去
+                        mBinding.swipeRefreshLayout.isRefreshing = false
                         // refresh 无法顺带被强转，只能自己转
                         val state = it.refresh as LoadState.Error
                         "${state.error.message}".showToast()

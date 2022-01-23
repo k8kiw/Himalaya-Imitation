@@ -25,6 +25,7 @@ class RecommendAlbumPagingSource : PagingSource<Int, Album>(){
             // 返回分页结果，创建一个page
             LoadResult.Page(albums, prevKey, nextKey)
         } catch (e:Exception){
+            // 转发异常
             LoadResult.Error(e)
         }
     }

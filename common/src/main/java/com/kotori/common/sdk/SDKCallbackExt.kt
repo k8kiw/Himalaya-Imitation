@@ -7,6 +7,7 @@ import com.ximalaya.ting.android.opensdk.model.album.Album
 import com.ximalaya.ting.android.opensdk.model.album.DiscoveryRecommendAlbumsList
 import com.ximalaya.ting.android.opensdk.model.category.Category
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList
+import java.util.concurrent.TimeoutException
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -31,7 +32,7 @@ object SDKCallbackExt {
                 }
 
                 override fun onError(p0: Int, p1: String?) {
-                    continuation.resumeWithException(Throwable(p1))
+                    continuation.resumeWithException(TimeoutException(p1))
                 }
 
             })
@@ -69,7 +70,7 @@ object SDKCallbackExt {
                 }
 
                 override fun onError(p0: Int, p1: String?) {
-                    continuation.resumeWithException(Throwable(p1))
+                    continuation.resumeWithException(TimeoutException(p1))
                 }
 
             })
