@@ -52,7 +52,7 @@ class RecommendAlbumPagingAdapter : BasePagingAdapter<Album>(differCallback) {
                 setText(R.id.album_title, it.albumTitle)
                 setText(R.id.album_introduction, it.albumIntro)
                 // 显示数据
-                setText(R.id.album_views_num, it.playCount.toString())
+                setText(R.id.album_play_num, it.playCount.toString())
                 setText(R.id.album_subscribe_num, it.subscribeCount.toString())
             }
         }
