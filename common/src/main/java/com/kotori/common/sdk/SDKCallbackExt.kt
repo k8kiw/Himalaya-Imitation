@@ -7,6 +7,8 @@ import com.ximalaya.ting.android.opensdk.model.album.Album
 import com.ximalaya.ting.android.opensdk.model.album.DiscoveryRecommendAlbumsList
 import com.ximalaya.ting.android.opensdk.model.category.Category
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList
+import com.ximalaya.ting.android.opensdk.model.track.Track
+import com.ximalaya.ting.android.opensdk.model.track.TrackList
 import java.util.concurrent.TimeoutException
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -87,4 +89,33 @@ object SDKCallbackExt {
     }
 
 
+    /**
+     * 获取一张专辑内的内容
+     * @param album 要查询的专辑
+     * @param page 当前页数
+     */
+    suspend fun getTrackByAlbum(album : Album, page : Int) : List<Track> {
+        return suspendCoroutine { continuation ->
+            // 得到 id
+            val albumId = album.id
+            // 设置参数
+            val map = mapOf(
+                DTransferConstants.ALBUM_ID to albumId.toString(),
+                DTransferConstants.SORT to "asc",
+                DTransferConstants.PAGE to page.toString(),
+            )
+            // 调用接口
+            CommonRequest.getTracks(map, object : IDataCallBack<TrackList> {
+                override fun onSuccess(p0: TrackList?) {
+                    val result = p0?.tracks ?: ArrayList<Track>()
+                    continuation.resume(result)
+                }
+
+                override fun onError(p0: Int, p1: String?) {
+                    continuation.resumeWithException(TimeoutException(p1))
+                }
+
+            })
+        }
+    }
 }
