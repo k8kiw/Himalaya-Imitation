@@ -4,6 +4,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.ximalaya.ting.android.opensdk.model.album.Album
+import com.ximalaya.ting.android.opensdk.model.track.Track
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -12,10 +13,10 @@ import kotlinx.coroutines.flow.Flow
  */
 object HomeRepository {
 
+    private const val PAGE_SIZE = 20
     // 分页加载的配置
     private val config = PagingConfig(
-        pageSize = 20,
-        maxSize = 150
+        pageSize = PAGE_SIZE,
     )
 
 
@@ -24,8 +25,23 @@ object HomeRepository {
      */
     fun getRecommendAlbumPagingData() : Flow<PagingData<Album>> {
         return Pager(
-            config = config,
+            config = PagingConfig(
+                pageSize = PAGE_SIZE,
+                maxSize = 150
+            ),
             pagingSourceFactory = { RecommendAlbumPagingSource() }
+        ).flow
+    }
+
+    /**
+     * 根据专辑获取其声音内容
+     */
+    fun getTrackPagingData(album: Album) : Flow<PagingData<Track>> {
+        return Pager(
+            config = PagingConfig(
+                pageSize = 50
+            ),
+            pagingSourceFactory = { DetailTrackPagingSource(album) }
         ).flow
     }
 }

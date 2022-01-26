@@ -6,6 +6,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.kotori.home.repository.HomeRepository
 import com.ximalaya.ting.android.opensdk.model.album.Album
+import com.ximalaya.ting.android.opensdk.model.track.Track
 import kotlinx.coroutines.flow.Flow
 
 /**
@@ -23,5 +24,7 @@ class HomeViewModel : ViewModel(){
     /**
      * --------------------------- 专辑详情页 -------------------------
      */
-
+    fun getTracksByAlbum(album: Album) : Flow<PagingData<Track>> {
+        return HomeRepository.getTrackPagingData(album).cachedIn(viewModelScope)
+    }
 }

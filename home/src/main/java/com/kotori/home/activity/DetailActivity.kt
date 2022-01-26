@@ -1,6 +1,10 @@
 package com.kotori.home.activity
 
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.DividerItemDecoration
 import coil.load
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -8,18 +12,24 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.support.Constants
+import com.kotori.common.ui.showFailTipsDialog
 import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
 import com.kotori.home.R
+import com.kotori.home.adapter.DetailTrackPagingAdapter
 import com.kotori.home.databinding.ActivityDetailBinding
 import com.kotori.home.viewmodel.HomeViewModel
 import com.ximalaya.ting.android.opensdk.model.album.Album
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @Route(path = Constants.PATH_ALBUM_DETAIL_PAGE)
 class DetailActivity : BaseActivity<ActivityDetailBinding>() {
 
     private val mViewModel : HomeViewModel by viewModel()
+
+    private val detailTrackPagingAdapter = DetailTrackPagingAdapter()
 
     @JvmField
     @Autowired(name = "album")
@@ -33,6 +43,46 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
 
         loadData()
         initTopBar()
+        initRecyclerView()
+        initListener()
+    }
+
+    private fun initListener() {
+        // 刷新
+        mBinding.swipeRefreshLayout.setOnRefreshListener {
+            detailTrackPagingAdapter.refresh()
+        }
+
+        // 监听加载状态
+        lifecycleScope.launchWhenCreated {
+            detailTrackPagingAdapter.loadStateFlow.collectLatest {
+                // 监听加载状态
+                when(it.refresh) {
+                    is LoadState.Loading -> mBinding.swipeRefreshLayout.isRefreshing = true
+                    is LoadState.NotLoading -> mBinding.swipeRefreshLayout.isRefreshing = false
+                    is LoadState.Error -> {
+                        // 隐藏刷新，不然一直在转回不去
+                        mBinding.swipeRefreshLayout.isRefreshing = false
+                        // 网络提示框
+                        showFailTipsDialog("加载错误，请稍后再试")
+                        // refresh 是字段无法被自动强转，只能自己转
+                        val state = it.refresh as LoadState.Error
+                        "${state.error.message}".showToast()
+                    }
+                }
+
+            }
+        }
+    }
+
+    private fun initRecyclerView() {
+        mBinding.detailTrackList.adapter = detailTrackPagingAdapter
+        mBinding.swipeRefreshLayout.setColorSchemeResources(R.color.qmui_config_color_blue)
+
+        // 添加divider
+        mBinding.detailTrackList.addItemDecoration(
+            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        )
     }
 
     private fun initTopBar() {
@@ -59,17 +109,21 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
 
         // 监听滑动状态
         mBinding.collapsingTopbarLayout.apply {
+            setContentScrimColor(ContextCompat.getColor(
+                this@DetailActivity,
+                R.color.qmui_config_color_blue
+            ))
+            setStatusBarScrimColor(ContextCompat.getColor(
+                this@DetailActivity,
+                R.color.qmui_config_color_blue
+            ))
             setScrimUpdateListener {
+                // scrim 到达阈值，切换颜色
                 LogUtil.d(TAG, "scrim = ${it.animatedValue}")
             }
             addOnOffsetUpdateListener { layout, offset, expandFraction ->
                 LogUtil.d(TAG, "offset = $offset, expandFraction = $expandFraction")
-                // TODO:top bar图片切换问题
-                /*if (expandFraction == 1.0f) {
-                    mBinding.detailAlbumCover.visibility = View.INVISIBLE
-                } else {
-                    mBinding.detailAlbumCover.visibility = View.VISIBLE
-                }*/
+
             }
         }
     }
@@ -79,7 +133,16 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
         ARouter.getInstance().inject(this)
 
         // 取得数据
-        "${album?.albumIntro}".showToast()
+        // "${album?.albumIntro}".showToast()
+
+        // 监听
+        lifecycleScope.launchWhenCreated {
+            album?.let { albumNotNull ->
+                mViewModel.getTracksByAlbum(albumNotNull).collect {
+                    detailTrackPagingAdapter.submitData(it)
+                }
+            }
+        }
     }
 
 

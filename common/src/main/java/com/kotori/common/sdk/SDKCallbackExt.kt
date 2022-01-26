@@ -103,6 +103,7 @@ object SDKCallbackExt {
                 DTransferConstants.ALBUM_ID to albumId.toString(),
                 DTransferConstants.SORT to "asc",
                 DTransferConstants.PAGE to page.toString(),
+                DTransferConstants.DISPLAY_COUNT to 50.toString()
             )
             // 调用接口
             CommonRequest.getTracks(map, object : IDataCallBack<TrackList> {
