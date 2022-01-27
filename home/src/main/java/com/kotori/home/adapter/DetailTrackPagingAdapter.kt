@@ -32,6 +32,7 @@ class DetailTrackPagingAdapter : BasePagingAdapter<Track>(differCallback){
         data?.let {
             // helper加载数据
             helper.apply {
+                setText(R.id.list_order, (data.orderNum + 1).toString())
                 setText(R.id.track_title, data.trackTitle)
                 setText(R.id.track_play_num, data.playCount.toString())
                 setText(R.id.track_duration_num, data.duration.toString())
