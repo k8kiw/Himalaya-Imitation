@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/rankingFragment"
-        android:name="com.kotori.ranking.RankingFragment"
+        android:name="com.kotori.search.RankingFragment"
         android:label="RankingFragment"
         tools:layout="@layout/fragment_ranking"/>
 </navigation>

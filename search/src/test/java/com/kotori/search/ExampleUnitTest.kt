@@ -1,4 +1,4 @@
-package com.kotori.ranking
+package com.kotori.search
 
 import org.junit.Test
 

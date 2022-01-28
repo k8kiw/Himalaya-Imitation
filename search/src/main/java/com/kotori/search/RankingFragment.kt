@@ -1,9 +1,9 @@
-package com.kotori.ranking
+package com.kotori.search
 
 import android.view.View
 import com.kotori.common.base.BaseDbFragment
 import com.kotori.common.entity.ProgressBean
-import com.kotori.ranking.databinding.FragmentRankingBinding
+import com.kotori.search.databinding.FragmentRankingBinding
 
 class RankingFragment: BaseDbFragment<FragmentRankingBinding>() {
     override fun onLazyInit() {

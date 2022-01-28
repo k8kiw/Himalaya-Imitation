@@ -16,7 +16,7 @@
             <option value="$PROJECT_DIR$/local" />
             <option value="$PROJECT_DIR$/personal" />
             <option value="$PROJECT_DIR$/player" />
-            <option value="$PROJECT_DIR$/ranking" />
+            <option value="$PROJECT_DIR$/search" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
