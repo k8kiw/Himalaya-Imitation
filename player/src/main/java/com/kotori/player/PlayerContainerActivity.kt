@@ -12,7 +12,6 @@ import com.kotori.common.support.Constants
 import com.kotori.common.utils.showToast
 import com.kotori.player.databinding.ActivityPlayerContainerBinding
 
-@Route(path = Constants.PATH_PLAYER_PAGE)
 class PlayerContainerActivity : BaseActivity<ActivityPlayerContainerBinding>() {
 
     @JvmField

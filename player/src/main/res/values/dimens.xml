@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="player_icon_size">35dp</dimen>
+    <dimen name="player_icon_play_size">50dp</dimen>
+    <dimen name="player_play_order_icon_size">30dp</dimen>
+    <item name="button_pressed_alpha" type="dimen" format="float">0.6</item>
+</resources>

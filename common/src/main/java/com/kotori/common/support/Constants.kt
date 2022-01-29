@@ -17,8 +17,12 @@ object Constants {
 
     const val PATH_PLAYER_PAGE = "/player/PlayerActivity"
 
+
+
     // ARouter 传递自定义对象所要用的
     const val SERVICE_ALBUM = "/service/AlbumServiceImpl"
+    const val SERVICE_TRACK = "/service/TrackServiceImpl"
+
 
     // 默认的返回键
     val DEFAULT_LEFT_IMAGE: Int = R.drawable.ic_arrow_back_24px_rounded
