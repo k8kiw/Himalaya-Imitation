@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import com.kotori.common.R
 import com.kotori.common.base.BaseFragment
 import com.kotori.common.support.Constants.DEFAULT_LEFT_IMAGE
+import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
 import com.qmuiteam.qmui.util.QMUIDisplayHelper
 import com.qmuiteam.qmui.widget.QMUITopBarLayout
 
@@ -34,6 +35,10 @@ fun BaseFragment.setTitleWitchBackBtn(title: String?=""){
  */
 fun BaseFragment.addLeftCloseImageBtn( drawableResId: Int = DEFAULT_LEFT_IMAGE){
     getTopBar()?.addLeftCloseImageBtn(this,drawableResId)
+}
+
+fun QMUITopBarLayout.addDefaultCloseButton() : QMUIAlphaImageButton {
+    return addLeftImageButton(DEFAULT_LEFT_IMAGE, R.id.qmui_topbar_item_left_back)
 }
 
 fun QMUITopBarLayout.addLeftCloseImageBtn(fragment: BaseFragment, drawableResId: Int = DEFAULT_LEFT_IMAGE) {

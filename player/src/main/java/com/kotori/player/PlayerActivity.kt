@@ -8,6 +8,8 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.support.Constants
+import com.kotori.common.support.Constants.DEFAULT_LEFT_IMAGE
+import com.kotori.common.ui.addDefaultCloseButton
 import com.kotori.common.utils.showToast
 import com.kotori.common.utils.trimAlbumTitle
 import com.kotori.player.databinding.ActivityPlayerBinding
@@ -47,12 +49,14 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
         getTopBar()?.apply {
             // 设置界面信息
             setTitle(currentTrack?.album?.albumTitle?.trimAlbumTitle())
-            // left button
+            // 返回键
+            addDefaultCloseButton().setOnClickListener { finish() }
             // 设置背景颜色
             setBackgroundColor(ContextCompat.getColor(
                 this@PlayerActivity,
                 R.color.qmui_config_color_background
             ))
+            // 去除分割线
         }
     }
 
