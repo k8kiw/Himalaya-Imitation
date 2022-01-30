@@ -21,7 +21,7 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup,android:name,android:appComponentFactory">
 
-        <!--独立进程的播放器-->
+        <!--播放器运行在独立进程中，需要声明-->
         <service
             android:name="com.ximalaya.ting.android.opensdk.player.service.XmPlayerService"
             android:process=":player"/>
