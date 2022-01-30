@@ -9,6 +9,7 @@ import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.support.Constants
 import com.kotori.common.utils.showToast
+import com.kotori.common.utils.trimAlbumTitle
 import com.kotori.player.databinding.ActivityPlayerBinding
 import com.ximalaya.ting.android.opensdk.model.track.Track
 
@@ -44,8 +45,10 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
     private fun initTopBar() {
         getTopBar()?.apply {
-            setTitle(currentTrack?.album?.albumTitle)
+            // 设置界面信息
+            setTitle(currentTrack?.album?.albumTitle?.trimAlbumTitle())
             // left button
+            // 设置背景颜色
             setBackgroundColor(ContextCompat.getColor(
                 this@PlayerActivity,
                 R.color.qmui_config_color_background

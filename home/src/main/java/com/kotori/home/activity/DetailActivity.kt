@@ -15,6 +15,7 @@ import com.kotori.common.support.Constants
 import com.kotori.common.ui.showFailTipsDialog
 import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
+import com.kotori.common.utils.trimAlbumTitle
 import com.kotori.home.R
 import com.kotori.home.adapter.DetailTrackPagingAdapter
 import com.kotori.home.databinding.ActivityDetailBinding
@@ -90,7 +91,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
             // 加载头图
             detailAlbumCover.load(album?.coverUrlLarge)
             // 设置标题
-            collapsingTopbarLayout.title = album?.albumTitle
+            collapsingTopbarLayout.title = album?.albumTitle?.trimAlbumTitle()
             // 增加返回键
             detailTopbar.addLeftImageButton(
                 Constants.DEFAULT_LEFT_IMAGE,

@@ -4,7 +4,9 @@ import androidx.recyclerview.widget.DiffUtil
 import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BasePagingAdapter
 import com.kotori.common.support.Constants
+import com.kotori.common.utils.formatNum
 import com.kotori.common.utils.showToast
+import com.kotori.common.utils.trimAlbumTitle
 import com.kotori.home.R
 import com.ximalaya.ting.android.opensdk.model.album.Album
 
@@ -49,11 +51,11 @@ class RecommendAlbumPagingAdapter : BasePagingAdapter<Album>(differCallback) {
                 // 加载封面
                 loadImage(R.id.album_cover, it.coverUrlSmall)
                 // 显示文字
-                setText(R.id.album_title, it.albumTitle)
+                setText(R.id.album_title, it.albumTitle.trimAlbumTitle())
                 setText(R.id.album_introduction, it.albumIntro)
                 // 显示数据
-                setText(R.id.album_play_num, it.playCount.toString())
-                setText(R.id.album_subscribe_num, it.subscribeCount.toString())
+                setText(R.id.album_play_num, it.playCount.toString().formatNum())
+                setText(R.id.album_subscribe_num, it.subscribeCount.toString().formatNum())
             }
         }
     }

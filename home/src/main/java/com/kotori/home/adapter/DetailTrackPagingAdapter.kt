@@ -4,6 +4,9 @@ import androidx.recyclerview.widget.DiffUtil
 import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BasePagingAdapter
 import com.kotori.common.support.Constants
+import com.kotori.common.utils.formatDuration
+import com.kotori.common.utils.formatNum
+import com.kotori.common.utils.trimAlbumTitle
 import com.kotori.home.R
 import com.ximalaya.ting.android.opensdk.model.track.Track
 
@@ -38,9 +41,9 @@ class DetailTrackPagingAdapter : BasePagingAdapter<Track>(differCallback){
             // helper加载数据
             helper.apply {
                 setText(R.id.list_order, (data.orderNum + 1).toString())
-                setText(R.id.track_title, data.trackTitle)
-                setText(R.id.track_play_num, data.playCount.toString())
-                setText(R.id.track_duration_num, data.duration.toString())
+                setText(R.id.track_title, data.trackTitle.trimAlbumTitle())
+                setText(R.id.track_play_num, data.playCount.toString().formatNum())
+                setText(R.id.track_duration_num, data.duration.toString().formatDuration())
             }
         }
     }
