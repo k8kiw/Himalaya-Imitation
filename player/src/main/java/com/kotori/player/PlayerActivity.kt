@@ -2,6 +2,7 @@ package com.kotori.player
 
 import android.view.View
 import androidx.core.content.ContextCompat
+import coil.load
 import com.alibaba.android.arouter.facade.annotation.Autowired
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
@@ -10,6 +11,7 @@ import com.kotori.common.entity.ProgressBean
 import com.kotori.common.support.Constants
 import com.kotori.common.support.Constants.DEFAULT_LEFT_IMAGE
 import com.kotori.common.ui.addDefaultCloseButton
+import com.kotori.common.ui.setMarqueeEnable
 import com.kotori.common.utils.showToast
 import com.kotori.common.utils.trimAlbumTitle
 import com.kotori.player.databinding.ActivityPlayerBinding
@@ -42,7 +44,14 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             |位置：${currentTrack?.orderNum}
         """.trimMargin().showToast()
 
-        // 加载界面上的信息
+        // 加载信息
+        mBinding.apply {
+            // 封面
+            playerAlbumCover.load(currentTrack?.coverUrlLarge)
+            // 标题
+            playerTrackTitle.text = currentTrack?.trackTitle
+            playerTrackTitle.setMarqueeEnable()
+        }
     }
 
     private fun initTopBar() {
