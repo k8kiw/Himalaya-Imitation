@@ -7,7 +7,7 @@ import android.widget.TextView
 /**
  * xml设置跑马灯无效，使用代码动态设置
  */
-fun TextView.setMarqueeEnable() {
+fun TextView.enableMarquee() {
     ellipsize = TextUtils.TruncateAt.MARQUEE
     isFocusableInTouchMode = true
     isSelected = true
