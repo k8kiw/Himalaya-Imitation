@@ -37,8 +37,18 @@ fun BaseFragment.addLeftCloseImageBtn( drawableResId: Int = DEFAULT_LEFT_IMAGE){
     getTopBar()?.addLeftCloseImageBtn(this,drawableResId)
 }
 
+/**
+ * 设置TopBar左返回键
+ */
 fun QMUITopBarLayout.addDefaultCloseButton() : QMUIAlphaImageButton {
     return addLeftImageButton(DEFAULT_LEFT_IMAGE, R.id.qmui_topbar_item_left_back)
+}
+
+/**
+ * 设置TopBar右功能键
+ */
+fun QMUITopBarLayout.addRightFunctionButton(resId: Int) : QMUIAlphaImageButton {
+    return addRightImageButton(resId, R.id.topbar_right_about_button)
 }
 
 fun QMUITopBarLayout.addLeftCloseImageBtn(fragment: BaseFragment, drawableResId: Int = DEFAULT_LEFT_IMAGE) {

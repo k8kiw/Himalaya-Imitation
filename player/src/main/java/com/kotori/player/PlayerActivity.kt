@@ -11,6 +11,7 @@ import com.kotori.common.entity.ProgressBean
 import com.kotori.common.support.Constants
 import com.kotori.common.support.Constants.DEFAULT_LEFT_IMAGE
 import com.kotori.common.ui.addDefaultCloseButton
+import com.kotori.common.ui.addRightFunctionButton
 import com.kotori.common.ui.setMarqueeEnable
 import com.kotori.common.utils.showToast
 import com.kotori.common.utils.trimAlbumTitle
@@ -60,12 +61,17 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             setTitle(currentTrack?.album?.albumTitle?.trimAlbumTitle())
             // 返回键
             addDefaultCloseButton().setOnClickListener { finish() }
+            // 功能键
+            addRightFunctionButton(R.drawable.ic_more_horiz_24px_rounded).setOnClickListener {
+
+            }
             // 设置背景颜色
             setBackgroundColor(ContextCompat.getColor(
                 this@PlayerActivity,
                 R.color.qmui_config_color_background
             ))
             // 去除分割线
+            setBottomDividerAlpha(0)
         }
     }
 

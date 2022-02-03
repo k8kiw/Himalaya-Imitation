@@ -8,6 +8,7 @@ import com.kotori.common.base.BaseDbFragment
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.sdk.SDKCallbackExt
 import com.kotori.common.support.Constants
+import com.kotori.common.ui.addRightFunctionButton
 import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
 import com.kotori.home.R
@@ -51,13 +52,10 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
     private fun initTopBar() {
         getTopBar()?.apply {
             setTitle(R.string.title_home)
-            addRightImageButton(
-                R.drawable.ic_search_24px_rounded,
-                R.id.topbar_right_about_button
-            )?.setOnClickListener {
+            addRightFunctionButton(R.drawable.ic_search_24px_rounded).setOnClickListener {
                 "搜索被点击".showToast()
                 // 测试数据获取
-                lifecycleScope.launch {
+                /*lifecycleScope.launch {
                     val recommendAlbumList = SDKCallbackExt.getRecommendAlbumList(30, 50)
 
                     LogUtil.d(TAG, recommendAlbumList.size.toString())
@@ -65,7 +63,7 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
                         LogUtil.d(TAG, it.albumTitle)
                     }
 
-                }
+                }*/
             }
         }
 
