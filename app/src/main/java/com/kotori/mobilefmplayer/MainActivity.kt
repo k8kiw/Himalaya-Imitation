@@ -37,8 +37,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         // nav列表，与menu中定义的内容与顺序应该一致
         val navGraphIds = listOf(
             R.navigation.navigation_home,
-            R.navigation.navigation_ranking,
-            R.navigation.navigation_player,
             R.navigation.navigation_local,
             R.navigation.navigation_personal
         )
@@ -50,7 +48,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             containerId = R.id.nav_host_container,
             intent = intent
         )
-        controller.observe(this, Observer { navController ->
+        controller.observe(this) { navController ->
             //setupActionBarWithNavController(navController)
             navController.addOnDestinationChangedListener { _, destination, _ ->
                 run {
@@ -63,7 +61,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     }
                 }
             }
-        })
+        }
 
         currentNavController = controller
     }
@@ -77,10 +75,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 
     override fun showProgress(progress: ProgressBean) {
-        TODO("Not yet implemented")
+
     }
 
     override fun hideProgress() {
-        TODO("Not yet implemented")
+
     }
 }
