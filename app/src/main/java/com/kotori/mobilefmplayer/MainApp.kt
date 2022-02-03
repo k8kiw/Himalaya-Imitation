@@ -4,6 +4,8 @@ import androidx.multidex.BuildConfig
 import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseApplication
 import com.kotori.home.di.moduleHome
+import com.kotori.player.di.modulePlayer
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -12,7 +14,8 @@ import org.koin.core.logger.Level
 class MainApp : BaseApplication() {
 
     private val modules = arrayListOf(
-        moduleHome
+        moduleHome,
+        modulePlayer
     )
 
     override fun onCreate() {
@@ -20,6 +23,9 @@ class MainApp : BaseApplication() {
 
         initKoin()
         initARouter()
+
+        // 播放器初始化
+        XmPlayerManager.getInstance(this).init()
     }
 
     private fun initKoin() {
