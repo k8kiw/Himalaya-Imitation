@@ -71,7 +71,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                         playerTrackTitle.text = currentTrack.trackTitle
                         playerTrackTitle.enableMarquee()
                         // 加载标题栏的专辑名
-                        getTopBar()?.setTitle(currentTrack.album?.albumTitle)
+                        getTopBar()?.setTitle(currentTrack.album?.albumTitle?.trimAlbumTitle())
                     }
 
                 }

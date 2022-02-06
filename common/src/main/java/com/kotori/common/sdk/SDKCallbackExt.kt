@@ -119,4 +119,32 @@ object SDKCallbackExt {
             })
         }
     }
+
+    /**
+     * 供播放器自动切页的common list，从一开始即可
+     *
+     */
+    suspend fun getCommonTrackListByAlbumId(albumId: Long) : TrackList {
+        return suspendCoroutine { continuation ->
+            val map = mapOf(
+                DTransferConstants.ALBUM_ID to albumId.toString(),
+                DTransferConstants.SORT to "asc",
+                DTransferConstants.PAGE to 1.toString(),
+                DTransferConstants.DISPLAY_COUNT to 50.toString()
+            )
+            // 调用接口
+            CommonRequest.getTracks(map, object : IDataCallBack<TrackList> {
+                override fun onSuccess(p0: TrackList?) {
+                    p0?.let {
+                        continuation.resume(it)
+                    }
+                }
+
+                override fun onError(p0: Int, p1: String?) {
+                    continuation.resumeWithException(TimeoutException(p1))
+                }
+
+            })
+        }
+    }
 }
