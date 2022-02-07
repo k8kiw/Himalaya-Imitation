@@ -15,12 +15,16 @@ import com.kotori.common.support.Constants
 import com.kotori.common.ui.addDefaultCloseButton
 import com.kotori.common.ui.addRightFunctionButton
 import com.kotori.common.ui.enableMarquee
+import com.kotori.common.ui.showFailTipsDialog
+import com.kotori.common.utils.formatDuration
 import com.kotori.common.utils.showToast
 import com.kotori.common.utils.trimAlbumTitle
 import com.kotori.player.databinding.ActivityPlayerBinding
+import com.kotori.player.viewmodel.PlayState
 import com.kotori.player.viewmodel.PlayerViewModel
 import com.ximalaya.ting.android.opensdk.model.track.Track
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -41,6 +45,8 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
     override fun initView(root: View) {
         initData()
         initTopBar()
+        initPlayer()
+        initListener()
     }
 
     /**
@@ -70,6 +76,8 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                         playerAlbumCover.load(currentTrack.coverUrlLarge)
                         playerTrackTitle.text = currentTrack.trackTitle
                         playerTrackTitle.enableMarquee()
+                        // 设置声音长度
+                        playerDuration.text = currentTrack.duration.toString().formatDuration()
                         // 加载标题栏的专辑名
                         getTopBar()?.setTitle(currentTrack.album?.albumTitle?.trimAlbumTitle())
                     }
@@ -98,6 +106,53 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             ))
             // 去除分割线
             setBottomDividerAlpha(0)
+        }
+    }
+
+    /**
+     * 处理播放器状态的变化
+     */
+    private fun initPlayer() {
+
+        val pauseImageId = R.drawable.ic_pause_circle_outline_24px_rounded
+        val playImageId = R.drawable.ic_play_circle_outline_24px_rounded
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // 监听播放状态
+                mViewModel.currentPlayState.collect {
+                    when(it) {
+                        is PlayState.Error -> showFailTipsDialog("加载出错")
+                        is PlayState.Pause -> {
+                            mBinding.playerPlayButton.setImageResource(playImageId)
+                        }
+                        is PlayState.Loading -> {
+
+                        }
+                        is PlayState.Playing -> {
+                            mBinding.playerPlayButton.setImageResource(pauseImageId)
+                        }
+                    }
+                }
+            }
+        }
+
+    }
+
+    private fun initListener() {
+        mBinding.apply {
+            // 播放按钮的点击逻辑
+            playerPlayButton.setOnClickListener {
+                mViewModel.apply {
+                    if (isPlaying) {
+                        pause()
+                    } else {
+                        play()
+                    }
+                }
+            }
+
+
         }
     }
 
