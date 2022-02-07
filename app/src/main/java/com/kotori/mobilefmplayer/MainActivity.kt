@@ -13,6 +13,7 @@ import com.kotori.common.ktx.setupWithNavController
 import com.kotori.common.sdk.testSDKGetCategories
 import com.kotori.common.support.Constants
 import com.kotori.mobilefmplayer.databinding.ActivityMainBinding
+import com.ximalaya.ting.android.opensdk.player.XmPlayerManager
 
 @Route(path = Constants.PATH_MAIN)
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -73,6 +74,35 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun onSupportNavigateUp(): Boolean {
         return currentNavController.value?.navigateUp() ?: false
     }
+
+
+    /**
+     * ===================== 释放资源 =======================
+     */
+    var isReleased = false
+
+    fun destroy() {
+        if (isReleased) {
+            return
+        }
+        XmPlayerManager.release()
+        isReleased = true
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (isFinishing) {
+            destroy()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        destroy()
+    }
+    /**
+     * ===================== 释放资源 =======================
+     */
 
 
     override fun showProgress(progress: ProgressBean) {
