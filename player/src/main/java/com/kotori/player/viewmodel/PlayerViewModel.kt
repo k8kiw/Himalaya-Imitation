@@ -171,4 +171,11 @@ class PlayerViewModel : ViewModel() {
     fun pause() {
         playerManager.pause()
     }
+
+    fun seekTo(position : Int) {
+        playerManager.seekTo(position)
+        if (!playerManager.isPlaying) {
+            playerManager.play()
+        }
+    }
 }

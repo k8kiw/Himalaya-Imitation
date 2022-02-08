@@ -23,6 +23,7 @@ import com.kotori.common.utils.trimAlbumTitle
 import com.kotori.player.databinding.ActivityPlayerBinding
 import com.kotori.player.viewmodel.PlayState
 import com.kotori.player.viewmodel.PlayerViewModel
+import com.qmuiteam.qmui.widget.QMUISlider
 import com.ximalaya.ting.android.opensdk.model.track.Track
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -137,6 +138,10 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                                 playerCurrentPosition.text = it.position.toString().formatPlayProgress()
                                 // 更新声音长度
                                 playerDuration.text = it.duration.toString().formatPlayProgress()
+                                // 更新进度条
+                                playerProgressBar.tickCount = it.duration
+                                //val percent = (it.position * 1.0f / it.duration).toInt()
+                                playerProgressBar.currentProgress = it.position
                             }
                         }
                     }
@@ -148,7 +153,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
     private fun initListener() {
         mBinding.apply {
-            // 播放按钮的点击逻辑
+            // 播放/暂停按钮的点击逻辑
             playerPlayButton.setOnClickListener {
                 mViewModel.apply {
                     if (isPlaying) {
@@ -159,7 +164,43 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 }
             }
 
+            // 进度条的拖动逻辑
+            playerProgressBar.setCallback(object : QMUISlider.Callback {
+                override fun onProgressChange(
+                    slider: QMUISlider?,
+                    progress: Int,
+                    tickCount: Int,
+                    fromUser: Boolean
+                ) {
 
+                }
+
+                override fun onTouchDown(
+                    slider: QMUISlider?,
+                    progress: Int,
+                    tickCount: Int,
+                    hitThumb: Boolean
+                ) {
+
+                }
+
+                override fun onTouchUp(slider: QMUISlider?, progress: Int, tickCount: Int) {
+                    mViewModel.seekTo(progress)
+                }
+
+                override fun onStartMoving(slider: QMUISlider?, progress: Int, tickCount: Int) {
+
+                }
+
+                override fun onStopMoving(slider: QMUISlider?, progress: Int, tickCount: Int) {
+
+                }
+
+                override fun onLongTouch(slider: QMUISlider?, progress: Int, tickCount: Int) {
+
+                }
+
+            })
         }
     }
 
