@@ -1,8 +1,11 @@
 package com.kotori.common.utils
 
+import java.text.SimpleDateFormat
+import java.util.*
+
 
 // 声音长度：秒转化为分钟
-fun String.formatDuration() : String{
+fun String.formatTrackDuration() : String{
     // 拿到整型时间
     val duration = this.toLong()
     // 计算
@@ -21,6 +24,23 @@ fun String.formatDuration() : String{
     }
     // 拼接
     return "$min:$sec"
+}
+
+
+// 播放进度的单位是毫秒，转换方式不同
+fun String.formatPlayProgress() : String {
+    // 使用format来完成
+    val minFormat = SimpleDateFormat("mm:ss", Locale.CHINESE)
+    val hourFormat = SimpleDateFormat("hh:mm:ss", Locale.CHINESE)
+
+    // 拿到时间
+    val duration = this.toLong()
+    // 区分是否大于一小时
+    return if (duration > 1000 * 60 * 60) {
+        hourFormat.format(duration)
+    } else {
+        minFormat.format(duration)
+    }
 }
 
 
