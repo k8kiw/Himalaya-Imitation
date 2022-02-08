@@ -8,13 +8,16 @@ sealed class PlayState {
 
     /**
      * 正在缓冲，缓冲进度为百分比
+     * 需要注意缓冲与播放是同时进行的
      */
     data class Loading(val progress: Int) : PlayState()
 
     /**
-     * 正在播放，显示当前播放进度以及其时长
+     * 正在播放，单位是毫秒
+     * @param position 当前播放进度
+     * @param duration 声音时长
      */
-    data class Playing(val position: Int) : PlayState()
+    data class Playing(val position: Int, val duration: Int) : PlayState()
 
     /**
      * 加载、播放错误

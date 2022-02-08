@@ -16,7 +16,8 @@ import com.kotori.common.ui.addDefaultCloseButton
 import com.kotori.common.ui.addRightFunctionButton
 import com.kotori.common.ui.enableMarquee
 import com.kotori.common.ui.showFailTipsDialog
-import com.kotori.common.utils.formatDuration
+import com.kotori.common.utils.formatPlayProgress
+import com.kotori.common.utils.formatTrackDuration
 import com.kotori.common.utils.showToast
 import com.kotori.common.utils.trimAlbumTitle
 import com.kotori.player.databinding.ActivityPlayerBinding
@@ -24,7 +25,6 @@ import com.kotori.player.viewmodel.PlayState
 import com.kotori.player.viewmodel.PlayerViewModel
 import com.ximalaya.ting.android.opensdk.model.track.Track
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -77,7 +77,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                         playerTrackTitle.text = currentTrack.trackTitle
                         playerTrackTitle.enableMarquee()
                         // 设置声音长度
-                        playerDuration.text = currentTrack.duration.toString().formatDuration()
+                        playerDuration.text = currentTrack.duration.toString().formatTrackDuration()
                         // 加载标题栏的专辑名
                         getTopBar()?.setTitle(currentTrack.album?.albumTitle?.trimAlbumTitle())
                     }
@@ -110,7 +110,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
     }
 
     /**
-     * 处理播放器状态的变化
+     * 处理播放器状态的变化，主要是更新界面
      */
     private fun initPlayer() {
 
@@ -130,7 +130,14 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
                         }
                         is PlayState.Playing -> {
-                            mBinding.playerPlayButton.setImageResource(pauseImageId)
+                            mBinding.apply {
+                                // 正在播放时更换暂停图标
+                                playerPlayButton.setImageResource(pauseImageId)
+                                // 更新播放进度
+                                playerCurrentPosition.text = it.position.toString().formatPlayProgress()
+                                // 更新声音长度
+                                playerDuration.text = it.duration.toString().formatPlayProgress()
+                            }
                         }
                     }
                 }

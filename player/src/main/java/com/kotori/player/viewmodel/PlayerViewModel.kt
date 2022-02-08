@@ -113,7 +113,7 @@ class PlayerViewModel : ViewModel() {
 
             override fun onPlayProgress(currPos: Int, duration: Int) {
                 LogUtil.d(TAG, "onPlayProgress --> currentPosition:$currPos, duration:$duration")
-                _currentPlayState.value = PlayState.Playing(currPos)
+                _currentPlayState.value = PlayState.Playing(currPos, duration)
             }
 
             override fun onError(exception: XmPlayerException?): Boolean {
