@@ -55,7 +55,7 @@ class PlayerViewModel : ViewModel() {
                 playerManager.resetPlayList()
             }
             // 设置播放器
-            playerManager.playList(trackList, 0)
+            playerManager.playList(trackList, order)
             // 播放测试，这里的index指的是list里的index
             // TODO:播放器其实并不会自己切页
             playerManager.play(order)
@@ -94,8 +94,15 @@ class PlayerViewModel : ViewModel() {
                 LogUtil.d(TAG, "onSoundPrepared")
             }
 
+            // 播放器切歌后，最先被调用的回调，在此更新track
             override fun onSoundSwitch(lastModel: PlayableModel?, curModel: PlayableModel?) {
                 LogUtil.d(TAG, "onSoundSwitch")
+                // Track 是 PlayableModel 的子类，判断类型做强转即可
+                if (curModel is Track) {
+                    LogUtil.d(TAG, "onSoundSwitch ---> ${curModel.trackTitle}")
+                    // 更新track
+                    _currentTrack.value = curModel
+                }
             }
 
             override fun onBufferingStart() {
@@ -163,6 +170,14 @@ class PlayerViewModel : ViewModel() {
      */
     fun play() {
         playerManager.play()
+    }
+
+    fun playPre() {
+        playerManager.playPre()
+    }
+
+    fun playNext() {
+        playerManager.playNext()
     }
 
     val isPlaying : Boolean

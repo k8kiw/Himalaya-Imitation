@@ -98,7 +98,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             addDefaultCloseButton().setOnClickListener { finish() }
             // 功能键
             addRightFunctionButton(R.drawable.ic_more_horiz_24px_rounded).setOnClickListener {
-
+                // 弹出更多菜单：分享、下载
             }
             // 设置背景颜色
             setBackgroundColor(ContextCompat.getColor(
@@ -111,7 +111,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
     }
 
     /**
-     * 处理播放器状态的变化，主要是更新界面
+     * 处理播放器状态的变化，同步播放器进度、更新成该有的界面
      */
     private fun initPlayer() {
 
@@ -128,7 +128,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                             mBinding.playerPlayButton.setImageResource(playImageId)
                         }
                         is PlayState.Loading -> {
-
+                            // 缓冲进度分成不同颜色在进度条上显示
                         }
                         is PlayState.Playing -> {
                             mBinding.apply {
@@ -138,7 +138,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                                 playerCurrentPosition.text = it.position.toString().formatPlayProgress()
                                 // 更新声音长度
                                 playerDuration.text = it.duration.toString().formatPlayProgress()
-                                // 更新进度条
+                                // 更新进度条，设置最大值与当前值
                                 playerProgressBar.tickCount = it.duration
                                 //val percent = (it.position * 1.0f / it.duration).toInt()
                                 playerProgressBar.currentProgress = it.position
@@ -151,6 +151,9 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
     }
 
+    /**
+     * 初始化页面上控件的点击、触摸等监听器
+     */
     private fun initListener() {
         mBinding.apply {
             // 播放/暂停按钮的点击逻辑
@@ -201,6 +204,22 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 }
 
             })
+
+            // 上一首
+            playerPreviousButton.setOnClickListener {
+                mViewModel.playPre()
+            }
+
+            // 下一首
+            playerNextButton.setOnClickListener {
+                mViewModel.playNext()
+            }
+
+            // 切换播放模式
+
+
+            // 弹出播放列表
+
         }
     }
 
