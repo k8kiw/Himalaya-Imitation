@@ -1,5 +1,6 @@
 package com.kotori.common.sdk
 
+import com.kotori.common.utils.LogUtil
 import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack
@@ -13,6 +14,9 @@ import java.util.concurrent.TimeoutException
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+
+
+private const val TAG = "SDKTest"
 
 /**
  * 封装SDK的参数设置、复杂的返回值、回调
@@ -109,6 +113,8 @@ object SDKCallbackExt {
             CommonRequest.getTracks(map, object : IDataCallBack<TrackList> {
                 override fun onSuccess(p0: TrackList?) {
                     val result = p0?.tracks ?: ArrayList<Track>()
+                    // 果然只会返回20个，参数无效
+                    LogUtil.d(TAG, "getTrackByAlbum ---> list size : ${result.size}")
                     continuation.resume(result)
                 }
 

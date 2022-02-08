@@ -6,7 +6,6 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList
 
-private const val TAG = "-------------"
 
 fun testSDKGetCategories() {
 
