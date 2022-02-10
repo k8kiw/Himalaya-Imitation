@@ -14,6 +14,9 @@ import com.ximalaya.ting.android.opensdk.player.XmPlayerManager
 import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -32,25 +35,22 @@ class PlayerViewModel : ViewModel() {
         // 对播放器设置回调工作
         addPlayerListener()
         // 默认播放模式为列表循环
-        setPlayMode(XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP)
+        setPlayMode(PLAY_MODEL_LIST_LOOP)
     }
 
     companion object {
         // 播放模式的对应名称
         val playModeName = mapOf(
-            XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP to "列表循环",
-            XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP to "单曲循环",
-            XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM to "随机播放"
+            PLAY_MODEL_LIST_LOOP to "列表循环",
+            PLAY_MODEL_SINGLE_LOOP to "单曲循环",
+            PLAY_MODEL_RANDOM to "随机播放"
         )
         // 播放模式切换顺序
         // 列表循环(默认) -> 单曲循环 -> 随机播放 -> 列表循环
         private val changeRule = mapOf(
-            XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP
-                    to XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP,
-            XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP
-                    to XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM,
-            XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM
-                    to XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP
+            PLAY_MODEL_LIST_LOOP to PLAY_MODEL_SINGLE_LOOP,
+            PLAY_MODEL_SINGLE_LOOP to PLAY_MODEL_RANDOM,
+            PLAY_MODEL_RANDOM to PLAY_MODEL_LIST_LOOP
         )
     }
 
