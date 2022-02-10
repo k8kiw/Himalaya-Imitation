@@ -33,7 +33,6 @@ class DetailTrackPagingAdapter : BasePagingAdapter<Track>(differCallback){
     override fun onItemClick(data: Track?) {
         ARouter.getInstance().build(Constants.PATH_PLAYER_PAGE)
             .withParcelable(KEY_TRACK, data)
-            .withObject(KEY_TRACK_LIST, this.snapshot().items)
             .navigation()
     }
 

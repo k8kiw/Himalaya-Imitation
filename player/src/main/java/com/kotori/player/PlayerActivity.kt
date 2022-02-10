@@ -12,8 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.support.Constants
-import com.kotori.common.support.Constants.KEY_TRACK
-import com.kotori.common.support.Constants.KEY_TRACK_LIST
+import com.kotori.common.support.PublicData
 import com.kotori.common.ui.addDefaultCloseButton
 import com.kotori.common.ui.addRightFunctionButton
 import com.kotori.common.ui.enableMarquee
@@ -37,11 +36,11 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
     private val mViewModel : PlayerViewModel by viewModel()
 
     @JvmField
-    @Autowired(name = KEY_TRACK)
+    @Autowired(name = Constants.KEY_TRACK)
     var currentTrackFromDetail: Track = Track()
 
     @JvmField
-    @Autowired(name = KEY_TRACK_LIST)
+    @Autowired(name = Constants.KEY_TRACK_LIST)
     var currentTrackListFromDetail: List<Track> = ArrayList()
 
 
@@ -64,7 +63,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
         // 将该有的数据传给 view model，之后就不用自己的数据了
         mViewModel.setCurrentTrackList(
-            currentTrackListFromDetail,
+            PublicData.trackList,
             currentTrackFromDetail.orderNum
         )
 
