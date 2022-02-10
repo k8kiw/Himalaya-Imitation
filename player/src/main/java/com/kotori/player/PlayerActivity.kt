@@ -81,8 +81,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 // 监听当前的Track，刷新界面
                 mViewModel.currentTrack.collect { currentTrack ->
                     // 显示Toast
-                    """位置：${currentTrack.orderNum}
-                    """.trimMargin().showToast()
+                    "位置：${currentTrack.orderNum}".trimMargin().showToast()
                     // 加载到界面上
                     mBinding.apply {
                         // 加载头图和名称
@@ -255,25 +254,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             }
 
             // 弹出播放列表
-            playerPlayListButton.setOnClickListener {
-                // 拿到列表
-                val titleList = mViewModel.currentTrackList.value.map { it.trackTitle }
-                // QMUI列表
-                showBottomSheetList(
-                    gravityCenter = false,
-                    addCancelBtn = false,
-                    withIcon = false,
-                    allowDragDismiss = true,
-                    title = "播放列表",
-                    items = titleList,
-                    markIndex = mViewModel.currentTrack.value.orderNum
-                ) { dialog, _, position, tag ->
-                    dialog.dismiss()
-                    tag.showToast()
-                    // 点击后切换track
-                    mViewModel.play(position)
-                }
-            }
+
         }
     }
 
