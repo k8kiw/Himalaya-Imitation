@@ -254,7 +254,25 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             }
 
             // 弹出播放列表
-
+            playerPlayListButton.setOnClickListener {
+                // 拿到列表
+                val titleList = mViewModel.currentTrackList.value.map { it.trackTitle }
+                // QMUI列表
+                showBottomSheetList(
+                    gravityCenter = false,
+                    addCancelBtn = false,
+                    withIcon = false,
+                    allowDragDismiss = true,
+                    title = "播放列表",
+                    items = titleList,
+                    markIndex = mViewModel.currentTrack.value.orderNum
+                ) { dialog, _, position, tag ->
+                    dialog.dismiss()
+                    tag.showToast()
+                    // 点击后切换track
+                    mViewModel.play(position)
+                }
+            }
         }
     }
 
