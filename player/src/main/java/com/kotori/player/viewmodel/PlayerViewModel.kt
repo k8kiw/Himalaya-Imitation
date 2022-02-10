@@ -59,27 +59,6 @@ class PlayerViewModel : ViewModel() {
     val currentTrack : StateFlow<Track> = _currentTrack.asStateFlow()
 
     /**
-     * 设置当前的track，自己或者view层都会调用
-     */
-    /*fun setCurrentTrack(track: Track) {
-        _currentTrack.value = track
-        // 设置列表数据
-        viewModelScope.launch {
-            // 拿序号
-            val order = _currentTrack.value.orderNum
-            // 先暂停，list没变的情况下不会自己切
-            if (playerManager.isPlaying) {
-                playerManager.resetPlayList()
-            }
-            // 设置播放器
-            playerManager.playList(_currentTrackList.value, order)
-            // 播放测试，这里的index指的是list里的index
-            // 播放器其实并不会自己切页
-            playerManager.play(order)
-        }
-    }*/
-
-    /**
      * ======================  当前播放器的trackList  =========================
      */
     private val _currentTrackList: MutableStateFlow<List<Track>> = MutableStateFlow(ArrayList())
