@@ -18,10 +18,7 @@ import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl.PlayMo
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 const val TAG = "PlayerViewModel"
@@ -59,20 +56,15 @@ class PlayerViewModel : ViewModel() {
      */
     private val _currentTrack = MutableStateFlow(Track())
 
-    val currentTrack : StateFlow<Track> = _currentTrack
+    val currentTrack : StateFlow<Track> = _currentTrack.asStateFlow()
 
     /**
      * 设置当前的track，自己或者view层都会调用
-     * 设置完就需要获取对应列表，设置到播放器里
      */
-    fun setCurrentTrack(track: Track) {
+    /*fun setCurrentTrack(track: Track) {
         _currentTrack.value = track
         // 设置列表数据
         viewModelScope.launch {
-            // TODO：拿列表，得自己拿真的列表
-            val trackList = _currentTrack.value.album?.albumId?.let {
-                SDKCallbackExt.getCommonTrackListByAlbumId(it)
-            }
             // 拿序号
             val order = _currentTrack.value.orderNum
             // 先暂停，list没变的情况下不会自己切
@@ -80,12 +72,60 @@ class PlayerViewModel : ViewModel() {
                 playerManager.resetPlayList()
             }
             // 设置播放器
-            playerManager.playList(trackList, order)
+            playerManager.playList(_currentTrackList.value, order)
             // 播放测试，这里的index指的是list里的index
-            // TODO:播放器其实并不会自己切页
+            // 播放器其实并不会自己切页
             playerManager.play(order)
         }
+    }*/
+
+    /**
+     * ======================  当前播放器的trackList  =========================
+     */
+    private val _currentTrackList: MutableStateFlow<List<Track>> = MutableStateFlow(ArrayList())
+
+    val currentTrackList: StateFlow<List<Track>> = _currentTrackList.asStateFlow()
+
+    /**
+     *  供外部传入已加载完的数据，每次打开Player只会使用第一次
+     *  @param list 专辑内容页面已经加载完的列表
+     *  @param currentIndex 用户所点击的项目(点完后跳转进的播放器)
+     */
+    fun setCurrentTrackList(list: List<Track>, currentIndex: Int) {
+        // 设进Flow保存数据
+        _currentTrackList.value = list
+        _currentTrack.value = list[currentIndex]
+        // 自动播放当前歌曲
+        // 先暂停，list没变的情况下不会自己切
+        if (playerManager.isPlaying) {
+            playerManager.resetPlayList()
+        }
+        // 设置播放器
+        playerManager.playList(_currentTrackList.value, currentIndex)
+        // 播放测试，这里的index指的是list里的index
+        // 播放器其实并不会自己切页
+        playerManager.play(currentIndex)
     }
+
+    /**
+     * =======================  当前播放器播放模式  ========================
+     * 注意：SDK 没有回调可以使用，需要自己回显界面
+     */
+    // 对view展示的播放模式
+    // TODO:val _currentPlayMode = MutableStateFlow()
+
+    /**
+     * 按照一定的顺序，进行播放模式的切换
+     */
+    fun changePlayMode() {
+        // 拿到当前的模式
+        val currentMode = playerManager.playMode
+        // 切换到下一个
+        val nextMode = changeRule[currentMode]
+
+        setPlayMode(nextMode)
+    }
+
 
     /**
      * ========================  播放器状态的观测  ========================
@@ -187,31 +227,6 @@ class PlayerViewModel : ViewModel() {
             }
 
         })
-    }
-
-
-    /**
-     * =======================  当前播放列表 List 和对应index  =======================
-     */
-
-
-    /**
-     * =======================  当前播放器播放模式  ========================
-     * 注意：SDK 没有回调可以使用，需要自己回显界面
-     */
-    // 对view展示的播放模式
-    // TODO:val _currentPlayMode = MutableStateFlow()
-
-    /**
-     * 按照一定的顺序，进行播放模式的切换
-     */
-    fun changePlayMode() {
-        // 拿到当前的模式
-        val currentMode = playerManager.playMode
-        // 切换到下一个
-        val nextMode = changeRule[currentMode]
-
-        setPlayMode(nextMode)
     }
 
 

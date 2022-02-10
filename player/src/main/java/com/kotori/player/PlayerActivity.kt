@@ -62,9 +62,11 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
     private fun initData() {
         ARouter.getInstance().inject(this)
 
-        // 传给 view model，之后就不用自己的数据了
-        mViewModel.setCurrentTrack(currentTrackFromDetail)
-        "${currentTrackListFromDetail.size}".showToast()
+        // 将该有的数据传给 view model，之后就不用自己的数据了
+        mViewModel.setCurrentTrackList(
+            currentTrackListFromDetail,
+            currentTrackFromDetail.orderNum
+        )
 
 
         // 启动协程，监听当前的Track，刷新界面
