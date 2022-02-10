@@ -1,6 +1,7 @@
 package com.kotori.player
 
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,10 +14,7 @@ import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.support.Constants
 import com.kotori.common.support.PublicData
-import com.kotori.common.ui.addDefaultCloseButton
-import com.kotori.common.ui.addRightFunctionButton
-import com.kotori.common.ui.enableMarquee
-import com.kotori.common.ui.showFailTipsDialog
+import com.kotori.common.ui.*
 import com.kotori.common.utils.formatPlayProgress
 import com.kotori.common.utils.formatTrackDuration
 import com.kotori.common.utils.showToast
@@ -83,8 +81,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 // 监听当前的Track，刷新界面
                 mViewModel.currentTrack.collect { currentTrack ->
                     // 显示Toast
-                    """专辑名：${currentTrack.album?.albumTitle}
-                        |位置：${currentTrack.orderNum}
+                    """位置：${currentTrack.orderNum}
                     """.trimMargin().showToast()
                     // 加载到界面上
                     mBinding.apply {
@@ -258,7 +255,25 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             }
 
             // 弹出播放列表
-
+            playerPlayListButton.setOnClickListener {
+                // 拿到列表
+                val titleList = mViewModel.currentTrackList.value.map { it.trackTitle }
+                // QMUI列表
+                showBottomSheetList(
+                    gravityCenter = false,
+                    addCancelBtn = false,
+                    withIcon = false,
+                    allowDragDismiss = true,
+                    title = "播放列表",
+                    items = titleList,
+                    markIndex = mViewModel.currentTrack.value.orderNum
+                ) { dialog, _, position, tag ->
+                    dialog.dismiss()
+                    tag.showToast()
+                    // 点击后切换track
+                    mViewModel.play(position)
+                }
+            }
         }
     }
 

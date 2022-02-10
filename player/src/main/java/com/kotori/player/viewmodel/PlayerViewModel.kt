@@ -226,8 +226,11 @@ class PlayerViewModel : ViewModel() {
     /**
      * =====================  封装一些播放器控制方法供view使用  =====================
      */
-    fun play() {
-        playerManager.play()
+    fun play(vararg index: Int) {
+        when (index.size) {
+            0 -> playerManager.play()
+            1 -> playerManager.play(index[0])
+        }
     }
 
     fun playPre() {
