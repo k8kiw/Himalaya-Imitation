@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.kotori.common.base.BaseApplication
 import com.kotori.common.sdk.SDKCallbackExt
 import com.kotori.common.utils.LogUtil
+import com.kotori.common.utils.showToast
 import com.ximalaya.ting.android.opensdk.model.PlayableModel
 import com.ximalaya.ting.android.opensdk.model.advertis.Advertis
 import com.ximalaya.ting.android.opensdk.model.advertis.AdvertisList
@@ -12,9 +13,12 @@ import com.ximalaya.ting.android.opensdk.model.track.Track
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager
 import com.ximalaya.ting.android.opensdk.player.advertis.IXmAdsStatusListener
 import com.ximalaya.ting.android.opensdk.player.service.IXmPlayerStatusListener
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl
 import com.ximalaya.ting.android.opensdk.player.service.XmPlayerException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 const val TAG = "PlayerViewModel"
@@ -27,10 +31,31 @@ class PlayerViewModel : ViewModel() {
     init {
         // 对播放器设置回调工作
         addPlayerListener()
+        // 默认播放模式为列表循环
+        setPlayMode(XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP)
+    }
+
+    companion object {
+        // 播放模式的对应名称
+        val playModeName = mapOf(
+            XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP to "列表循环",
+            XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP to "单曲循环",
+            XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM to "随机播放"
+        )
+        // 播放模式切换顺序
+        // 列表循环(默认) -> 单曲循环 -> 随机播放 -> 列表循环
+        private val changeRule = mapOf(
+            XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP
+                    to XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP,
+            XmPlayListControl.PlayMode.PLAY_MODEL_SINGLE_LOOP
+                    to XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM,
+            XmPlayListControl.PlayMode.PLAY_MODEL_RANDOM
+                    to XmPlayListControl.PlayMode.PLAY_MODEL_LIST_LOOP
+        )
     }
 
     /**
-     * =======================  当前播放的track  ===========================
+     * ======================  当前播放的track  ===========================
      */
     private val _currentTrack = MutableStateFlow(Track())
 
@@ -63,7 +88,7 @@ class PlayerViewModel : ViewModel() {
     }
 
     /**
-     * =======================  播放状态的观测  =======================
+     * ========================  播放器状态的观测  ========================
      */
     private val _currentPlayState: MutableStateFlow<PlayState> = MutableStateFlow(PlayState.Pause)
 
@@ -166,6 +191,31 @@ class PlayerViewModel : ViewModel() {
 
 
     /**
+     * =======================  当前播放列表 List 和对应index  =======================
+     */
+
+
+    /**
+     * =======================  当前播放器播放模式  ========================
+     * 注意：SDK 没有回调可以使用，需要自己回显界面
+     */
+    // 对view展示的播放模式
+    // TODO:val _currentPlayMode = MutableStateFlow()
+
+    /**
+     * 按照一定的顺序，进行播放模式的切换
+     */
+    fun changePlayMode() {
+        // 拿到当前的模式
+        val currentMode = playerManager.playMode
+        // 切换到下一个
+        val nextMode = changeRule[currentMode]
+
+        setPlayMode(nextMode)
+    }
+
+
+    /**
      * =====================  封装一些播放器控制方法供view使用  =====================
      */
     fun play() {
@@ -192,5 +242,12 @@ class PlayerViewModel : ViewModel() {
         if (!playerManager.isPlaying) {
             playerManager.play()
         }
+    }
+
+    private fun setPlayMode(mode : XmPlayListControl.PlayMode?) {
+        playerManager.playMode = mode
+        //TODO:设置当前playmode的state flow
+
+        "当前播放模式：${playModeName[playerManager.playMode]}".showToast()
     }
 }

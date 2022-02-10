@@ -216,7 +216,9 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             }
 
             // 切换播放模式
-
+            playerPlayModeButton.setOnClickListener {
+                mViewModel.changePlayMode()
+            }
 
             // 弹出播放列表
 

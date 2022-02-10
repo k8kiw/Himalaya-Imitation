@@ -93,7 +93,7 @@
 
         <!--功能键 由播放顺序的 vertical bias决定-->
         <com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
-            android:id="@+id/player_play_order_button"
+            android:id="@+id/player_play_mode_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -116,11 +116,11 @@
             android:src="@drawable/ic_skip_previous_24px_rounded"
             android:background="@color/qmui_config_color_transparent"
 
-            app:layout_constraintBottom_toBottomOf="@+id/player_play_order_button"
+            app:layout_constraintBottom_toBottomOf="@+id/player_play_mode_button"
             app:layout_constraintEnd_toStartOf="@+id/player_play_button"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/player_play_order_button"
-            app:layout_constraintTop_toTopOf="@+id/player_play_order_button"
+            app:layout_constraintStart_toEndOf="@+id/player_play_mode_button"
+            app:layout_constraintTop_toTopOf="@+id/player_play_mode_button"
             app:qmui_alpha_pressed="@dimen/button_pressed_alpha" />
 
         <com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
