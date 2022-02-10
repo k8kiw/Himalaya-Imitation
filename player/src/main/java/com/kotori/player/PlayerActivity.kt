@@ -26,6 +26,7 @@ import com.kotori.player.viewmodel.PlayState
 import com.kotori.player.viewmodel.PlayerViewModel
 import com.qmuiteam.qmui.widget.QMUISlider
 import com.ximalaya.ting.android.opensdk.model.track.Track
+import com.ximalaya.ting.android.opensdk.player.service.XmPlayListControl.PlayMode
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -53,6 +54,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
         initTopBar()
         initPlayer()
         initListener()
+        loadData()
     }
 
     /**
@@ -67,12 +69,18 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             currentTrackFromDetail.orderNum
         )
 
+    }
 
-        // 启动协程，监听当前的Track，刷新界面
+    /**
+     * 从View Model加载需要的数据到界面上
+     */
+    private fun loadData() {
+        // 启动协程
         lifecycleScope.launch {
             // 一定要在界面的生命周期内更新，flow在后台依然能收到
             // start 时才执行，stop 后自动取消
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // 监听当前的Track，刷新界面
                 mViewModel.currentTrack.collect { currentTrack ->
                     // 显示Toast
                     """专辑名：${currentTrack.album?.albumTitle}
@@ -94,6 +102,8 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             }
         }
 
+        // 监听播放列表
+        // mViewModel.currentTrackList.collect {  }
     }
 
     /**
@@ -122,12 +132,19 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
      */
     private fun initPlayer() {
 
+        // 需要切换的图片资源
         val pauseImageId = R.drawable.ic_pause_circle_outline_24px_rounded
         val playImageId = R.drawable.ic_play_circle_outline_24px_rounded
+        // 三种播放模式的图片资源
+        val playModeImageId = mapOf(
+            PlayMode.PLAY_MODEL_LIST_LOOP to R.drawable.ic_repeat_24px_rounded,
+            PlayMode.PLAY_MODEL_SINGLE_LOOP to R.drawable.ic_repeat_one_24px_rounded,
+            PlayMode.PLAY_MODEL_RANDOM to R.drawable.ic_shuffle_24px_rounded
+        )
 
+        // 监听播放状态
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // 监听播放状态
                 mViewModel.currentPlayState.collect {
                     when(it) {
                         is PlayState.Error -> showFailTipsDialog("加载出错")
@@ -156,6 +173,19 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
             }
         }
 
+        // 监听播放模式
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                mViewModel.currentPlayMode.collect {
+                    // 拿到图片
+                    val image = playModeImageId[it]
+                    // 加载图片
+                    if (image != null) {
+                        mBinding.playerPlayModeButton.setImageResource(image)
+                    }
+                }
+            }
+        }
     }
 
     /**
