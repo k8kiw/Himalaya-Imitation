@@ -9,15 +9,15 @@ import com.kotori.common.R
  */
 object Constants {
 
+    // 页面跳转路径
     const val PATH_MAIN = "/app/MainActivity"
-
     const val PATH_HOME_PAGE = "/home/HomeFragment"
-
     const val PATH_ALBUM_DETAIL_PAGE = "/home/DetailActivity"
-
     const val PATH_PLAYER_PAGE = "/player/PlayerActivity"
 
-
+    // 页面带参数跳转的参数名
+    const val KEY_TRACK = "track"
+    const val KEY_TRACK_LIST = "trackList"
 
     // ARouter 传递自定义对象所要用的
     const val SERVICE_ALBUM = "/service/AlbumServiceImpl"

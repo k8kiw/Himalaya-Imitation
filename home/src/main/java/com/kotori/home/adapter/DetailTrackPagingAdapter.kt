@@ -4,6 +4,8 @@ import androidx.recyclerview.widget.DiffUtil
 import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BasePagingAdapter
 import com.kotori.common.support.Constants
+import com.kotori.common.support.Constants.KEY_TRACK_LIST
+import com.kotori.common.support.Constants.KEY_TRACK
 import com.kotori.common.utils.formatTrackDuration
 import com.kotori.common.utils.formatNum
 import com.kotori.common.utils.trimAlbumTitle
@@ -29,9 +31,9 @@ class DetailTrackPagingAdapter : BasePagingAdapter<Track>(differCallback){
     override fun getItemLayout(position: Int): Int = R.layout.item_track
 
     override fun onItemClick(data: Track?) {
-        // TODO：打开播放页面
         ARouter.getInstance().build(Constants.PATH_PLAYER_PAGE)
-            .withParcelable("track", data)
+            .withParcelable(KEY_TRACK, data)
+            .withObject(KEY_TRACK_LIST, this.snapshot().items)
             .navigation()
     }
 
