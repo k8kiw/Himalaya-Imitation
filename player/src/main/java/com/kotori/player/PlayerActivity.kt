@@ -1,7 +1,6 @@
 package com.kotori.player
 
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,7 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.support.Constants
-import com.kotori.common.support.PublicData
+import com.kotori.common.support.PublicRepository
 import com.kotori.common.ui.*
 import com.kotori.common.utils.formatPlayProgress
 import com.kotori.common.utils.formatTrackDuration
@@ -63,7 +62,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
         // 将该有的数据传给 view model，之后就不用自己的数据了
         mViewModel.setCurrentTrackList(
-            PublicData.trackList,
+            PublicRepository.trackList,
             currentTrackFromDetail.orderNum
         )
 

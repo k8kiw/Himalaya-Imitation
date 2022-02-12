@@ -12,7 +12,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.support.Constants
-import com.kotori.common.support.PublicData
+import com.kotori.common.support.PublicRepository
 import com.kotori.common.ui.showFailTipsDialog
 import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
@@ -74,7 +74,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
                 }
 
                 // 把新的列表数据设置出去
-                PublicData.trackList = detailTrackPagingAdapter.snapshot().items
+                PublicRepository.trackList = detailTrackPagingAdapter.snapshot().items
             }
         }
     }
