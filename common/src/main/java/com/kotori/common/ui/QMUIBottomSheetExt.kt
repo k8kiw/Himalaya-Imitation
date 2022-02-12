@@ -16,7 +16,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheetListItemModel
  * @param gravityCenter item项的文字是否处于中央
  * @param addCancelBtn 是否需要取消键
  * @param allowDragDismiss 是否可以下滑收起菜单栏
- * @param markIndex 当前正在播放的曲目，用主题色与左侧icon标记(不用右侧check)
+ * @param markIndex 当前正在播放的曲目 /*忽略：用主题色与左侧icon标记(不用右侧check)*/
  * @param title 菜单的标题
  * @param items 需要显示的list列表
  * @param clickCallback 单击的回调事件
@@ -36,16 +36,16 @@ fun Activity.showBottomSheetList(
         .setTitle(title)
         .setAddCancelBtn(addCancelBtn)
         .setAllowDrag(allowDragDismiss)
-        /*.setNeedRightMark(true)
-        .setCheckedIndex(markIndex)*/
+        .setNeedRightMark(true)
+        .setCheckedIndex(markIndex)
         .setOnSheetItemClickListener(clickCallback)
 
     for (item in items) {
-        if (items[markIndex] == item) {
-            /*builder.addItem(
+        /*if (items[markIndex] == item) {
+            *//*builder.addItem(
                 ContextCompat.getDrawable(this, R.mipmap.icon_tabbar_lab),
                 "Item $i"
-            )*/
+            )*//*
             // 构建自己的被标记item项
             val markedItem = QMUIBottomSheetListItemModel(item, item)
             // 带icon和文字主题色
@@ -54,9 +54,9 @@ fun Activity.showBottomSheetList(
             // 插入菜单列表
             builder.addItem(markedItem)
         } else {
-            builder.addItem(item)
 
-        }
+        }*/
+        builder.addItem(item)
     }
     builder.build().show()
 }
