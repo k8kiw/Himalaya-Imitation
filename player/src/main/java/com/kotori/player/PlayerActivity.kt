@@ -258,10 +258,9 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
                 // 拿到列表
                 val titleList = mViewModel.currentTrackList.value.map { it.trackTitle }
                 // QMUI列表
-                showBottomSheetList(
+                this@PlayerActivity.showBottomSheetList(
                     gravityCenter = false,
                     addCancelBtn = false,
-                    withIcon = false,
                     allowDragDismiss = true,
                     title = "播放列表",
                     items = titleList,
