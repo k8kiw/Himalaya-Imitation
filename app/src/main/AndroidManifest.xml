@@ -27,6 +27,7 @@
             android:process=":player"/>
 
         <activity android:name=".SplashActivity"
+            android:theme="@style/AppTheme.Launcher"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
