@@ -3,7 +3,7 @@
     package="com.kotori.player">
 
     <application>
-        <activity android:name=".PlayerActivity" />
+        <activity android:name=".ui.PlayerActivity" />
         <activity android:name=".PlayerContainerActivity" />
     </application>
 

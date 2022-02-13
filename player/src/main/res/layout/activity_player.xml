@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/qmui_config_color_background"
-        tools:context=".PlayerActivity">
+        tools:context=".ui.PlayerActivity">
 
 
         <!--进度条   起始时间控制高度，其他与它对齐-->

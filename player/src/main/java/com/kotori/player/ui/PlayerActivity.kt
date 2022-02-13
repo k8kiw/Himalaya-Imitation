@@ -1,4 +1,4 @@
-package com.kotori.player
+package com.kotori.player.ui
 
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -18,6 +18,7 @@ import com.kotori.common.utils.formatPlayProgress
 import com.kotori.common.utils.formatTrackDuration
 import com.kotori.common.utils.showToast
 import com.kotori.common.utils.trimAlbumTitle
+import com.kotori.player.R
 import com.kotori.player.databinding.ActivityPlayerBinding
 import com.kotori.player.viewmodel.PlayState
 import com.kotori.player.viewmodel.PlayerViewModel

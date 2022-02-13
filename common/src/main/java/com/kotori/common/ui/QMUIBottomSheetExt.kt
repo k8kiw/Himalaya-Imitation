@@ -1,8 +1,8 @@
 package com.kotori.common.ui
 
-import android.app.Activity
 import android.view.View
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import com.kotori.common.R
 import com.kotori.common.base.BaseApplication
 import com.qmuiteam.qmui.skin.QMUISkinManager
@@ -21,7 +21,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheetListItemModel
  * @param items 需要显示的list列表
  * @param clickCallback 单击的回调事件
  */
-fun Activity.showBottomSheetList(
+fun FragmentActivity.showBottomSheetList(
     gravityCenter: Boolean,
     addCancelBtn: Boolean,
     allowDragDismiss: Boolean,
