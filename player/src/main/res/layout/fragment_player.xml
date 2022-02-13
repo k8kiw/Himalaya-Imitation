@@ -39,7 +39,7 @@
 
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="声音标题声音标题"
+                android:text="声音标题"
                 android:textAlignment="textStart"
                 android:textColor="@color/qmui_config_color_75_pure_black"
 

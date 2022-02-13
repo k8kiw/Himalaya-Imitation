@@ -5,9 +5,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import coil.load
+import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseDbFragment
 import com.kotori.common.entity.ProgressBean
+import com.kotori.common.support.Constants
 import com.kotori.common.ui.showBottomSheetList
+import com.kotori.common.ui.showFailTipsDialog
 import com.kotori.common.utils.showToast
 import com.kotori.player.R
 import com.kotori.player.databinding.FragmentPlayerBinding
@@ -31,20 +34,25 @@ class PlayerFragment : BaseDbFragment<FragmentPlayerBinding>() {
     override fun showTopBar(): Boolean  = false
 
     override fun initView(root: View) {
-        // 加载当前播放状态
-        root.setOnClickListener {
-            "打开播放器".showToast()
-        }
 
         initListener()
         initPlayer()
         loadData()
+
+        // 点击跳转播放器
+        root.setOnClickListener {
+            if (mViewModel.isPlayerInit) {
+                ARouter.getInstance().build(Constants.PATH_PLAYER_PAGE).navigation()
+            } else {
+                showFailTipsDialog("播放列表无内容")
+            }
+        }
     }
 
     private fun initPlayer() {
         // 需要切换的图片资源
-        val pauseImageId = R.drawable.ic_pause_circle_outline_24px_rounded
-        val playImageId = R.drawable.ic_play_circle_outline_24px_rounded
+        val pauseImageId = R.drawable.ic_pause_circle_outline_small_ver
+        val playImageId = R.drawable.ic_play_circle_outline_small_ver
 
         // 根据不同状态显示
         launchAndRepeatWithViewLifecycle {

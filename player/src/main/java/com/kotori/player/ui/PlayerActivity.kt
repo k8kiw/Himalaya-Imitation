@@ -36,7 +36,7 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
     @JvmField
     @Autowired(name = Constants.KEY_TRACK)
-    var currentTrackFromDetail: Track = Track()
+    var currentTrackFromDetail: Track? = null
 
     @JvmField
     @Autowired(name = Constants.KEY_TRACK_LIST)
@@ -44,7 +44,6 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
 
 
     override fun getLayoutId(): Int = R.layout.activity_player
-
 
 
     override fun initView(root: View) {
@@ -61,12 +60,13 @@ class PlayerActivity : BaseActivity<ActivityPlayerBinding>() {
     private fun initData() {
         ARouter.getInstance().inject(this)
 
-        // 将该有的数据传给 view model，之后就不用自己的数据了
-        mViewModel.setCurrentTrackList(
-            PublicRepository.trackList,
-            currentTrackFromDetail.orderNum
-        )
-
+        // 从主页跳转过来时，没有数据就不需要设置了
+        currentTrackFromDetail?.apply {
+            mViewModel.setCurrentTrackList(
+                PublicRepository.trackList,
+                this.orderNum
+            )
+        }
     }
 
     /**
