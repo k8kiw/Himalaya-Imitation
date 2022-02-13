@@ -7,6 +7,8 @@
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+
     app:cardBackgroundColor="@color/qmui_config_color_white"
     app:cardUseCompatPadding="true"
     app:cardCornerRadius="8dp">
