@@ -68,6 +68,10 @@ object PlayerRepository {
      *  @param currentIndex 用户所点击的项目(点完后跳转进的播放器)
      */
     fun setCurrentTrackList(list: List<Track>, currentIndex: Int) {
+        // 如果点进来的数据完全相同，则啥都不干，不然会被暂停一次
+        if (list == currentTrackList.value && currentIndex == currentTrack.value.orderNum) {
+            return
+        }
         // 设进Flow保存数据
         currentTrackList.value = list
         currentTrack.value = list[currentIndex]
