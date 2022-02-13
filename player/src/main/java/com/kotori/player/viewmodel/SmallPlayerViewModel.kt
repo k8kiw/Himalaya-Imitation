@@ -39,4 +39,8 @@ class SmallPlayerViewModel : ViewModel() {
 
     val isPlaying : Boolean
         get() = playerManager.isPlaying
+
+    // 当前是否初始化完成
+    val isPlayerInit : Boolean
+        get() = playerManager.playList.size != 0
 }

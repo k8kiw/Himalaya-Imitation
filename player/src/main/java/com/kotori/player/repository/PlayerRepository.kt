@@ -34,6 +34,10 @@ object PlayerRepository {
         addPlayerListener()
         // 默认播放模式为列表循环
         playerManager.playMode = PLAY_MODEL_LIST_LOOP
+        // 打个toast看看信息
+        /*"""播放器的列表size：${playerManager.playList.size}
+            |播放器的当前位置：${playerManager.currentIndex}
+        """.trimMargin().showToast()*/
     }
 
     // 播放模式的对应名称
@@ -49,7 +53,6 @@ object PlayerRepository {
         PLAY_MODEL_SINGLE_LOOP to PLAY_MODEL_RANDOM,
         PLAY_MODEL_RANDOM to PLAY_MODEL_LIST_LOOP
     )
-
 
     /**
      * ======================  当前播放的track  ===========================

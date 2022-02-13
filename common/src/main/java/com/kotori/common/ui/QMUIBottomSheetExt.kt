@@ -3,8 +3,6 @@ package com.kotori.common.ui
 import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import com.kotori.common.R
-import com.kotori.common.base.BaseApplication
 import com.qmuiteam.qmui.skin.QMUISkinManager
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet
 import com.qmuiteam.qmui.widget.dialog.QMUIBottomSheet.BottomListSheetBuilder
@@ -31,7 +29,7 @@ fun FragmentActivity.showBottomSheetList(
     clickCallback: (QMUIBottomSheet, View, Int, String) -> Unit
 ) {
     val builder = BottomListSheetBuilder(this)
-        .setSkinManager(QMUISkinManager.defaultInstance(BaseApplication.context))
+        .setSkinManager(QMUISkinManager.defaultInstance(this))
         .setGravityCenter(gravityCenter)
         .setTitle(title)
         .setAddCancelBtn(addCancelBtn)
