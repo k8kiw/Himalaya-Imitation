@@ -53,7 +53,8 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
         getTopBar()?.apply {
             setTitle(R.string.title_home)
             addRightFunctionButton(R.drawable.ic_search_24px_rounded).setOnClickListener {
-                "搜索被点击".showToast()
+                // 跳转搜索页面
+                ARouter.getInstance().build(Constants.PATH_SEARCH_PAGE).navigation()
                 // 测试数据获取
                 /*lifecycleScope.launch {
                     val recommendAlbumList = SDKCallbackExt.getRecommendAlbumList(30, 50)

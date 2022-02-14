@@ -14,6 +14,7 @@ object Constants {
     const val PATH_HOME_PAGE = "/home/HomeFragment"
     const val PATH_ALBUM_DETAIL_PAGE = "/home/DetailActivity"
     const val PATH_PLAYER_PAGE = "/player/PlayerActivity"
+    const val PATH_SEARCH_PAGE = "/search/SearchActivity"
 
     // 页面带参数跳转的参数名
     const val KEY_TRACK = "track"
