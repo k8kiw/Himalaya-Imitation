@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
@@ -8,17 +7,37 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:fitsSystemWindows="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/search_bar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="搜索页面"
+            android:layout_marginHorizontal="15dp"
+
+            app:mt_navIconTint="#515151"
+            style="@style/MaterialSearchBarLight"
+
+            app:layout_constrainedWidth="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"/>
+
+        <!--<androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_recommend_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none"
+
+            android:clipToPadding="false"
+            android:paddingHorizontal="10dp"
+
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />-->
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

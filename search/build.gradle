@@ -41,5 +41,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.4.0'
 
     // 搜索框架
-    implementation 'io.github.lapism:search:1.2.1'
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.5'
+    //implementation 'io.github.lapism:search:1.2.1'
 }
