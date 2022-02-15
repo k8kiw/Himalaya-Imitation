@@ -20,7 +20,7 @@
             app:mt_navIconTint="#515151"
             style="@style/MaterialSearchBarLight"
 
-            app:layout_constrainedWidth="true"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

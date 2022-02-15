@@ -4,7 +4,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.ImageView
-import androidx.recyclerview.widget.RecyclerView
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
@@ -42,6 +41,10 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
             // 更改NavIcon
             setNavIcon(R.drawable.ic_home_used_in_search_bar)
 
+            // 设置联想内容适配器
+
+            val testList = listOf("111", "222", "444", "666")
+            lastSuggestions = testList
 
             // 设置监听器
             setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
