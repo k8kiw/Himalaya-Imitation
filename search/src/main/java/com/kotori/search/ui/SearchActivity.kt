@@ -34,7 +34,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
             setMaxSuggestionCount(10)
             setSpeechMode(false)
             setRoundedSearchBarEnabled(true)
-            setCardViewElevation(10)
+            // 调整card view 向后的阴影程度
+            setCardViewElevation(5)
 
             // 用左边的菜单键代替退出
             setNavButtonEnabled(true)
