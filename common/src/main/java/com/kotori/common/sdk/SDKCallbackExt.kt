@@ -88,6 +88,8 @@ object SDKCallbackExt {
                     }
 
                     override fun onError(p0: Int, p1: String?) {
+                        LogUtil.d(TAG, "getRecommendAlbumList --> error code : $p0")
+                        LogUtil.d(TAG, "getRecommendAlbumList --> error msg : $p1")
                         continuation.resumeWithException(TimeoutException(p1))
                     }
 
@@ -119,11 +121,13 @@ object SDKCallbackExt {
                 override fun onSuccess(p0: TrackList?) {
                     val result = p0?.tracks ?: ArrayList<Track>()
                     // 果然只会返回20个，参数无效
-                    LogUtil.d(TAG, "getTrackByAlbum ---> list size : ${result.size}")
+                    LogUtil.d(TAG, "getTrackByAlbum ---> result size : ${result.size}")
                     continuation.resume(result)
                 }
 
                 override fun onError(p0: Int, p1: String?) {
+                    LogUtil.d(TAG, "getTrackByAlbum --> error code : $p0")
+                    LogUtil.d(TAG, "getTrackByAlbum --> error msg : $p1")
                     continuation.resumeWithException(TimeoutException(p1))
                 }
 
@@ -179,10 +183,13 @@ object SDKCallbackExt {
             CommonRequest.getSearchedAlbums(map, object : IDataCallBack<SearchAlbumList> {
                 override fun onSuccess(p0: SearchAlbumList?) {
                     val result = p0?.albums ?: ArrayList()
+                    LogUtil.d(TAG, "getSearchedAlbums --> result size : ${result.size}")
                     continuation.resume(result)
                 }
 
                 override fun onError(p0: Int, p1: String?) {
+                    LogUtil.d(TAG, "getSearchedAlbums --> error code : $p0")
+                    LogUtil.d(TAG, "getSearchedAlbums --> error msg : $p1")
                     continuation.resumeWithException(TimeoutException(p1))
                 }
 
@@ -204,10 +211,13 @@ object SDKCallbackExt {
             CommonRequest.getSuggestWord(map, object : IDataCallBack<SuggestWords> {
                 override fun onSuccess(p0: SuggestWords?) {
                     val result = p0?.keyWordList ?: ArrayList()
+                    LogUtil.d(TAG, "getSuggestWord --> result size : ${result.size}")
                     continuation.resume(result)
                 }
 
                 override fun onError(p0: Int, p1: String?) {
+                    LogUtil.d(TAG, "getSuggestWord --> error code : $p0")
+                    LogUtil.d(TAG, "getSuggestWord --> error msg : $p1")
                     continuation.resumeWithException(TimeoutException(p1))
                 }
             })
@@ -223,10 +233,13 @@ object SDKCallbackExt {
             CommonRequest.getHotWords(map, object : IDataCallBack<HotWordList> {
                 override fun onSuccess(p0: HotWordList?) {
                     val result = p0?.hotWordList ?: ArrayList()
+                    LogUtil.d(TAG, "getHotWords --> result size : ${result.size}")
                     continuation.resume(result)
                 }
 
                 override fun onError(p0: Int, p1: String?) {
+                    LogUtil.d(TAG, "getHotWords --> error code : $p0")
+                    LogUtil.d(TAG, "getHotWords --> error msg : $p1")
                     continuation.resumeWithException(TimeoutException(p1))
                 }
 
