@@ -6,10 +6,15 @@ import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack
 import com.ximalaya.ting.android.opensdk.model.album.Album
 import com.ximalaya.ting.android.opensdk.model.album.DiscoveryRecommendAlbumsList
+import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList
 import com.ximalaya.ting.android.opensdk.model.category.Category
 import com.ximalaya.ting.android.opensdk.model.category.CategoryList
 import com.ximalaya.ting.android.opensdk.model.track.Track
 import com.ximalaya.ting.android.opensdk.model.track.TrackList
+import com.ximalaya.ting.android.opensdk.model.word.HotWord
+import com.ximalaya.ting.android.opensdk.model.word.HotWordList
+import com.ximalaya.ting.android.opensdk.model.word.QueryResult
+import com.ximalaya.ting.android.opensdk.model.word.SuggestWords
 import java.util.concurrent.TimeoutException
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -107,7 +112,7 @@ object SDKCallbackExt {
                 DTransferConstants.ALBUM_ID to albumId.toString(),
                 DTransferConstants.SORT to "asc",
                 DTransferConstants.PAGE to page.toString(),
-                DTransferConstants.DISPLAY_COUNT to 50.toString()
+                DTransferConstants.PAGE_SIZE to 50.toString()
             )
             // 调用接口
             CommonRequest.getTracks(map, object : IDataCallBack<TrackList> {
@@ -144,6 +149,81 @@ object SDKCallbackExt {
                     p0?.let {
                         continuation.resume(it)
                     }
+                }
+
+                override fun onError(p0: Int, p1: String?) {
+                    continuation.resumeWithException(TimeoutException(p1))
+                }
+
+            })
+        }
+    }
+
+
+    /**
+     * ========================== 搜索 =======================================
+     */
+
+    /**
+     * 根据关键字搜索专辑(实际执行的搜索)
+     */
+    suspend fun getSearchedAlbums(keyword: String, page: Int) : List<Album> {
+        return suspendCoroutine { continuation ->
+            // 设置参数
+            val map = mapOf(
+                DTransferConstants.SEARCH_KEY to keyword,
+                DTransferConstants.PAGE to page.toString(),
+                DTransferConstants.PAGE_SIZE to 50.toString()
+            )
+            // 搜索
+            CommonRequest.getSearchedAlbums(map, object : IDataCallBack<SearchAlbumList> {
+                override fun onSuccess(p0: SearchAlbumList?) {
+                    val result = p0?.albums ?: ArrayList()
+                    continuation.resume(result)
+                }
+
+                override fun onError(p0: Int, p1: String?) {
+                    continuation.resumeWithException(TimeoutException(p1))
+                }
+
+            })
+        }
+    }
+
+
+    /**
+     * 输入搜索内容时的实时联想，QueryResult标明了keyword和需要高光的部分
+     */
+    suspend fun getSuggestWord(keyword: String) : List<QueryResult> {
+        return suspendCoroutine { continuation ->
+            // 设置参数
+            val map = mapOf(
+                DTransferConstants.SEARCH_KEY to keyword
+            )
+            // 搜索
+            CommonRequest.getSuggestWord(map, object : IDataCallBack<SuggestWords> {
+                override fun onSuccess(p0: SuggestWords?) {
+                    val result = p0?.keyWordList ?: ArrayList()
+                    continuation.resume(result)
+                }
+
+                override fun onError(p0: Int, p1: String?) {
+                    continuation.resumeWithException(TimeoutException(p1))
+                }
+            })
+        }
+    }
+
+    /**
+     * 获取热搜词，默认为前十个
+     */
+    suspend fun getHotWords(topNum: Int = 10) : List<HotWord> {
+        return suspendCoroutine { continuation ->
+            val map = mapOf(DTransferConstants.TOP to topNum.toString())
+            CommonRequest.getHotWords(map, object : IDataCallBack<HotWordList> {
+                override fun onSuccess(p0: HotWordList?) {
+                    val result = p0?.hotWordList ?: ArrayList()
+                    continuation.resume(result)
                 }
 
                 override fun onError(p0: Int, p1: String?) {
