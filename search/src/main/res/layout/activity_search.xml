@@ -28,6 +28,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"/>
 
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/search_page_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:name="com.kotori.search.ui.SearchSuggestFragment"
+
+            app:layout_constrainedHeight="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_bar" />
+
         <!--<androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_recommend_list"
             android:layout_width="match_parent"
