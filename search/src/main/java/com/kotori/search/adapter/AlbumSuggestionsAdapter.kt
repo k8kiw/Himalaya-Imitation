@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
 import com.ximalaya.ting.android.opensdk.model.word.QueryResult
@@ -28,7 +29,15 @@ class AlbumSuggestionsAdapter constructor(
         holder: SuggestionHolder?,
         position: Int
     ) {
-        holder?.title?.text = suggestion?.keyword
+        holder?.apply {
+            // 显示联想
+            title.text = suggestion?.keyword
+            // 点击事件
+            itemView.setOnClickListener {
+                "点击了：${title.text}".showToast()
+                // 将title加入搜索框，如果无法加入那就在外部写listener
+            }
+        }
     }
 
     /**
@@ -62,8 +71,8 @@ class AlbumSuggestionsAdapter constructor(
     }
 
     inner class SuggestionHolder constructor(
-        itemView: View
-    ): RecyclerView.ViewHolder(itemView){
-        val title: TextView = itemView.findViewById(R.id.search_suggestion_title)
+        rootView: View
+    ): RecyclerView.ViewHolder(rootView){
+        val title: TextView = rootView.findViewById(R.id.search_suggestion_title)
     }
 }
