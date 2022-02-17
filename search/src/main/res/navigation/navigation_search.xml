@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_search"
+    app:startDestination="@id/searchSuggestFragment">
+
+    <fragment
+        android:id="@+id/searchSuggestFragment"
+        android:name="com.kotori.search.ui.SearchSuggestFragment"
+        android:label="SearchSuggestFragment"
+        tools:layout="@layout/fragment_search_suggest">
+        <action
+            android:id="@+id/action_searchSuggestFragment_to_searchResultFragment"
+            app:destination="@id/searchResultFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.kotori.search.ui.SearchResultFragment"
+        android:label="SearchResultFragment"
+        tools:layout="@layout/fragment_search_result">
+        <action
+            android:id="@+id/action_searchResultFragment_to_searchSuggestFragment"
+            app:destination="@id/searchSuggestFragment" />
+    </fragment>
+</navigation>

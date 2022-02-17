@@ -7,10 +7,16 @@ import com.kotori.common.entity.ProgressBean
 import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.kotori.search.databinding.FragmentSearchSuggestBinding
+import com.kotori.search.viewmodel.SearchViewModel
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+
 
 
 class SearchSuggestFragment : BaseDbFragment<FragmentSearchSuggestBinding>() {
+
+    private val mViewModel: SearchViewModel by sharedViewModel()
+
     override fun onLazyInit() {
 
     }
