@@ -1,9 +1,6 @@
 package com.kotori.player.ui
 
 import android.view.View
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import coil.load
 import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseDbFragment
@@ -12,13 +9,12 @@ import com.kotori.common.support.Constants
 import com.kotori.common.ui.showBottomSheetList
 import com.kotori.common.ui.showFailTipsDialog
 import com.kotori.common.utils.showToast
+import com.kotori.common.ktx.launchAndRepeatWithViewLifecycle
 import com.kotori.player.R
 import com.kotori.player.databinding.FragmentPlayerBinding
 import com.kotori.player.viewmodel.PlayState
 import com.kotori.player.viewmodel.SmallPlayerViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlayerFragment : BaseDbFragment<FragmentPlayerBinding>() {
@@ -124,17 +120,5 @@ class PlayerFragment : BaseDbFragment<FragmentPlayerBinding>() {
 
     override fun hideProgress() {
 
-    }
-
-
-    private inline fun launchAndRepeatWithViewLifecycle(
-        minActiveState: Lifecycle.State = Lifecycle.State.RESUMED,
-        crossinline block: suspend CoroutineScope.() -> Unit
-    ) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(minActiveState) {
-                block()
-            }
-        }
     }
 }
