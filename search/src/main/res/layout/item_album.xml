@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+
+    app:cardBackgroundColor="@color/qmui_config_color_white"
+    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="8dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp">
+
+        <!--控件边距用margin设置-->
+        <com.qmuiteam.qmui.widget.QMUIRadiusImageView2
+            android:id="@+id/album_cover"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:src="@mipmap/img_placeholder"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:qmui_corner_radius="8dp" />
+
+        <TextView
+            android:id="@+id/album_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="专辑标题专辑标题"
+            android:textAlignment="textStart"
+            android:textColor="@color/qmui_config_color_75_pure_black"
+
+            android:textSize="18sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/album_cover"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/album_introduction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="专辑简介很长很长很长很长很长很长很长很长很长很长很长很长"
+            android:textAlignment="textStart"
+            android:textColor="@color/qmui_config_color_gray_6"
+            android:textSize="12sp"
+
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/album_cover"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.55" />
+
+        <ImageView
+            android:id="@+id/album_play_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_play_arrow_24px_rounded"
+
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/album_play_num"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/album_cover"
+            app:layout_constraintTop_toTopOf="@+id/album_play_num"
+            app:layout_constraintVertical_bias="0.95" />
+
+        <TextView
+            android:id="@+id/album_play_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="100万"
+            android:textAlignment="textStart"
+            android:textColor="@color/qmui_config_color_gray_6"
+            android:textSize="12sp"
+
+
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/album_play_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.98" />
+
+
+        <ImageView
+            android:id="@+id/album_subscribe_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:src="@drawable/ic_star_24px_rounded"
+
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="@+id/album_play_num"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/album_play_num"
+            app:layout_constraintTop_toTopOf="@+id/album_subscribe_num"
+            app:layout_constraintVertical_bias="0.95" />
+
+        <TextView
+            android:id="@+id/album_subscribe_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="10万"
+            android:textAlignment="textStart"
+            android:textColor="@color/qmui_config_color_gray_6"
+            android:textSize="12sp"
+
+
+            app:layout_constrainedWidth="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/album_subscribe_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.98" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+
