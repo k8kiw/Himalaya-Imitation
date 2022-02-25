@@ -9,7 +9,6 @@ import com.kotori.home.databinding.FragmentBlankBinding
 
 class BlankFragment : BaseDbFragment<FragmentBlankBinding>() {
     override fun onLazyInit() {
-        TODO("Not yet implemented")
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_blank
@@ -23,10 +22,8 @@ class BlankFragment : BaseDbFragment<FragmentBlankBinding>() {
     }
 
     override fun showProgress(progress: ProgressBean) {
-        TODO("Not yet implemented")
     }
 
     override fun hideProgress() {
-        TODO("Not yet implemented")
     }
 }

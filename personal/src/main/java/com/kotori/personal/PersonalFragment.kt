@@ -8,7 +8,6 @@ import com.kotori.personal.databinding.FragmentPersonalBinding
 
 class PersonalFragment: BaseDbFragment<FragmentPersonalBinding>() {
     override fun onLazyInit() {
-        TODO("Not yet implemented")
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_personal
@@ -24,11 +23,9 @@ class PersonalFragment: BaseDbFragment<FragmentPersonalBinding>() {
     }
 
     override fun showProgress(progress: ProgressBean) {
-        TODO("Not yet implemented")
     }
 
     override fun hideProgress() {
-        TODO("Not yet implemented")
     }
 
 }

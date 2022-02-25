@@ -15,7 +15,6 @@ class TempPlayerFragment : BaseDbFragment<FragmentTempPlayerBinding>() {
 
 
     override fun onLazyInit() {
-        TODO("Not yet implemented")
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_temp_player
@@ -28,11 +27,9 @@ class TempPlayerFragment : BaseDbFragment<FragmentTempPlayerBinding>() {
 
 
     override fun showProgress(progress: ProgressBean) {
-        TODO("Not yet implemented")
     }
 
     override fun hideProgress() {
-        TODO("Not yet implemented")
     }
 
 }

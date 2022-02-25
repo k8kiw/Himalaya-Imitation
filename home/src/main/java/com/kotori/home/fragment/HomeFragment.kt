@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 @Route(path = Constants.PATH_HOME_PAGE)
 class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
     override fun onLazyInit() {
-        TODO("Not yet implemented")
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_home
@@ -154,11 +153,9 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
 
 
     override fun showProgress(progress: ProgressBean) {
-        TODO("Not yet implemented")
     }
 
     override fun hideProgress() {
-        TODO("Not yet implemented")
     }
 
 }

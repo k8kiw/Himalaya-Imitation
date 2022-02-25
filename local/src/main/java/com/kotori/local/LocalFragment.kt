@@ -7,7 +7,6 @@ import com.kotori.local.databinding.FragmentLocalBinding
 
 class LocalFragment : BaseDbFragment<FragmentLocalBinding>() {
     override fun onLazyInit() {
-        TODO("Not yet implemented")
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_local
@@ -21,11 +20,9 @@ class LocalFragment : BaseDbFragment<FragmentLocalBinding>() {
     }
 
     override fun showProgress(progress: ProgressBean) {
-        TODO("Not yet implemented")
     }
 
     override fun hideProgress() {
-        TODO("Not yet implemented")
     }
 
 }

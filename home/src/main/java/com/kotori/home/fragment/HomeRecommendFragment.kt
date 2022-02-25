@@ -22,7 +22,6 @@ class HomeRecommendFragment : BaseDbFragment<FragmentHomeRecommendBinding>(){
     private val recommendAlbumPagingAdapter = RecommendAlbumPagingAdapter()
 
     override fun onLazyInit() {
-        TODO("Not yet implemented")
     }
 
     override fun getLayoutId(): Int = R.layout.fragment_home_recommend
@@ -82,11 +81,9 @@ class HomeRecommendFragment : BaseDbFragment<FragmentHomeRecommendBinding>(){
 
 
     override fun showProgress(progress: ProgressBean) {
-        TODO("Not yet implemented")
     }
 
     override fun hideProgress() {
-        TODO("Not yet implemented")
     }
 
 }

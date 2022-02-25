@@ -29,11 +29,9 @@ class PlayerContainerActivity : BaseActivity<ActivityPlayerContainerBinding>() {
     }
 
     override fun showProgress(progress: ProgressBean) {
-        TODO("Not yet implemented")
     }
 
     override fun hideProgress() {
-        TODO("Not yet implemented")
     }
 
 }
