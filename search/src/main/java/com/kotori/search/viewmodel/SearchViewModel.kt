@@ -26,7 +26,6 @@ class SearchViewModel: ViewModel() {
     }
 
     // 当搜索词变化时，发送新的Flow，替换掉原paging data
-    @ExperimentalCoroutinesApi
     val searchResultList = _currentSearchKeyword.flatMapLatest { keyword ->
         Pager(PagingConfig(pageSize = 20)) {
             SearchResultPagingSource(keyword)

@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
+import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.support.Constants
 import com.kotori.common.utils.showToast
 import com.kotori.search.R
@@ -66,7 +67,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
             val suggestions2 = genSuggestions(testList2)
             // 设置联想数据
             adapter.suggestions = suggestions1
-            //TODO：adapter设置点击事件，为bar设置文字建议抽成一个公用方法，点击下面信息也要用
             this.setCustomSuggestionAdapter(adapter)
 
             // 设置监听器
@@ -87,6 +87,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                     // 确认搜索，展示搜索结果列表，替换fragment
                     "搜索内容：$text".showToast()
                     mViewModel.setCurrentSearchKeyword(text.toString())
+                    //TODO: 使输入框失去焦点
 
                     // 确认当前是否处于搜索页面
                     if (navController.currentDestination?.id != R.id.searchResultFragment) {
@@ -104,6 +105,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
 
             })
 
+            //TODO：设置联想词点击事件，为bar设置文字建议抽成一个公用方法，点击下面信息也要用
+            //setSuggestionsClickListener()
+
             addTextChangeListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
@@ -116,6 +120,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                     }
                     // 实时获取联想内容并显示
                     "获取搜索联想：$s".showToast()
+                    //TODO： set还是update？
                     adapter.suggestions = suggestions2
                     adapter.notifyDataSetChanged()
                     // adapter过滤信息
@@ -129,10 +134,10 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
         }
     }
 
-    private fun genSuggestions(testList: List<String>): MutableList<QueryResult> {
-        val suggestions: MutableList<QueryResult> = ArrayList()
+    private fun genSuggestions(testList: List<String>): MutableList<ParcelableQueryResult> {
+        val suggestions: MutableList<ParcelableQueryResult> = ArrayList()
         for (s in testList) {
-            val suggestion = QueryResult()
+            val suggestion = ParcelableQueryResult()
             suggestion.keyword = s
             suggestions.add(suggestion)
         }

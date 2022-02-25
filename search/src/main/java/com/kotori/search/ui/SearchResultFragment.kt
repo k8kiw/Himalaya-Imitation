@@ -48,8 +48,7 @@ class SearchResultFragment : BaseDbFragment<FragmentSearchResultBinding>() {
     private fun loadData() {
         launchAndRepeatWithViewLifecycle {
             mViewModel.currentSearchKeyword.collect {
-                //TODO：keyword变化后需要重新执行搜索
-                // 清空列表，重新加载
+                //TODO：keyword变化后需要重新执行搜索,清空列表，重新加载
                 mViewModel.searchResultList.collectLatest {
                     searchResultPagingAdapter.submitData(it)
                 }

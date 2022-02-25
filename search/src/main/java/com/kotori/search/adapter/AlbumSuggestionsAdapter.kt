@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
@@ -14,7 +15,7 @@ import com.ximalaya.ting.android.opensdk.model.word.QueryResult
 
 class AlbumSuggestionsAdapter constructor(
     private val inflater: LayoutInflater
-): SuggestionsAdapter<QueryResult, AlbumSuggestionsAdapter.SuggestionHolder>(inflater) {
+): SuggestionsAdapter<ParcelableQueryResult, AlbumSuggestionsAdapter.SuggestionHolder>(inflater) {
 
     override fun getSingleViewHeight(): Int = 50
 
@@ -25,7 +26,7 @@ class AlbumSuggestionsAdapter constructor(
     }
 
     override fun onBindSuggestionHolder(
-        suggestion: QueryResult?,
+        suggestion: ParcelableQueryResult?,
         holder: SuggestionHolder?,
         position: Int
     ) {
@@ -35,7 +36,7 @@ class AlbumSuggestionsAdapter constructor(
             // 点击事件
             itemView.setOnClickListener {
                 "点击了：${title.text}".showToast()
-                // 将title加入搜索框，如果无法加入那就在外部写listener
+                // TODO:将title加入搜索框，如果无法加入那就在外部写listener
             }
         }
     }
@@ -63,7 +64,7 @@ class AlbumSuggestionsAdapter constructor(
             }
 
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                suggestions = results?.values as ArrayList<QueryResult>
+                suggestions = results?.values as ArrayList<ParcelableQueryResult>
                 notifyDataSetChanged()
             }
 
