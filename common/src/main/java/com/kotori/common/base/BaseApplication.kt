@@ -5,10 +5,8 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
-import androidx.multidex.BuildConfig
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
-import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.DemoHelper
 import com.kotori.common.receiver.MyPlayerReceiver
 import com.qmuiteam.qmui.arch.QMUISwipeBackActivityManager
@@ -34,9 +32,6 @@ import com.ximalaya.ting.android.sdkdownloader.http.request.UriRequest
 import okhttp3.*
 import org.json.JSONException
 import org.json.JSONObject
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
 import org.xutils.x
 import java.io.IOException
 
@@ -134,38 +129,49 @@ open class BaseApplication : MultiDexApplication(), DemoHelper.AppIdsUpdater {
             }
 
             // 下载sdk
-            XmDownloadManager.Builder(this)
-                .maxDownloadThread(3) // 最大的下载个数 默认为1 最大为3
-                .maxSpaceSize(Long.MAX_VALUE) // 设置下载文件占用磁盘空间最大值，单位字节。不设置没有限制
-                .connectionTimeOut(15000) // 下载时连接超时的时间 ,单位毫秒 默认 30000
-                .readTimeOut(15000) // 下载时读取的超时时间 ,单位毫秒 默认 30000
-                .fifo(false) // 等待队列的是否优先执行先加入的任务. false表示后添加的先执行(不会改变当前正在下载的音频的状态) 默认为true
-                .maxRetryCount(3) // 出错时重试的次数 默认2次
-                .progressCallBackMaxTimeSpan(1000) //  进度条progress 更新的频率 默认是800
-                .requestTracker(requestTracker) // 日志 可以打印下载信息
-                .savePath(mp3) // 保存的地址 会检查这个地址是否有效
-                .create()
+            XmDownloadManager.Builder(this).apply {
+                // 最大的下载个数 默认为1 最大为3
+                maxDownloadThread(3)
+                // 设置下载文件占用磁盘空间最大值，单位字节。不设置没有限制
+                maxSpaceSize(Long.MAX_VALUE)
+                // 下载时连接超时的时间 ,单位毫秒 默认 30000
+                connectionTimeOut(15000)
+                // 下载时读取的超时时间 ,单位毫秒 默认 30000
+                readTimeOut(15000)
+                // 等待队列的是否优先执行先加入的任务. false表示后添加的先执行(不会改变当前正在下载的音频的状态) 默认为true
+                fifo(false)
+                // 出错时重试的次数 默认2次
+                maxRetryCount(3)
+                //  进度条progress 更新的频率 默认是800
+                progressCallBackMaxTimeSpan(1000)
+                // 日志 可以打印下载信息
+                requestTracker(requestTracker)
+                // 保存的地址 会检查这个地址是否有效
+                savePath(mp3)
+                create()
+            }
         }
 
         if (BaseUtil.isPlayerProcess(this)) {
             val instanse = XmNotificationCreater.getInstanse(this)
-            instanse.setNextPendingIntent(null as PendingIntent?)
-            instanse.setPrePendingIntent(null as PendingIntent?)
 
-            val actionName = "com.app.test.android.Action_Close"
-            val intent = Intent(actionName)
-            intent.setClass(this, MyPlayerReceiver::class.java)
+            // 设置上下首切换
+            /*instanse.setNextPendingIntent(null as PendingIntent?)
+            instanse.setPrePendingIntent(null as PendingIntent?)*/
 
-            val broadcast = PendingIntent.getBroadcast(this, 0, intent, 0)
-            instanse.setClosePendingIntent(broadcast)
+            // 关闭通知按钮
+            val closeActionName = "com.app.test.android.Action_Close"
+            val closeIntent = Intent(closeActionName)
+            closeIntent.setClass(this, MyPlayerReceiver::class.java)
+            val closeBroadcast = PendingIntent.getBroadcast(this, 0, closeIntent, PendingIntent.FLAG_IMMUTABLE)
+            instanse.setClosePendingIntent(closeBroadcast)
 
-
+            // 播放暂停
             val pauseActionName = "com.app.test.android.Action_PAUSE_START"
-            val intent1 = Intent(pauseActionName)
-            intent1.setClass(this, MyPlayerReceiver::class.java)
-
-            val broadcast1 = PendingIntent.getBroadcast(this, 0, intent1, 0)
-            instanse.setStartOrPausePendingIntent(broadcast1)
+            val pauseIntent = Intent(pauseActionName)
+            pauseIntent.setClass(this, MyPlayerReceiver::class.java)
+            val pauseBroadcast = PendingIntent.getBroadcast(this, 0, pauseIntent, PendingIntent.FLAG_IMMUTABLE)
+            instanse.setStartOrPausePendingIntent(pauseBroadcast)
         }
     }
 
