@@ -18,7 +18,7 @@ import com.kotori.search.adapter.AlbumSuggestionsAdapter
 import com.kotori.search.databinding.ActivitySearchBinding
 import com.kotori.search.viewmodel.SearchViewModel
 import com.mancj.materialsearchbar.MaterialSearchBar
-import com.ximalaya.ting.android.opensdk.model.word.QueryResult
+import com.qmuiteam.qmui.util.QMUIKeyboardHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @Route(path = Constants.PATH_SEARCH_PAGE)
@@ -87,9 +87,11 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                     // 确认搜索，展示搜索结果列表，替换fragment
                     "搜索内容：$text".showToast()
                     mViewModel.setCurrentSearchKeyword(text.toString())
-                    //TODO: 使输入框失去焦点
 
-                    // 确认当前是否处于搜索页面
+                    //focusable = View.NOT_FOCUSABLE
+                    QMUIKeyboardHelper.hideKeyboard(this@apply)
+
+                    // 确认当前是否处于搜索页面，否则无需再navigate
                     if (navController.currentDestination?.id != R.id.searchResultFragment) {
                         navController.navigate(R.id.action_searchSuggestFragment_to_searchResultFragment)
                     }
@@ -155,9 +157,10 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
         imageView.setImageResource(navIconRes)
     }
 
-    private fun showSearchSuggestFragment() {
-        mBinding.searchPageContainer
-    }
+
+
+
+
 
     override fun showProgress(progress: ProgressBean) {
 
