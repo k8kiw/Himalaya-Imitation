@@ -16,8 +16,10 @@ import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.kotori.search.adapter.AlbumSuggestionsAdapter
 import com.kotori.search.databinding.ActivitySearchBinding
+import com.kotori.search.ktx.setNavIcon
 import com.kotori.search.viewmodel.SearchViewModel
 import com.mancj.materialsearchbar.MaterialSearchBar
+import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
 import com.qmuiteam.qmui.util.QMUIKeyboardHelper
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -69,6 +71,18 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
             adapter.suggestions = suggestions1
             this.setCustomSuggestionAdapter(adapter)
 
+            //TODO：设置联想词点击事件，为bar设置文字建议抽成一个公用方法，点击下面信息也要用
+            setSuggestionsClickListener(object :SuggestionsAdapter.OnItemViewClickListener {
+                override fun OnItemClickListener(position: Int, v: View?) {
+
+                }
+
+                override fun OnItemDeleteListener(position: Int, v: View?) {
+
+                }
+
+            })
+
             // 设置监听器
             setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
                 override fun onSearchStateChanged(enabled: Boolean) {
@@ -90,6 +104,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
 
                     //focusable = View.NOT_FOCUSABLE
                     QMUIKeyboardHelper.hideKeyboard(this@apply)
+                    searchEditText?.clearFocus()
 
                     // 确认当前是否处于搜索页面，否则无需再navigate
                     if (navController.currentDestination?.id != R.id.searchResultFragment) {
@@ -106,9 +121,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                 }
 
             })
-
-            //TODO：设置联想词点击事件，为bar设置文字建议抽成一个公用方法，点击下面信息也要用
-            //setSuggestionsClickListener()
 
             addTextChangeListener(object : TextWatcher {
                 override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -145,20 +157,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
         }
         return suggestions
     }
-
-    private fun MaterialSearchBar.setNavIcon(navIconRes: Int) {
-        val navIconResId = this.javaClass.getDeclaredField("navIconResId")
-        navIconResId.isAccessible = true
-        navIconResId.set(this, navIconRes)
-
-        val navIcon = this.javaClass.getDeclaredField("navIcon")
-        navIcon.isAccessible = true
-        val imageView = navIcon.get(this) as ImageView
-        imageView.setImageResource(navIconRes)
-    }
-
-
-
 
 
 
