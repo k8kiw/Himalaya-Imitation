@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import com.kotori.common.base.BaseDbFragment
 import com.kotori.common.entity.ProgressBean
+import com.kotori.common.ktx.launchAndRepeatWithViewLifecycle
 import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.kotori.search.databinding.FragmentSearchSuggestBinding
 import com.kotori.search.viewmodel.SearchViewModel
 import com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 
@@ -32,13 +34,13 @@ class SearchSuggestFragment : BaseDbFragment<FragmentSearchSuggestBinding>() {
     }
 
     private fun initHotWords() {
-        // 获取热词
-        val list = ArrayList<String>()
-        for (i in 1..20) {
-            val s = "词$i"
-            list.add(s)
+        launchAndRepeatWithViewLifecycle {
+            mViewModel.hotWordList.collect {
+                // 获取热词
+                addHotWordsToFloatLayout(it)
+                //"获取热词".showToast()
+            }
         }
-        addHotWordsToFloatLayout(list)
     }
 
     /**
@@ -54,6 +56,9 @@ class SearchSuggestFragment : BaseDbFragment<FragmentSearchSuggestBinding>() {
         )*/
         // 遍历list，把每一项都做成Button添加进去
         list.forEach {
+            if(it.isBlank()) {
+                return@forEach
+            }
             // 通过xml来加载button，不然不走AttributeSet的构造，会丢失样式
             val floatLayoutItem = LayoutInflater.from(activity).inflate(
                 R.layout.round_button_in_float_layout,

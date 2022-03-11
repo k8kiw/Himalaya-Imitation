@@ -6,11 +6,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.kotori.common.sdk.SDKCallbackExt
 import com.kotori.search.repository.SearchRepository
 import com.kotori.search.repository.SearchResultPagingSource
 import com.ximalaya.ting.android.opensdk.model.album.Album
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 
 class SearchViewModel: ViewModel() {
 
@@ -39,5 +42,23 @@ class SearchViewModel: ViewModel() {
         // 被实际调用时再执行搜索
         return SearchRepository.getSearchResultPagingData(_currentSearchKeyword.value)
             .cachedIn(viewModelScope)
+    }
+
+    /**
+     * 热搜词
+     */
+    private val _hotWordList = MutableStateFlow(listOf(""))
+
+    val hotWordList = _hotWordList.asStateFlow()
+
+    init {
+        getHotWords()
+    }
+
+    private fun getHotWords() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = SDKCallbackExt.getHotWords()
+            _hotWordList.value = result.map { it.searchword }
+        }
     }
 }
