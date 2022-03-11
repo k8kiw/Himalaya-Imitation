@@ -26,6 +26,7 @@ fun MaterialSearchBar.setNavIcon(navIconRes: Int) {
  * 设置搜索框的内容，并执行搜索
  */
 fun MaterialSearchBar.doSearch(keyword: String) {
+    openSearch()
     text = keyword
 
     /*// 拿到当前的listener执行搜索

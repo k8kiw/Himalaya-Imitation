@@ -38,7 +38,7 @@ class SearchSuggestFragment : BaseDbFragment<FragmentSearchSuggestBinding>() {
             val s = "词$i"
             list.add(s)
         }
-        addHotWordsToFloat(list)
+        addHotWordsToFloatLayout(list)
     }
 
     /**
@@ -46,7 +46,7 @@ class SearchSuggestFragment : BaseDbFragment<FragmentSearchSuggestBinding>() {
      * 这里每个item添加QMUIRoundButton进去
      * @param list 需要添加进布局的内容项
      */
-    private fun addHotWordsToFloat(list: List<String>) {
+    private fun addHotWordsToFloatLayout(list: List<String>) {
         // wrap_content 的布局参数
         /*val layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -70,7 +70,9 @@ class SearchSuggestFragment : BaseDbFragment<FragmentSearchSuggestBinding>() {
             
             // 设置点击监听，点击后启动搜索
             floatLayoutItem.setOnClickListener {
-                "点击了热词：${floatLayoutItem.text}".showToast()
+                val word = floatLayoutItem.text.toString()
+                "点击了热词：${word}".showToast()
+                mViewModel.setCurrentSearchKeyword(word)
             }
             mBinding.searchHotWordsFloatLayout.addView(floatLayoutItem)
         }
@@ -100,7 +102,9 @@ class SearchSuggestFragment : BaseDbFragment<FragmentSearchSuggestBinding>() {
 
             // 设置点击监听，点击后启动搜索
             floatLayoutItem.setOnClickListener {
-                "点击了记录：${floatLayoutItem.text}".showToast()
+                val word = floatLayoutItem.text.toString()
+                "点击了热词：${word}".showToast()
+                mViewModel.setCurrentSearchKeyword(word)
             }
             // 长按删除，历史记录里才需要
             floatLayoutItem.setOnLongClickListener {

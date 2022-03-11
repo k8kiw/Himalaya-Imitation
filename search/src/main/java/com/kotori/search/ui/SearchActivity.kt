@@ -4,12 +4,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
+import com.kotori.common.ktx.launchAndRepeatWithLifecycle
 import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.support.Constants
 import com.kotori.common.utils.showToast
@@ -20,8 +20,8 @@ import com.kotori.search.ktx.doSearch
 import com.kotori.search.ktx.setNavIcon
 import com.kotori.search.viewmodel.SearchViewModel
 import com.mancj.materialsearchbar.MaterialSearchBar
-import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
 import com.qmuiteam.qmui.util.QMUIKeyboardHelper
+import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @Route(path = Constants.PATH_SEARCH_PAGE)
@@ -42,6 +42,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
             navController = findNavController()
         }
         initSearchBar()
+        loadData()
     }
 
     private fun initSearchBar() {
@@ -139,6 +140,18 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                 }
 
             })
+        }
+    }
+
+    private fun loadData() {
+        launchAndRepeatWithLifecycle {
+            mViewModel.currentSearchKeyword.collect {
+                if (it.isBlank()) {
+                    return@collect
+                }
+                // 搜索词变化时显示在上面
+                mBinding.searchBar.doSearch(it)
+            }
         }
     }
 
