@@ -16,6 +16,7 @@ import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.kotori.search.adapter.AlbumSuggestionsAdapter
 import com.kotori.search.databinding.ActivitySearchBinding
+import com.kotori.search.ktx.doSearch
 import com.kotori.search.ktx.setNavIcon
 import com.kotori.search.viewmodel.SearchViewModel
 import com.mancj.materialsearchbar.MaterialSearchBar
@@ -69,19 +70,12 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
             val suggestions2 = genSuggestions(testList2)
             // 设置联想数据
             adapter.suggestions = suggestions1
-            this.setCustomSuggestionAdapter(adapter)
 
             //TODO：设置联想词点击事件，为bar设置文字建议抽成一个公用方法，点击下面信息也要用
-            setSuggestionsClickListener(object :SuggestionsAdapter.OnItemViewClickListener {
-                override fun OnItemClickListener(position: Int, v: View?) {
-
-                }
-
-                override fun OnItemDeleteListener(position: Int, v: View?) {
-
-                }
-
-            })
+            adapter.onItemClick = { _, title ->
+                doSearch(title)
+            }
+            setCustomSuggestionAdapter(adapter)
 
             // 设置监听器
             setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {

@@ -36,5 +36,7 @@ fun MaterialSearchBar.doSearch(keyword: String) {
     listener.onSearchConfirmed(keyword)*/
 
     // 弹起键盘让用户修改再搜
-    QMUIKeyboardHelper.showKeyboard(this.searchEditText, false)
+    QMUIKeyboardHelper.showKeyboard(searchEditText, false)
+    // 光标放最后
+    searchEditText.setSelection(keyword.length)
 }

@@ -10,7 +10,6 @@ import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.mancj.materialsearchbar.adapter.SuggestionsAdapter
-import com.ximalaya.ting.android.opensdk.model.word.QueryResult
 
 
 class AlbumSuggestionsAdapter constructor(
@@ -35,10 +34,16 @@ class AlbumSuggestionsAdapter constructor(
             title.text = suggestion?.keyword
             // 点击事件
             itemView.setOnClickListener {
-                "点击了：${title.text}".showToast()
-                // TODO:将title加入搜索框，如果无法加入那就在外部写listener
+                onItemClick(position, title.text.toString())
             }
         }
+    }
+
+    /**
+     * 联想项点击事件，入参为 position 和 text
+     */
+    var onItemClick: (Int, String) -> Unit = { position, text ->
+        "点击了第${position}项，标题为：${text}".showToast()
     }
 
     /**
