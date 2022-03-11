@@ -1,11 +1,9 @@
 package com.kotori.search.ui
 
 import android.view.View
-import androidx.lifecycle.lifecycleScope
 import com.kotori.common.base.BaseDbFragment
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.ktx.launchAndRepeatWithViewLifecycle
-import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.kotori.search.adapter.SearchResultPagingAdapter
 import com.kotori.search.databinding.FragmentSearchResultBinding
@@ -47,20 +45,10 @@ class SearchResultFragment : BaseDbFragment<FragmentSearchResultBinding>() {
 
     private fun loadData() {
         launchAndRepeatWithViewLifecycle {
-            mViewModel.currentSearchKeyword.collect {
-                //TODO：keyword变化后需要重新执行搜索,清空列表，重新加载
-                mViewModel.searchResultList.collectLatest {
-                    searchResultPagingAdapter.submitData(it)
-                }
-            }
-        }
-
-        /*lifecycleScope.launchWhenCreated {
-            // 订阅列表数据源
-            mViewModel.getSearchResult().collect {
+            mViewModel.searchResultList.collect {
                 searchResultPagingAdapter.submitData(it)
             }
-        }*/
+        }
     }
 
 
