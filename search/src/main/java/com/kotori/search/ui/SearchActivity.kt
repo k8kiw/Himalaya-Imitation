@@ -12,7 +12,6 @@ import com.kotori.common.entity.ProgressBean
 import com.kotori.common.ktx.launchAndRepeatWithLifecycle
 import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.support.Constants
-import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.kotori.search.adapter.AlbumSuggestionsAdapter
@@ -33,6 +32,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
     private lateinit var navController: NavController
 
     //private lateinit var adapter: AlbumSuggestionsAdapter
+    private val isSearchResultNotVisible
+        get() = navController.currentDestination?.id != R.id.searchResultFragment
 
     override fun getLayoutId(): Int = R.layout.activity_search
 
@@ -74,10 +75,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                 doSearch(text)
             }
 
-            //TODO：设置联想假数据模拟联想
-            val testList = listOf("111", "222", "333", "444", "555")
-            val suggestions = genSuggestions(testList)
-            lastSuggestions = suggestions
+            lastSuggestions = emptyList<ParcelableQueryResult>()
 
 
             // 设置监听器
@@ -96,7 +94,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                         return
                     }
                     // 确认搜索，展示搜索结果列表，替换fragment
-                    "搜索内容：$text".showToast()
                     mViewModel.setCurrentSearchKeyword(text.toString())
 
                     //focusable = View.NOT_FOCUSABLE
@@ -104,7 +101,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                     searchEditText?.clearFocus()
 
                     // 确认当前是否处于搜索页面，否则无需再navigate
-                    if (navController.currentDestination?.id != R.id.searchResultFragment) {
+                    if (isSearchResultNotVisible) {
                         navController.navigate(R.id.action_searchSuggestFragment_to_searchResultFragment)
                     }
                 }
@@ -148,7 +145,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
     private fun loadData() {
         launchAndRepeatWithLifecycle {
             mViewModel.currentSearchKeyword.collect {
-                if (it.isBlank()) {
+                if (it.isBlank() || it == mBinding.searchBar.text) {
                     return@collect
                 }
                 // 搜索词变化时显示在上面
@@ -158,12 +155,14 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
 
         launchAndRepeatWithLifecycle {
             mViewModel.searchSuggestList.collect {
-                mBinding.searchBar.apply {
-                    if (it[0].keyword.isBlank()) {
-                        // 更新内容
-                        updateLastSuggestions(emptyList<ParcelableQueryResult>())
-                    } else {
-                        updateLastSuggestions(it)
+                if (isSearchResultNotVisible) {
+                    mBinding.searchBar.apply {
+                        if (it[0].keyword.isBlank()) {
+                            // 更新内容
+                            updateLastSuggestions(emptyList<ParcelableQueryResult>())
+                        } else {
+                            updateLastSuggestions(it)
+                        }
                     }
                 }
             }
