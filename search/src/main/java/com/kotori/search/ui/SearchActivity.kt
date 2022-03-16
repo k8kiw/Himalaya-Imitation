@@ -12,6 +12,7 @@ import com.kotori.common.entity.ProgressBean
 import com.kotori.common.ktx.launchAndRepeatWithLifecycle
 import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.support.Constants
+import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.kotori.search.adapter.AlbumSuggestionsAdapter
@@ -30,6 +31,8 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
     private val mViewModel: SearchViewModel by viewModel()
 
     private lateinit var navController: NavController
+
+    //private lateinit var adapter: AlbumSuggestionsAdapter
 
     override fun getLayoutId(): Int = R.layout.activity_search
 
@@ -61,22 +64,21 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
             // 更改NavIcon
             setNavIcon(R.drawable.ic_home_used_in_search_bar)
 
-            // 设置联想内容适配器
+            // 设置联想内容adapter
             val layoutInflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
             val adapter = AlbumSuggestionsAdapter(layoutInflater)
-            //TODO：假数据模拟联想
-            val testList1 = listOf("111", "222", "444", "666")
-            val testList2 = listOf("777", "888", "999", "000")
-            val suggestions1 = genSuggestions(testList1)
-            val suggestions2 = genSuggestions(testList2)
-            // 设置联想数据
-            adapter.suggestions = suggestions1
-
-            //TODO：设置联想词点击事件，为bar设置文字建议抽成一个公用方法，点击下面信息也要用
-            adapter.onItemClick = { _, title ->
-                doSearch(title)
-            }
             setCustomSuggestionAdapter(adapter)
+
+            // 点击事件
+            adapter.onItemClick = { _, text ->
+                doSearch(text)
+            }
+
+            //TODO：设置联想假数据模拟联想
+            val testList = listOf("111", "222", "333", "444", "555")
+            val suggestions = genSuggestions(testList)
+            lastSuggestions = suggestions
+
 
             // 设置监听器
             setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
@@ -123,16 +125,16 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                 }
 
                 override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                    // 空的时候退出搜索会被调用一次，需要屏蔽
-                    if (s?.isBlank() == true) {
-                        return
+                    s?.apply {
+                        // 空的时候退出搜索会被调用一次，需要屏蔽
+                        if (s.isBlank()) {
+                            return
+                        }
+                        // 实时获取联想内容并显示
+                        "获取搜索联想：$s".showToast()
+                        // 设置给ViewModel，让它更新联想
+                        mViewModel.setCurrentSearchSuggest(s.toString())
                     }
-                    // 实时获取联想内容并显示
-                    "获取搜索联想：$s".showToast()
-                    //TODO： set还是update？
-                    adapter.suggestions = suggestions2
-                    adapter.notifyDataSetChanged()
-                    // adapter过滤信息
                 }
 
                 override fun afterTextChanged(s: Editable?) {
@@ -153,8 +155,24 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                 mBinding.searchBar.doSearch(it)
             }
         }
+
+        launchAndRepeatWithLifecycle {
+            mViewModel.searchSuggestList.collect {
+                mBinding.searchBar.apply {
+                    if (it[0].keyword.isBlank()) {
+                        // 更新内容
+                        updateLastSuggestions(emptyList<ParcelableQueryResult>())
+                    } else {
+                        updateLastSuggestions(it)
+                    }
+                }
+            }
+        }
     }
 
+    /**
+     * 测试用成成模拟数据
+     */
     private fun genSuggestions(testList: List<String>): MutableList<ParcelableQueryResult> {
         val suggestions: MutableList<ParcelableQueryResult> = ArrayList()
         for (s in testList) {

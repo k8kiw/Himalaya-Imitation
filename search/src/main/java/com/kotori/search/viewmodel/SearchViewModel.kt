@@ -6,6 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.sdk.SDKCallbackExt
 import com.kotori.search.repository.SearchRepository
 import com.kotori.search.repository.SearchResultPagingSource
@@ -36,6 +37,28 @@ class SearchViewModel: ViewModel() {
             .onStart { emit(PagingData.empty()) }
             .cachedIn(viewModelScope)
     }
+
+    /**
+     * 需要实时联想的词
+     */
+    private val _currentSearchSuggest = MutableStateFlow("")
+
+    fun setCurrentSearchSuggest(suggest: String) {
+        _currentSearchSuggest.value = suggest
+    }
+
+    val searchSuggestList = _currentSearchSuggest.flatMapLatest { suggest ->
+        flow {
+            if (suggest.isBlank()) {
+                val parcelableQueryResult = ParcelableQueryResult()
+                parcelableQueryResult.keyword = ""
+                emit(listOf(parcelableQueryResult))
+            } else {
+                emit(SDKCallbackExt.getSuggestWord(suggest))
+            }
+        }
+    }
+
 
     // 执行搜索的接口
     fun getSearchResult() : Flow<PagingData<Album>> {

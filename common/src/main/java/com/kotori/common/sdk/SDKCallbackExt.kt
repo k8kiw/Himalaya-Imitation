@@ -13,7 +13,6 @@ import com.ximalaya.ting.android.opensdk.model.track.Track
 import com.ximalaya.ting.android.opensdk.model.track.TrackList
 import com.ximalaya.ting.android.opensdk.model.word.HotWord
 import com.ximalaya.ting.android.opensdk.model.word.HotWordList
-import com.ximalaya.ting.android.opensdk.model.word.QueryResult
 import com.ximalaya.ting.android.opensdk.model.word.SuggestWords
 import java.util.concurrent.TimeoutException
 import kotlin.coroutines.resume
@@ -201,7 +200,7 @@ object SDKCallbackExt {
     /**
      * 输入搜索内容时的实时联想，QueryResult标明了keyword和需要高光的部分
      */
-    suspend fun getSuggestWord(keyword: String) : List<QueryResult> {
+    suspend fun getSuggestWord(keyword: String) : List<ParcelableQueryResult> {
         return suspendCoroutine { continuation ->
             // 设置参数
             val map = mapOf(
@@ -212,7 +211,18 @@ object SDKCallbackExt {
                 override fun onSuccess(p0: SuggestWords?) {
                     val result = p0?.keyWordList ?: ArrayList()
                     LogUtil.d(TAG, "getSuggestWord --> result size : ${result.size}")
-                    continuation.resume(result)
+                    if (result.isNotEmpty()) {
+                        // QueryResult转换
+                        val myResult = result.map { ParcelableQueryResult(it) }
+                        myResult.forEach {
+                            LogUtil.d(TAG, "myResult -> ${it.keyword}")
+                        }
+                        continuation.resume(myResult)
+                    } else {
+                        val myResult = ParcelableQueryResult()
+                        myResult.keyword = ""
+                        continuation.resume(listOf(myResult))
+                    }
                 }
 
                 override fun onError(p0: Int, p1: String?) {

@@ -9,6 +9,14 @@ import com.ximalaya.ting.android.opensdk.model.word.QueryResult
  */
 class ParcelableQueryResult() : QueryResult(), Parcelable {
 
+    constructor(queryResult: QueryResult) : this() {
+        queryResult.also {
+            queryId = it.queryId
+            keyword = it.keyword
+            highlightKeyword = it.highlightKeyword
+        }
+    }
+
     constructor(parcel: Parcel) : this() {
     }
 
