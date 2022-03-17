@@ -6,6 +6,7 @@ import com.kotori.common.base.BaseApplication
 import com.kotori.home.di.moduleHome
 import com.kotori.player.di.modulePlayer
 import com.kotori.search.di.moduleSearch
+import com.tencent.mmkv.MMKV
 import com.ximalaya.ting.android.opensdk.player.XmPlayerManager
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -23,11 +24,12 @@ class MainApp : BaseApplication() {
     override fun onCreate() {
         super.onCreate()
 
+        // 播放器初始化
+        XmPlayerManager.getInstance(context).init()
+
         initKoin()
         initARouter()
-
-        // 播放器初始化
-        XmPlayerManager.getInstance(this).init()
+        initMMKV()
     }
 
     private fun initKoin() {
@@ -47,5 +49,9 @@ class MainApp : BaseApplication() {
         ARouter.openLog()
         ARouter.openDebug()
         ARouter.init(this)
+    }
+
+    private fun initMMKV() {
+        MMKV.initialize(context)
     }
 }
