@@ -8,7 +8,8 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class SmallPlayerViewModel : ViewModel() {
 
-    private val playerManager = PlayerRepository.playerManager
+    private val playerManager
+        get() = PlayerRepository.playerManager
 
     /**
      * 界面上需要显示的信息

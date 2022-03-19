@@ -1,6 +1,7 @@
 package com.kotori.player.repository
 
 import com.kotori.common.base.BaseApplication
+import com.kotori.common.mmkv.*
 import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
 import com.kotori.player.viewmodel.PlayState
@@ -23,13 +24,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * home上的fragment与activity需要共享数据，需要抽取公共的播放信息到这里
  * 比如播放状态，很多StateFlow需要移到这里来
  */
-object PlayerRepository {
+object PlayerRepository: MMKVOwner{
     private const val TAG = "PlayerTAG"
 
     // 播放器实例，它可以直接拿到当前列表
-    val playerManager: XmPlayerManager = XmPlayerManager.getInstance(BaseApplication.context)
+    val playerManager: XmPlayerManager
+        get() = XmPlayerManager.getInstance(BaseApplication.context)
+
+    // mmkv持久化，在首页显示上一次的数据
+    var lastTrackIndex by mmkvInt()
+    private val lastTrackList = kv.decodeParcelableList<Track>("lastTrackList")
 
     init {
+        setPlayList(lastTrackList, lastTrackIndex)
         // 对播放器设置回调工作
         addPlayerListener()
         // 默认播放模式为列表循环
@@ -57,12 +64,16 @@ object PlayerRepository {
     /**
      * ======================  当前播放的track  ===========================
      */
-    val currentTrack = MutableStateFlow(Track())
+    val currentTrack = if (lastTrackList.isEmpty()) {
+        MutableStateFlow(Track())
+    } else {
+        MutableStateFlow(lastTrackList[lastTrackIndex])
+    }
 
     /**
      * ======================  当前播放器的trackList  =========================
      */
-    val currentTrackList: MutableStateFlow<List<Track>> = MutableStateFlow(ArrayList())
+    val currentTrackList = MutableStateFlow(lastTrackList)
 
 
     /**
@@ -78,16 +89,26 @@ object PlayerRepository {
         // 设进Flow保存数据
         currentTrackList.value = list
         currentTrack.value = list[currentIndex]
+        // 持久化
+        if (lastTrackList != list || lastTrackIndex != currentIndex) {
+            kv.encodeParcelableList("lastTrackList", list)
+            lastTrackIndex = currentIndex
+        }
+
+        setPlayList(list, currentIndex)
+    }
+
+    private fun setPlayList(list: List<Track>, index: Int) {
         // 自动播放当前歌曲
         // 先暂停，list没变的情况下不会自己切
         if (playerManager.isPlaying) {
             playerManager.resetPlayList()
         }
         // 设置播放器
-        playerManager.playList(currentTrackList.value, currentIndex)
+        playerManager.playList(list, index)
         // 播放测试，这里的index指的是list里的index
         // 播放器其实并不会自己切页
-        playerManager.play(currentIndex)
+        playerManager.play(index)
     }
 
 

@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.*
 class PlayerViewModel : ViewModel() {
 
     // 播放器实例，它可以直接拿到当前列表
-    private val playerManager = PlayerRepository.playerManager
+    private val playerManager
+        get() = PlayerRepository.playerManager
 
     // 当前播放的track
     val currentTrack: StateFlow<Track> = PlayerRepository.currentTrack.asStateFlow()
@@ -44,7 +45,7 @@ class PlayerViewModel : ViewModel() {
     fun play(vararg index: Int) {
         when (index.size) {
             0 -> playerManager.play()
-            1 -> playerManager.play(index[0])
+            1 -> playerManager.play(index[0].also { PlayerRepository.lastTrackIndex = it })
         }
     }
 
