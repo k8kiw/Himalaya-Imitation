@@ -5,6 +5,7 @@ import com.ximalaya.ting.android.opensdk.constants.DTransferConstants
 import com.ximalaya.ting.android.opensdk.datatrasfer.CommonRequest
 import com.ximalaya.ting.android.opensdk.datatrasfer.IDataCallBack
 import com.ximalaya.ting.android.opensdk.model.album.Album
+import com.ximalaya.ting.android.opensdk.model.album.AlbumList
 import com.ximalaya.ting.android.opensdk.model.album.DiscoveryRecommendAlbumsList
 import com.ximalaya.ting.android.opensdk.model.album.SearchAlbumList
 import com.ximalaya.ting.android.opensdk.model.category.Category
@@ -98,6 +99,30 @@ object SDKCallbackExt {
         }
     }
 
+    /**
+     * 根据分类id，返回该分类的专辑列表，按播放量排序
+     */
+    suspend fun getAlbumList(id: Int, page: Int) : List<Album> {
+        return suspendCoroutine { continuation ->
+            val map = mapOf(
+                DTransferConstants.CATEGORY_ID to id.toString(),
+                DTransferConstants.CALC_DIMENSION to "3",
+                DTransferConstants.PAGE to page.toString(),
+                DTransferConstants.PAGE_SIZE to 50.toString()
+            )
+            CommonRequest.getAlbumList(map, object : IDataCallBack<AlbumList> {
+                override fun onSuccess(p0: AlbumList?) {
+                    val list = p0?.albums ?: emptyList()
+                    continuation.resume(list)
+                }
+
+                override fun onError(p0: Int, p1: String?) {
+                    continuation.resumeWithException(TimeoutException(p1))
+                }
+
+            })
+        }
+    }
 
     /**
      * 获取一张专辑内的内容
@@ -136,7 +161,6 @@ object SDKCallbackExt {
 
     /**
      * 供播放器自动切页的common list，从一开始即可
-     *
      */
     suspend fun getCommonTrackListByAlbumId(albumId: Long) : TrackList {
         return suspendCoroutine { continuation ->
