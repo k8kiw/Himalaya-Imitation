@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Home</string>
+
+    <string name="home_recommend_tab">推荐</string>
+    <string name="home_crosstalk_tab">相声</string>
+    <string name="home_novel_tab">小说</string>
+    <string name="home_news_tab">时事</string>
+    <string name="home_music_tab">音乐</string>
 </resources>

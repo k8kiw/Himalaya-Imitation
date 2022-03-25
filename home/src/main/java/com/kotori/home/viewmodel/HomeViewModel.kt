@@ -15,10 +15,19 @@ import kotlinx.coroutines.flow.Flow
  */
 class HomeViewModel : ViewModel(){
 
-    fun getRecommendAlbums() : Flow<PagingData<Album>> {
-        // 封装repository，并缓存
-        return HomeRepository.getRecommendAlbumPagingData().cachedIn(viewModelScope)
-    }
+    /**
+     * tab 下的 paging data
+     */
+    val recommendPagingData = HomeRepository.getRecommendAlbumPagingData().cachedIn(viewModelScope)
+
+    val crosstalkPagingData = HomeRepository.getCrossTalkPagingData().cachedIn(viewModelScope)
+
+    val novelPagingData = HomeRepository.getNovelPagingData().cachedIn(viewModelScope)
+
+    val newsPagingData = HomeRepository.getNewsPagingData().cachedIn(viewModelScope)
+
+    val musicPagingData = HomeRepository.getMusicPagingData().cachedIn(viewModelScope)
+
 
 
     /**

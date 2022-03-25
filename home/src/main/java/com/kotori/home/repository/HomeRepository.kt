@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
  */
 object HomeRepository {
 
-    private const val PAGE_SIZE = 20
+    private const val PAGE_SIZE = 50
     // 分页加载的配置
     private val config = PagingConfig(
         pageSize = PAGE_SIZE,
@@ -34,14 +34,45 @@ object HomeRepository {
     }
 
     /**
+     * 分类
+     */
+    private const val NEWS_ID = 1
+    private const val MUSIC_ID = 2
+    private const val NOVEL_ID = 3
+    private const val CROSSTALK_ID = 12
+
+    fun getCrossTalkPagingData() : Flow<PagingData<Album>> {
+        return Pager(config) {
+            HomeAlbumPagingSource(CROSSTALK_ID)
+        }.flow
+    }
+
+    fun getNewsPagingData() : Flow<PagingData<Album>> {
+        return Pager(config) {
+            HomeAlbumPagingSource(NEWS_ID)
+        }.flow
+    }
+
+    fun getMusicPagingData() : Flow<PagingData<Album>> {
+        return Pager(config) {
+            HomeAlbumPagingSource(MUSIC_ID)
+        }.flow
+    }
+
+    fun getNovelPagingData() : Flow<PagingData<Album>> {
+        return Pager(config) {
+            HomeAlbumPagingSource(NOVEL_ID)
+        }.flow
+    }
+
+
+
+    /**
      * 根据专辑获取其声音内容
      */
     fun getTrackPagingData(album: Album) : Flow<PagingData<Track>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 50
-            ),
-            pagingSourceFactory = { DetailTrackPagingSource(album) }
-        ).flow
+        return Pager(config) {
+            DetailTrackPagingSource(album)
+        }.flow
     }
 }

@@ -74,7 +74,13 @@ class HomeFragment : BaseDbFragment<FragmentHomeBinding>() {
      * view pager 控制fragment的滑动，tab只要设置即可
      */
     private fun initTabAndPager() {
-        val tabs = listOf("推荐", "小说", "相声", "玄幻", "时事")
+        val tabs = listOf(
+            getString(R.string.home_recommend_tab),
+            getString(R.string.home_crosstalk_tab),
+            getString(R.string.home_novel_tab),
+            getString(R.string.home_news_tab),
+            getString(R.string.home_music_tab)
+        )
 
         // 先初始化view pager, 后面设置tab时一并绑定
         mBinding.homeViewPager.apply {
