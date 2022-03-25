@@ -8,11 +8,12 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.sdk.SDKCallbackExt
+import com.kotori.common.utils.LogUtil
+import com.kotori.common.utils.showToast
 import com.kotori.search.repository.SearchRepository
 import com.kotori.search.repository.SearchResultPagingSource
 import com.ximalaya.ting.android.opensdk.model.album.Album
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -31,6 +32,7 @@ class SearchViewModel: ViewModel() {
 
     // 当搜索词变化时，发送新的Flow，替换掉原paging data
     val searchResultList = _currentSearchKeyword.flatMapLatest { keyword ->
+        "搜索新词：$keyword".showToast()
         Pager(PagingConfig(pageSize = 20)) {
             SearchResultPagingSource(keyword)
         }.flow
