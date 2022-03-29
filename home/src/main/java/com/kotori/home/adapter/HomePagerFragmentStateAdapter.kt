@@ -12,7 +12,7 @@ import com.kotori.home.fragment.*
  * 传入view pager所在的界面，以及需要的页面数目
  */
 class HomePagerFragmentStateAdapter constructor(
-    private val fragment : Fragment,
+    fragment : Fragment,
     private val pageList : List<String>
 ) : FragmentStateAdapter(fragment) {
 
@@ -20,12 +20,12 @@ class HomePagerFragmentStateAdapter constructor(
 
     override fun createFragment(position: Int): Fragment {
         // 创建fragment
-        val newFragment = when (pageList[position]) {
-            fragment.getString(R.string.home_recommend_tab) -> HomeRecommendFragment()
-            fragment.getString(R.string.home_crosstalk_tab) -> HomeCrosstalkFragment()
-            fragment.getString(R.string.home_novel_tab) -> HomeNovelFragment()
-            fragment.getString(R.string.home_news_tab) -> HomeNewsFragment()
-            fragment.getString(R.string.home_music_tab) -> HomeMusicFragment()
+        val newFragment = when (position) {
+            0 -> HomeRecommendFragment()
+            1 -> HomeCrosstalkFragment()
+            2 -> HomeNovelFragment()
+            3 -> HomeNewsFragment()
+            4 -> HomeMusicFragment()
             else -> BlankFragment()
         }
 
