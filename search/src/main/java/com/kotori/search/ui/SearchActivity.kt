@@ -8,6 +8,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.kotori.common.base.BaseActivity
+import com.kotori.common.database.SearchHistory
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.ktx.launchAndRepeatWithLifecycle
 import com.kotori.common.sdk.ParcelableQueryResult
@@ -23,6 +24,8 @@ import com.mancj.materialsearchbar.MaterialSearchBar
 import com.qmuiteam.qmui.util.QMUIKeyboardHelper
 import kotlinx.coroutines.flow.collect
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Route(path = Constants.PATH_SEARCH_PAGE)
 class SearchActivity : BaseActivity<ActivitySearchBinding>(){
@@ -95,6 +98,9 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                     }
                     // 确认搜索，展示搜索结果列表，替换fragment
                     mViewModel.setCurrentSearchKeyword(text.toString())
+                    // 记录搜索
+                    mViewModel.addHistory(text.toString())
+
 
                     //focusable = View.NOT_FOCUSABLE
                     QMUIKeyboardHelper.hideKeyboard(this@apply)
@@ -145,7 +151,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
     private fun loadData() {
         launchAndRepeatWithLifecycle {
             mViewModel.currentSearchKeyword.collect {
-                if (it.isBlank() || it == mBinding.searchBar.text) {
+                if (it.isBlank()) {
                     return@collect
                 }
                 // 搜索词变化时显示在上面
@@ -155,6 +161,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
 
         launchAndRepeatWithLifecycle {
             mViewModel.searchSuggestList.collect {
+                // 当搜索推荐页展示时才调用
                 if (isSearchResultNotVisible) {
                     mBinding.searchBar.apply {
                         if (it[0].keyword.isBlank()) {
