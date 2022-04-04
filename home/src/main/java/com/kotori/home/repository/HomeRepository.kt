@@ -3,21 +3,37 @@ package com.kotori.home.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.kotori.common.database.AppDatabase
+import com.kotori.common.database.MyAlbum
 import com.ximalaya.ting.android.opensdk.model.album.Album
 import com.ximalaya.ting.android.opensdk.model.track.Track
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 
 /**
  * 数据仓库，封装各种来源的数据，提供出一致的接口
  * 对分页数据作flow的封装
  */
-object HomeRepository {
+class HomeRepository(database: AppDatabase) {
 
-    private const val PAGE_SIZE = 50
-    // 分页加载的配置
-    private val config = PagingConfig(
-        pageSize = PAGE_SIZE,
-    )
+    private val albumDao = database.albumDao()
+
+    companion object {
+        private const val PAGE_SIZE = 50
+        // 分页加载的配置
+        private val config = PagingConfig(
+            pageSize = PAGE_SIZE,
+        )
+
+        /**
+         * 分类
+         */
+        private const val NEWS_ID = 1
+        private const val MUSIC_ID = 2
+        private const val NOVEL_ID = 3
+        private const val CROSSTALK_ID = 12
+    }
 
 
     /**
@@ -32,14 +48,6 @@ object HomeRepository {
             pagingSourceFactory = { RecommendAlbumPagingSource() }
         ).flow
     }
-
-    /**
-     * 分类
-     */
-    private const val NEWS_ID = 1
-    private const val MUSIC_ID = 2
-    private const val NOVEL_ID = 3
-    private const val CROSSTALK_ID = 12
 
     fun getCrossTalkPagingData() : Flow<PagingData<Album>> {
         return Pager(config) {
@@ -65,6 +73,27 @@ object HomeRepository {
         }.flow
     }
 
+    /**
+     * 封装好自己数据库的MyAlbum类，界面处只需传入官方Album
+     */
+    suspend fun isSubscribed(album: Album): Boolean {
+        val myAlbum = MyAlbum(album)
+        return albumDao.isSubscribed(myAlbum)
+    }
+
+    suspend fun addSubscription(album: Album) {
+        withContext(Dispatchers.IO) {
+            val myAlbum = MyAlbum(album)
+            albumDao.insertAlbums(myAlbum)
+        }
+    }
+
+    suspend fun deleteSubscription(album: Album) {
+        withContext(Dispatchers.IO) {
+            val myAlbum = MyAlbum(album)
+            albumDao.deleteAlbums(myAlbum)
+        }
+    }
 
 
     /**

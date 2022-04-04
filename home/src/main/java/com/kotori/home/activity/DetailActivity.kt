@@ -11,6 +11,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseActivity
 import com.kotori.common.entity.ProgressBean
+import com.kotori.common.ktx.launchAndRepeatWithLifecycle
 import com.kotori.common.support.Constants
 import com.kotori.common.support.PublicRepository
 import com.kotori.common.ui.showFailTipsDialog
@@ -21,6 +22,7 @@ import com.kotori.home.R
 import com.kotori.home.adapter.DetailTrackPagingAdapter
 import com.kotori.home.databinding.ActivityDetailBinding
 import com.kotori.home.viewmodel.HomeViewModel
+import com.qmuiteam.qmui.alpha.QMUIAlphaImageButton
 import com.ximalaya.ting.android.opensdk.model.album.Album
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
@@ -36,6 +38,9 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
     @JvmField
     @Autowired(name = "album")
     var album : Album? = null
+
+    // 返回按钮
+    lateinit var subscribeButton: QMUIAlphaImageButton
 
     override fun getLayoutId(): Int = R.layout.activity_detail
 
@@ -106,9 +111,7 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
             detailTopbar.addRightImageButton(
                 R.drawable.ic_add_24px_rounded,
                 R.id.topbar_right_about_button
-            )?.setOnClickListener {
-                "点击了订阅".showToast()
-            }
+            )?.also { subscribeButton = it }
         }
 
         // 监听滑动状态
@@ -139,11 +142,35 @@ class DetailActivity : BaseActivity<ActivityDetailBinding>() {
         // 取得数据
         // "${album?.albumIntro}".showToast()
 
-        // 监听
+        // 列表adapter获取分页数据
         lifecycleScope.launchWhenCreated {
             album?.let { albumNotNull ->
                 mViewModel.getTracksByAlbum(albumNotNull).collect {
                     detailTrackPagingAdapter.submitData(it)
+                }
+            }
+        }
+
+        // 订阅按钮的变更
+        launchAndRepeatWithLifecycle {
+            mViewModel.isSubscribed.collect { isSubscribed ->
+                // 获取应该显示的图片资源
+                val buttonImage = mViewModel.subscribeButtonImageRes[isSubscribed]
+                // 设置图片
+                buttonImage?.let { subscribeButton.setImageResource(it) }
+                // 设置点击事件
+                if (isSubscribed) {
+                    // 若当前是已订阅状态，则删除
+                    subscribeButton.setOnClickListener {
+                        "取消订阅".showToast()
+                        album?.apply { mViewModel.deleteSubscribe(this) }
+                    }
+                } else {
+                    // 若当前是未订阅状态，则添加
+                    subscribeButton.setOnClickListener {
+                        "新增订阅".showToast()
+                        album?.apply { mViewModel.addSubscribe(this) }
+                    }
                 }
             }
         }
