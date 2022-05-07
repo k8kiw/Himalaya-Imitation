@@ -3,6 +3,7 @@ package com.kotori.search.repository
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.kotori.common.base.BaseRepository
 import com.kotori.common.database.AppDatabase
 import com.kotori.common.database.SearchHistory
 import com.ximalaya.ting.android.opensdk.model.album.Album
@@ -13,7 +14,7 @@ import kotlinx.coroutines.withContext
 import org.koin.experimental.property.inject
 import java.util.*
 
-class SearchRepository(database: AppDatabase) {
+class SearchRepository(database: AppDatabase): BaseRepository() {
 
     private val historyDao = database.searchHistoryDao()
 

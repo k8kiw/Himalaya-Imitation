@@ -8,6 +8,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.kotori.common.database.SearchHistory
+import com.kotori.common.network.RequestState
 import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.sdk.SDKCallbackExt
 import com.kotori.common.utils.showToast
@@ -21,10 +22,10 @@ import java.util.*
 
 class SearchViewModel(private val repository: SearchRepository): ViewModel() {
 
-    init {
+    /*init {
         getHotWords()
         //getHistories()
-    }
+    }*/
 
     /**
      * 搜索框传进来的搜索关键字
@@ -50,6 +51,7 @@ class SearchViewModel(private val repository: SearchRepository): ViewModel() {
     /**
      * 需要实时联想的词
      */
+    //TODO: 重复点击同一个词不会被设置，退出搜索模式后应该将它设为空
     private val _currentSearchSuggest = MutableStateFlow("")
 
     fun setCurrentSearchSuggest(suggest: String) {
@@ -83,10 +85,22 @@ class SearchViewModel(private val repository: SearchRepository): ViewModel() {
 
     val hotWordList = _hotWordList.asStateFlow()
 
+    /**
+     * 热搜词的请求状态
+     * 由于进入到该界面就需要请求了，所以在初始化完成后自动调用
+     */
+    val hotWordLoadState = MutableStateFlow<RequestState>(RequestState.Empty)
+        .also { getHotWords() }
+
     private fun getHotWords() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = SDKCallbackExt.getHotWords()
-            _hotWordList.value = result.map { it.searchword }
+            repository.executeReq(hotWordLoadState) {
+                SDKCallbackExt.getHotWords()
+                    .map { it.searchword }
+                    .also { _hotWordList.value = it }
+            }
+            /*val result = SDKCallbackExt.getHotWords()
+            _hotWordList.value = result.map { it.searchword }*/
         }
     }
 

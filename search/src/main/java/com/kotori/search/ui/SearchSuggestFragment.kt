@@ -6,6 +6,8 @@ import com.kotori.common.base.BaseDbFragment
 import com.kotori.common.database.SearchHistory
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.ktx.launchAndRepeatWithViewLifecycle
+import com.kotori.common.network.RequestState
+import com.kotori.common.ui.showFailTipsDialog
 import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.kotori.search.databinding.FragmentSearchSuggestBinding
@@ -37,10 +39,29 @@ class SearchSuggestFragment : BaseDbFragment<FragmentSearchSuggestBinding>() {
 
     private fun initHotWords() {
         launchAndRepeatWithViewLifecycle {
-            mViewModel.hotWordList.collect {
+            /*mViewModel.hotWordList.collect {
                 // 将热词显示在界面上
                 addHotWordsToFloatLayout(it)
                 //"获取热词".showToast()
+            }*/
+            mViewModel.hotWordLoadState.collect {
+                when(it) {
+                    is RequestState.Success -> {
+                        // 由于list的类型擦除，加载成功那就用hotWordList
+                        val list = mViewModel.hotWordList.value
+                        addHotWordsToFloatLayout(list)
+                    }
+                    is RequestState.Error -> {
+                        showFailTipsDialog("加载错误，请稍后再试")
+                        it.errorMessage.showToast()
+                    }
+                    is RequestState.Loading -> {
+
+                    }
+                    is RequestState.Empty -> {
+
+                    }
+                }
             }
         }
     }
