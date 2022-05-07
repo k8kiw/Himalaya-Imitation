@@ -15,6 +15,7 @@ import com.kotori.common.network.RequestState
 import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.support.Constants
 import com.kotori.common.ui.showFailTipsDialog
+import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.kotori.search.adapter.AlbumSuggestionsAdapter
@@ -118,7 +119,16 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                     // 按钮的点击事件
                     when(buttonCode) {
                         MaterialSearchBar.BUTTON_NAVIGATION -> finish()
-                        MaterialSearchBar.BUTTON_BACK -> mBinding.searchBar.closeSearch()
+                        MaterialSearchBar.BUTTON_BACK -> {
+                            mBinding.searchBar.closeSearch()
+                            // 清空联想词，避免重复一个词点击无效
+                            mViewModel.setCurrentSearchKeyword("")
+                            mViewModel.setCurrentSearchSuggest("")
+                            // 执行收起动画
+                            updateLastSuggestions(emptyList<ParcelableQueryResult>())
+                            // 由于列表为空时，放动画不会清空联想列表，得手动
+                            adapter.suggestions = emptyList()
+                        }
                     }
                 }
 
@@ -153,11 +163,13 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
     private fun loadData() {
         launchAndRepeatWithLifecycle {
             mViewModel.currentSearchKeyword.collect {
-                if (it.isBlank()) {
-                    return@collect
+                if (it.isNotBlank()) {
+                    // 搜索词变化时显示在上面
+                    mBinding.searchBar.doSearch(it)
+                } else {
+                    LogUtil.d("Test", "联想列表置空")
+                    // mBinding.searchBar.updateLastSuggestions(emptyList<ParcelableQueryResult>())
                 }
-                // 搜索词变化时显示在上面
-                mBinding.searchBar.doSearch(it)
             }
         }
 
