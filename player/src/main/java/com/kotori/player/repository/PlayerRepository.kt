@@ -27,25 +27,28 @@ import kotlinx.coroutines.flow.MutableStateFlow
 object PlayerRepository: MMKVOwner{
     private const val TAG = "PlayerTAG"
 
-    // 播放器实例，它可以直接拿到当前列表
-    val playerManager: XmPlayerManager
-        get() = XmPlayerManager.getInstance(BaseApplication.context)
-
     // mmkv持久化，在首页显示上一次的数据
     var lastTrackIndex by mmkvInt()
     private val lastTrackList = kv.decodeParcelableList<Track>("lastTrackList")
 
-    init {
-        setPlayList(lastTrackList, lastTrackIndex)
-        // 对播放器设置回调工作
-        addPlayerListener()
-        // 默认播放模式为列表循环
-        playerManager.playMode = PLAY_MODEL_LIST_LOOP
-        // 打个toast看看信息
-        /*"""播放器的列表size：${playerManager.playList.size}
-            |播放器的当前位置：${playerManager.currentIndex}
-        """.trimMargin().showToast()*/
-    }
+    // 播放器实例
+    val playerManager: XmPlayerManager = XmPlayerManager.getInstance(BaseApplication.context)
+        .also {
+            // 如果被杀死还需要初始化
+            if (!it.isConnected) {
+                it.init()
+            }
+            // 初始化播放器得在它创建完成后
+            it.replacePlayList(lastTrackList, lastTrackIndex)
+            // 对播放器设置回调工作
+            it.addPlayerStateListener()
+            // 默认播放模式为列表循环
+            it.playMode = PLAY_MODEL_LIST_LOOP
+            // 打个toast看看信息
+            /*"""播放器的列表size：${it.playList.size}
+                |播放器的当前位置：${it.currentIndex}
+            """.trimMargin().showToast()*/
+        }
 
     // 播放模式的对应名称
     private val playModeName = mapOf(
@@ -95,20 +98,20 @@ object PlayerRepository: MMKVOwner{
             lastTrackIndex = currentIndex
         }
 
-        setPlayList(list, currentIndex)
+        playerManager.replacePlayList(list, currentIndex)
     }
 
-    private fun setPlayList(list: List<Track>, index: Int) {
+    private fun XmPlayerManager.replacePlayList(list: List<Track>, index: Int) {
         // 自动播放当前歌曲
         // 先暂停，list没变的情况下不会自己切
-        if (playerManager.isPlaying) {
-            playerManager.resetPlayList()
+        if (this.isPlaying) {
+            this.resetPlayList()
         }
         // 设置播放器
-        playerManager.playList(list, index)
+        this.playList(list, index)
         // 播放测试，这里的index指的是list里的index
         // 播放器其实并不会自己切页
-        playerManager.play(index)
+        this.play(index)
     }
 
 
@@ -146,9 +149,9 @@ object PlayerRepository: MMKVOwner{
      */
     val currentPlayState: MutableStateFlow<PlayState> = MutableStateFlow(PlayState.Pause)
 
-    private fun addPlayerListener() {
+    private fun XmPlayerManager.addPlayerStateListener() {
         // 播放器回调
-        playerManager.addPlayerStatusListener(object : IXmPlayerStatusListener {
+        addPlayerStatusListener(object : IXmPlayerStatusListener {
             override fun onPlayStart() {
                 LogUtil.d(TAG, "onPlayStart")
             }
@@ -209,7 +212,7 @@ object PlayerRepository: MMKVOwner{
 
 
         // 广告状态监听
-        playerManager.addAdsStatusListener(object: IXmAdsStatusListener {
+        addAdsStatusListener(object: IXmAdsStatusListener {
             override fun onStartGetAdsInfo() {
                 LogUtil.d(TAG, "onStartGetAdsInfo")
             }
