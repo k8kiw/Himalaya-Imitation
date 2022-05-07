@@ -11,6 +11,7 @@ import com.kotori.common.database.SearchHistory
 import com.kotori.common.network.RequestState
 import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.sdk.SDKCallbackExt
+import com.kotori.common.utils.LogUtil
 import com.kotori.common.utils.showToast
 import com.kotori.search.repository.SearchRepository
 import com.kotori.search.repository.SearchResultPagingSource
@@ -58,17 +59,27 @@ class SearchViewModel(private val repository: SearchRepository): ViewModel() {
         _currentSearchSuggest.value = suggest
     }
 
+    val searchSuggestLoadState = MutableStateFlow<RequestState>(RequestState.Empty)
+
     val searchSuggestList = _currentSearchSuggest.flatMapLatest { suggest ->
+        LogUtil.d("Test", "请求${suggest}的联想")
         flow {
             if (suggest.isBlank()) {
                 val parcelableQueryResult = ParcelableQueryResult()
                 parcelableQueryResult.keyword = ""
                 emit(listOf(parcelableQueryResult))
             } else {
-                emit(SDKCallbackExt.getSuggestWord(suggest))
+                //TODO: 使用通用请求
+                /*repository.executeReq(searchSuggestLoadState) {
+                    LogUtil.d("Test", "执行请求")
+                    SDKCallbackExt.getSuggestWord(suggest)
+                        .also { emit(it) }
+                }*/
+                val result = SDKCallbackExt.getSuggestWord(suggest)
+                emit(result)
             }
-        }.stateIn(viewModelScope)
-    }
+        }
+    }//.asLiveData()
 
 
     // 执行搜索的接口

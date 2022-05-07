@@ -11,8 +11,10 @@ import com.kotori.common.base.BaseActivity
 import com.kotori.common.database.SearchHistory
 import com.kotori.common.entity.ProgressBean
 import com.kotori.common.ktx.launchAndRepeatWithLifecycle
+import com.kotori.common.network.RequestState
 import com.kotori.common.sdk.ParcelableQueryResult
 import com.kotori.common.support.Constants
+import com.kotori.common.ui.showFailTipsDialog
 import com.kotori.common.utils.showToast
 import com.kotori.search.R
 import com.kotori.search.adapter.AlbumSuggestionsAdapter
@@ -161,7 +163,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
 
         launchAndRepeatWithLifecycle {
             mViewModel.searchSuggestList.collect {
-                // 当搜索推荐页展示时才调用
                 if (isSearchResultNotVisible) {
                     mBinding.searchBar.apply {
                         if (it[0].keyword.isBlank()) {
@@ -173,6 +174,33 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>(){
                     }
                 }
             }
+            /*mViewModel.searchSuggestLoadState.collect {
+                when(it) {
+                    is RequestState.Success -> {
+                        val result = mViewModel.searchSuggestList.value ?: emptyList()
+                        if (isSearchResultNotVisible) {
+                            mBinding.searchBar.apply {
+                                if (result[0].keyword.isBlank()) {
+                                    // 更新内容
+                                    updateLastSuggestions(emptyList<ParcelableQueryResult>())
+                                } else {
+                                    updateLastSuggestions(result)
+                                }
+                            }
+                        }
+                    }
+                    is RequestState.Error -> {
+                        showFailTipsDialog("加载错误，请稍后再试")
+                        it.errorMessage.showToast()
+                    }
+                    is RequestState.Loading -> {
+
+                    }
+                    is RequestState.Empty -> {
+
+                    }
+                }
+            }*/
         }
     }
 
