@@ -4,6 +4,7 @@ import androidx.multidex.BuildConfig
 import com.alibaba.android.arouter.launcher.ARouter
 import com.kotori.common.base.BaseApplication
 import com.kotori.home.di.moduleHome
+import com.kotori.local.di.moduleLocal
 import com.kotori.player.di.modulePlayer
 import com.kotori.search.di.moduleSearch
 import com.tencent.mmkv.MMKV
@@ -18,7 +19,8 @@ class MainApp : BaseApplication() {
     private val modules = arrayListOf(
         moduleHome,
         modulePlayer,
-        moduleSearch
+        moduleSearch,
+        moduleLocal
     )
 
     override fun onCreate() {

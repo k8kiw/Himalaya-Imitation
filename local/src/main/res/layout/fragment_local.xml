@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,19 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-            android:id="@+id/local_test_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/subscribe_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
 
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="20dp"
-            android:text="本地测试"
-            android:textSize="20sp"/>
+            android:clipToPadding="false"
+            android:paddingHorizontal="10dp"
+
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            tools:listitem="@layout/item_album"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

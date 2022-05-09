@@ -1,12 +1,19 @@
 package com.kotori.common.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AlbumDao {
     @Query("SELECT * FROM album")
-    fun getAlbums(): Flow<List<MyAlbum>>
+    suspend fun getAlbums(): List<MyAlbum>
+
+    @Query("SELECT * FROM album")
+    fun getAlbumsWithLiveData(): LiveData<List<MyAlbum>>
+
+    @Query("SELECT * FROM album")
+    fun getAlbumsWithFlow(): Flow<List<MyAlbum>>
 
     @Query("SELECT * FROM album WHERE id IN (:albumIds)")
     fun getAlbumsWithFlowByIds(albumIds: List<Long>): Flow<List<MyAlbum>>
