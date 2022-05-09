@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
  * fragment内使用协程观测StateFlow的扩展
  */
 inline fun Fragment.launchAndRepeatWithViewLifecycle(
-    minActiveState: Lifecycle.State = Lifecycle.State.RESUMED,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
     crossinline block: suspend CoroutineScope.() -> Unit
 ) {
     viewLifecycleOwner.lifecycleScope.launch {
@@ -29,7 +29,7 @@ inline fun Fragment.launchAndRepeatWithViewLifecycle(
  * activity内使用协程观测StateFlow
  */
 inline fun QMUIActivity.launchAndRepeatWithLifecycle(
-    minActiveState: Lifecycle.State = Lifecycle.State.RESUMED,
+    minActiveState: Lifecycle.State = Lifecycle.State.STARTED,
     crossinline block: suspend CoroutineScope.() -> Unit
 ) {
     lifecycleScope.launch {
