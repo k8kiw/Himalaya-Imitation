@@ -52,7 +52,6 @@ class SearchViewModel(private val repository: SearchRepository): ViewModel() {
     /**
      * 需要实时联想的词
      */
-    //TODO: 重复点击同一个词不会被设置，退出搜索模式后应该将它设为空
     private val _currentSearchSuggest = MutableStateFlow("")
 
     fun setCurrentSearchSuggest(suggest: String) {
