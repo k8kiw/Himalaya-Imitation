@@ -34,10 +34,15 @@ class LocalFragment : BaseDbFragment<FragmentLocalBinding>() {
         LogUtil.d(TAG, "is null? ${mViewModel.albumList.value.size}")
     }*/
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        loadData()
+    }
+
     override fun initView(root: View) {
         getTopBar()?.setTitle(R.string.title_local)
         initRecyclerView()
-        loadData()
+        initListener()
     }
 
     private fun initRecyclerView() {
