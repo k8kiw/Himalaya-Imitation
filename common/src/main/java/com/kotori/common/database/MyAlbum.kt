@@ -9,7 +9,8 @@ import com.ximalaya.ting.android.opensdk.model.album.Album
 data class MyAlbum(
     @PrimaryKey val id: Long,
     @ColumnInfo(name = "title") val albumTitle: String,
-    @ColumnInfo(name = "cover_url") val coverUrlSmall: String,
+    @ColumnInfo(name = "cover_url_small") val coverUrlSmall: String,
+    @ColumnInfo(name = "cover_url_large") val coverUrlLarge: String,
     @ColumnInfo(name = "intro") val albumIntro: String,
     @ColumnInfo(name = "play_count") val playCount: Long,
     @ColumnInfo(name = "subscribe_count") val subscribeCount: Long,
@@ -19,6 +20,7 @@ data class MyAlbum(
         id = album.id,
         albumTitle = album.albumTitle,
         coverUrlSmall = album.coverUrlSmall,
+        coverUrlLarge = album.coverUrlLarge,
         albumIntro = album.albumIntro,
         playCount = album.playCount,
         subscribeCount = album.subscribeCount
@@ -30,6 +32,7 @@ data class MyAlbum(
             it.id = id
             it.albumTitle = albumTitle
             it.coverUrlSmall = coverUrlSmall
+            it.coverUrlLarge = coverUrlLarge
             it.albumIntro = albumIntro
             it.playCount = playCount
             it.subscribeCount = subscribeCount
