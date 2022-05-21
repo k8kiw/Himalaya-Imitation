@@ -18,7 +18,7 @@
 
     <item
         android:id="@+id/navigation_local"
-        android:icon="@drawable/ic_download_24px_rounded"
+        android:icon="@drawable/ic_subscriptions_24px_rounded"
         android:title="@string/title_local"/>
 
     <item
