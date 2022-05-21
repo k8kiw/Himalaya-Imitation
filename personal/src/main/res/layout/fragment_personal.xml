@@ -10,20 +10,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundButton
-            android:id="@+id/personal_test_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <ImageView
+            android:id="@+id/iv_user_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="40dp"
+            android:src="@mipmap/icon_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            android:paddingVertical="10dp"
-            android:paddingHorizontal="20dp"
-            android:text="我的测试"
-            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/tv_name_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/personal_go_to_login"
+            android:textColor="#405182"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_user_icon" />
 
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:background="#F1F3F9"
+            app:layout_constraintTop_toBottomOf="@id/tv_name_user" />
+
+        <com.kotori.common.widget.SettingView
+            android:id="@+id/setting_item_subscribe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/view"
+            app:leftText="订阅" />
+
+        <com.kotori.common.widget.SettingView
+            android:id="@+id/setting_item_settings"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintTop_toBottomOf="@id/setting_item_subscribe"
+            app:leftText="设置" />
+
+        <com.kotori.common.widget.SettingView
+            android:id="@+id/setting_item_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/setting_item_settings"
+            app:leftText="关于" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

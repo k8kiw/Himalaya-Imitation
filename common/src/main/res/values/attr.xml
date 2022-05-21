@@ -17,4 +17,32 @@
 <resources>
     <attr name="app_primary_color" format="color" /> <!-- topbar -->
     <attr name="app_content_bg_color" format="color" /> <!-- content-->
+
+    <declare-styleable name="SettingItem">
+        <attr name="leftTopText" format="string"/>
+        <attr name="leftText" format="string" />
+        <attr name="leftIcon" format="integer" />
+        <attr name="rightIcon" format="integer" />
+        <attr name="LtextSize" format="float" />
+        <attr name="LtextColor" format="color" />
+        <attr name="isShowUnderLine" format="boolean" />
+        <attr name="leftIconSize" format="dimension" />
+        <attr name="leftTextMarginLeft" format="dimension" />
+        <attr name="rightStyle" format="enum">
+            <enum name="text" value="0" />
+            <enum name="text_icon" value="1" />
+            <enum name="icon" value="2" />
+            <enum name="text_radiobutton" value="3" />
+            <enum name="text_edittext" value="4" />
+            <enum name="text_bottom_text" value="5" />
+            <enum name="none" value="6" />
+        </attr>
+        <attr name="isShowRightText" format="boolean" />
+        <attr name="rightText" format="string" />
+        <attr name="rightIconText" format="string" />
+        <attr name="bottomText" format="string" />
+        <attr name="editTextHInt" format="string" />
+        <attr name="rightTextSize" format="float" />
+        <attr name="rightTextColor" format="color" />
+    </declare-styleable>
 </resources>
